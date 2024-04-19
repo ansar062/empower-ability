@@ -1,0 +1,17 @@
+
+
+/* Reset default browser styles */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+/* Additional styles for code elements */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+    
+  font-family: 'Sansita Swashed', sans-serif; /* Use Sansita Swashed font */
+}
