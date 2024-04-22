@@ -25,7 +25,7 @@ export const SearchBar = styled.input`
   padding: 10px;
   border: none;
   border-radius: 4px;
-  margin-right: 10px;
+  margin-right: 5px;
 `;
 
 export const FilteringOptions = styled.div`
@@ -164,100 +164,3 @@ export const StoryCard = styled.div`
   }
 `;
 
-
-
-export const BecomeInstructorWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  margin-bottom: 20px;
-  background-color: #f8f8f8;
-  border-radius: 8px;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    max-width: 800px;
-  }
-`;
-
-export const InstructorImage = styled.img`
-  width: 100%;
-  max-width: 300px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 0;
-  }
-`;
-
-export const InstructorContent = styled.div`
-  flex: 1;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-
-  @media (min-width: 768px) {
-    margin-left: 20px;
-  }
-`;
-
-export const InstructorHeading = styled.h2`
-  font-size: 2rem;
-  font-weight: bold;
-  color: teal;
-  margin-bottom: 15px;
-`;
-
-export const InstructorSubHeading = styled.p`
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 15px;
-`;
-
-export const InstructorCTAButton = styled.button`
-  background-color: teal;
-  color: #fff;
-  padding: 10px 20px;
-  border: 2px solid teal;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-
-  &:hover {
-    background-color: #004080;
-    border-color: #004080;
-  }
-`;
-
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 50%;
-  margin-bottom: 20px;
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 10px;
-  }
-
-  li {
-    margin-bottom: 10px;
-  }
-`;
-
-export const Imag = styled.div`
-  img {
-    width: 100%;
-    height: auto;
-    margin-top: 20px;
-  }
-`;

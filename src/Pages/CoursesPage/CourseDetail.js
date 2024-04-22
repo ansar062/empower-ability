@@ -1,42 +1,60 @@
 import React from 'react';
 import styled from 'styled-components';
+import Comments from '../../Components/Comments';
 
 // Styled components
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1200px;
   margin: auto;
+  padding: 20px;
+`;
+
+const Header = styled.header`
   text-align: center;
+  margin-bottom: 40px;
 `;
 
 const Title = styled.h1`
-  font-size: 28px;
+  font-size: 36px;
   margin-bottom: 10px;
 `;
 
-const Instructor = styled.p`
-  font-style: italic;
+const Subtitle = styled.p`
+  font-size: 18px;
   margin-bottom: 20px;
 `;
 
 const MediaContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const VideoContainer = styled.div`
   position: relative;
   overflow: hidden;
-  width: 100%;
-  margin-bottom: 20px;
+  width: 50%;
+  max-width: 600px;
+  margin-right: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
 `;
 
 const ResponsiveIframe = styled.iframe`
   width: 100%;
-  height: 315px; /* Adjust the height as needed */
+  height: 315px;
 `;
 
 const Image = styled.img`
@@ -44,42 +62,30 @@ const Image = styled.img`
   max-width: 600px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
 `;
 
-const AccessibilityNote = styled.p`
-  font-size: 14px;
-  color: #888;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const ContentSection = styled.section`
+  margin-bottom: 40px;
 `;
 
-const Icon = styled.span`
+const SectionTitle = styled.h2`
   font-size: 24px;
-  margin-right: 5px;
+  margin-bottom: 20px;
 `;
 
-const SectionHeading = styled.h2`
-  font-size: 20px;
-  margin-top: 20px;
+const Description = styled.p`
+  font-size: 18px;
+  line-height: 1.6;
 `;
 
 const AssignmentList = styled.ul`
   list-style: none;
   padding: 0;
-  text-align: left;
-  margin-top: 10px;
 `;
 
 const AssignmentItem = styled.li`
+  font-size: 18px;
   margin-bottom: 10px;
-`;
-
-const Description = styled.p`
-  line-height: 1.6;
-  margin-top: 20px;
 `;
 
 const CourseDetails = () => {
@@ -99,8 +105,10 @@ const CourseDetails = () => {
 
   return (
     <Container>
-      <Title>{course.title}</Title>
-      <Instructor>Instructor: {course.instructor}</Instructor>
+      <Header>
+        <Title>{course.title}</Title>
+        <Subtitle>Instructor: {course.instructor}</Subtitle>
+      </Header>
 
       <MediaContainer>
         <VideoContainer>
@@ -113,36 +121,23 @@ const CourseDetails = () => {
           />
         </VideoContainer>
 
-        <AccessibilityNote>
-          <Icon role="img" aria-label="Accessibility Icon">
-            🌐
-          </Icon>{' '}
-          Note: This video is subtitled, and alternative descriptions are provided for visual content to ensure accessibility.
-        </AccessibilityNote>
-
         <Image src={process.env.PUBLIC_URL + course.imageUrl} alt="Course Preview" />
-
-        <AccessibilityNote>
-          <Icon role="img" aria-label="Accessibility Icon">
-            🖼️
-          </Icon>{' '}
-          Alternative: Image showing a preview of the course. Alt text: Course Preview Image.
-        </AccessibilityNote>
       </MediaContainer>
 
-      <Description>{course.description}</Description>
+      <ContentSection>
+        <SectionTitle>About the Course</SectionTitle>
+        <Description>{course.description}</Description>
+      </ContentSection>
 
-      <SectionHeading>Assignments</SectionHeading>
-      <AssignmentList>
-        {course.assignments.map((assignment, index) => (
-          <AssignmentItem key={index}>
-            <Icon role="img" aria-label="Assignment Icon">
-              📝
-            </Icon>{' '}
-            {assignment}
-          </AssignmentItem>
-        ))}
-      </AssignmentList>
+      <ContentSection>
+        <SectionTitle>Assignments</SectionTitle>
+        <AssignmentList>
+          {course.assignments.map((assignment, index) => (
+            <AssignmentItem key={index}>{assignment}</AssignmentItem>
+          ))}
+        </AssignmentList>
+      </ContentSection>
+      <Comments />
     </Container>
   );
 };

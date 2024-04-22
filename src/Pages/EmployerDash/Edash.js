@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaRegLightbulb, FaUserClock, FaEnvelopeOpenText, FaHandsHelping } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Edash = () => {
   const handleSeekHelp = () => {
@@ -26,19 +26,27 @@ const Edash = () => {
           <ActionGrid>
             <ActionItem onClick={() => console.log("Posting a job...")}>
               <ActionIcon><FaRegLightbulb /></ActionIcon>
-              Post a Job
+              <NavLink to="/epostjobs" activeClassName="active">
+            <NavText>Post a Job</NavText>
+          </NavLink>
             </ActionItem>
             <ActionItem onClick={() => console.log("Viewing applications...")}>
               <ActionIcon><FaUserClock /></ActionIcon>
-              View Applications
+              <NavLink to="/eapp" activeClassName="active">
+            <NavText>View Applications</NavText>
+          </NavLink>
             </ActionItem>
             <ActionItem onClick={() => console.log("Checking messages...")}>
               <ActionIcon><FaEnvelopeOpenText /></ActionIcon>
-              Check Messages
+              <NavLink to="/einbox" activeClassName="active">
+            <NavText>Check Messages</NavText>
+          </NavLink>
             </ActionItem>
             <ActionItem onClick={handleSeekHelp}>
               <ActionIcon><FaHandsHelping /></ActionIcon>
-              Seek Help
+              <NavLink to="/ehelp" activeClassName="active">
+            <NavText>Seek Help</NavText>
+          </NavLink>
             </ActionItem>
           </ActionGrid>
         </QuickActionsSection>
@@ -81,6 +89,8 @@ const SupportMessage = styled.p`
   line-height: 1.6;
 `;
 
+
+
 const AboutImage = styled.img`
   width: 50%;
   max-width: 350px;
@@ -94,6 +104,20 @@ const QuickActionsSection = styled.div`
 const QuickActionsHeader = styled.h3`
   font-size: 24px;
   margin-bottom: 20px;
+`;
+
+
+const NavText = styled.span`
+  font-size: 16px;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+  &:hover {
+    color: teal;
+  }
+  &.active {
+    color: teal;
+  }
 `;
 
 const ActionGrid = styled.div`

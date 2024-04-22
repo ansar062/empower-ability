@@ -1,5 +1,3 @@
-// Sidebar.js
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaHome, FaBriefcase, FaUsers, FaBookOpen, FaAngleDown } from 'react-icons/fa'; 
@@ -84,7 +82,7 @@ const Sidebar = () => {
           <DropdownIcon><FaAngleDown /></DropdownIcon>
         </SidebarLink>
         <DropdownLink isOpen={freelancerOpen}>
-          <SidebarLink to="/jobs">Jobs</SidebarLink>
+          <SidebarLink to="/sjobs">Jobs</SidebarLink>
           <SidebarLink to="/myjobs">My Jobs</SidebarLink>
           <SidebarLink to="/communication">Communication</SidebarLink>
         </DropdownLink>
@@ -93,11 +91,11 @@ const Sidebar = () => {
           <DropdownIcon><FaAngleDown /></DropdownIcon>
         </SidebarLink>
         <DropdownLink isOpen={studentOpen}>
-          <SidebarLink to="/courses">Courses</SidebarLink>
+          <SidebarLink to="/scourses">Courses</SidebarLink>
           <SidebarLink to="/mycourses">My Courses</SidebarLink>
           <SidebarLink to="/communication">Communication</SidebarLink>
         </DropdownLink>
-        <SidebarLink to="/blogs">
+        <SidebarLink to="/sblogs">
           <Icon><FaBookOpen /></Icon> Blogs
         </SidebarLink>
       </SidebarNav>

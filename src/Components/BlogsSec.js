@@ -77,7 +77,8 @@ const CardSubtitle = styled.p`
 `;
 
 const CardTitle = styled.h3`
-  margin: 10px 0;
+  margin-top: 5px;
+  margin-bottom: 30px;
   font-size: 18px;
   color: black;
   transition: color 0.3s ease-in-out;
@@ -174,7 +175,7 @@ const BlogSection = () => {
                 <CardSubtitle>{blog.subtitle}</CardSubtitle>
 
                 <CardTitle>
-                <a href="/singlepost" className="card-title" style={{ color: 'teal', marginBottom: '100px' }}>
+                <a href="/singlepost" className="card-title" style={{ color: 'black', textDecoration: 'none' }}>
                     {blog.title} 
                   </a>
                 </CardTitle>

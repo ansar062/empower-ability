@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { FaBell, FaUser } from 'react-icons/fa'; 
 import UserDropdownMenu from '../../Components/UserDropdownMenu'; // Correct import
 
@@ -44,7 +45,9 @@ const UserDropdownMenuContainer = styled.div`
 const Header = () => {
   return (
     <HeaderContainer>
-      <Logo src="logo.png" alt="Logo" />
+      <NavLink to="/">
+          <Logo src="/images/logo.png" alt="logo" />
+        </NavLink>
       <SearchBar type="text" placeholder="Search..." />
       <UserDropdownMenuContainer>
         <NotificationIcon />

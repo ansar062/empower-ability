@@ -12,12 +12,6 @@ import {
   TestimonialsSection,
   TestimonialCard,
   NavigationArrow,
-  BecomeInstructorWrapper,
-  InstructorImage,
-  InstructorContent,
-  InstructorHeading,
-  InstructorSubHeading,
-  InstructorCTAButton,
 } from './styles';
 
 const CoursePage = () => {
@@ -228,22 +222,6 @@ const CoursePage = () => {
   </div>
 </TestimonialsSection>
 
-<BecomeInstructorWrapper>
-  <InstructorContent>
-    <InstructorHeading>Become an Instructor</InstructorHeading>
-    <InstructorSubHeading>
-      Instructors from around the world teach millions of learners on Udemy.
-      We provide the tools and skills to teach what you love.
-    </InstructorSubHeading>
-    <Link to="/becomeinstructor">
-  <InstructorCTAButton onClick={becomeInstructor}>
-    Become an Instructor
-  </InstructorCTAButton>
-</Link>
-  </InstructorContent>
-  <InstructorImage src="/Images/instructor.png" alt="Become an Instructor" />
-</BecomeInstructorWrapper>
-      
     </CoursePageWrapper>
   );
 };

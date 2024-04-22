@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { FaEdit, FaQuestion, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaUser, FaEdit, FaQuestion, FaSignOutAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const UserDropdownMenu = ({ position }) => {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,6 @@ const UserDropdownMenu = ({ position }) => {
     setOpen(!open);
   };
 
-  // Placeholder icons from Font Awesome
   const editIcon = <FaEdit />;
   const helpIcon = <FaQuestion />;
   const logoutIcon = <FaSignOutAlt />;
@@ -40,9 +40,10 @@ const UserDropdownMenu = ({ position }) => {
             <UserRole>Website Designer</UserRole>
           </UserInfo>
           <MenuList>
-            <DropdownItem icon={editIcon} text="Edit Profile" />
-            <DropdownItem icon={helpIcon} text="Helps" />
-            <DropdownItem icon={logoutIcon} text="Logout" />
+            <DropdownItem icon={editIcon} text="Edit Profile" to="/editprofile" />
+            <DropdownItem icon={helpIcon} text="Helps" href="mailto:maidatariq06@gmail.com" />
+
+            <DropdownItem icon={logoutIcon} text="Logout" to="/" />
           </MenuList>
         </DropdownMenu>
       )}
@@ -88,10 +89,12 @@ const MenuList = styled.ul`
   margin: 0;
 `;
 
-const DropdownItem = ({ icon, text }) => (
+const DropdownItem = ({ icon, text, to }) => (
   <ListItem>
-    <DropdownItemIcon>{icon}</DropdownItemIcon>
-    <ListItemText>{text}</ListItemText>
+    <StyledLink to={to}>
+      <DropdownItemIcon>{icon}</DropdownItemIcon>
+      <ListItemText>{text}</ListItemText>
+    </StyledLink>
   </ListItem>
 );
 
@@ -104,6 +107,13 @@ const ListItem = styled.li`
   &:hover {
     background-color: #f5f5f5;
   }
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
 `;
 
 const DropdownItemIcon = styled.div`

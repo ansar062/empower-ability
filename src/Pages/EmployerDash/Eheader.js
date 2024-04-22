@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaHome, FaBriefcase, FaPaperPlane, FaUsers, FaUser, FaBell } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import UserDropdownMenu from '../../Components/UserDropdownMenu'; 
+import NotificationIcon from '../../Components/NotificationIcon'; 
 
 const EHeader = () => {
   return (
@@ -14,44 +16,34 @@ const EHeader = () => {
       <Navigation>
         <NavItem>
           <NavLink to="/edash" activeClassName="active">
-            <NavIcon><FaHome /></NavIcon>
             <NavText>Dashboard</NavText>
           </NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/epostjobs" activeClassName="active">
-            <NavIcon><FaBriefcase /></NavIcon>
             <NavText>Post a Job</NavText>
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/einbox" activeClassName="active">
-            <NavIcon><FaPaperPlane /></NavIcon>
+          <NavLink to="/chat" activeClassName="active">
             <NavText>Messages</NavText>
           </NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/eapp" activeClassName="active">
-            <NavIcon><FaUsers /></NavIcon>
             <NavText>Applications</NavText>
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/profile" activeClassName="active">
-            <NavIcon><FaUser /></NavIcon>
-            <NavText>Profile</NavText>
           </NavLink>
         </NavItem>
       </Navigation>
       <RightSection>
         <NotificationButton>
-          <FaBell />
+          <NotificationIcon />
         </NotificationButton>
         <StudentLink to="/">
           Student
         </StudentLink>
         <UserIcon>
-          <FaUser />
+        <UserDropdownMenu /> 
         </UserIcon>
       </RightSection>
     </HeaderContainer>
@@ -103,7 +95,7 @@ const NavIcon = styled.div`
 `;
 
 const NavText = styled.span`
-  font-size: 14px;
+  font-size: 16px;
 `;
 
 const RightSection = styled.div`

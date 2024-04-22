@@ -14,9 +14,8 @@ import JobsPage from './Pages/JobsPage/Jobs';
 import BlogsPage from './Pages/BlogsPage/Blogs';
 import CoursesPage from './Pages/CoursesPage/Courses';
 import SinglePost from './Pages/BlogsPage/SinglePost';
-import Write from './Pages/BlogsPage/Write';
+import Write from './Pages/SpecialDash/Write';
 import CourseDetail from './Pages/CoursesPage/CourseDetail';
-import BecomeInstructor from './Pages/CoursesPage/BecomeInstructor';
 import Tutor from './Pages/ProfileSetup/tutor'; 
 import Freelancer from './Pages/ProfileSetup/freelancer'; 
 import Theader from './Pages/TutorDash/Theader';
@@ -31,6 +30,11 @@ import EHeader from './Pages/EmployerDash/Eheader';
 import EFooter from './Pages/EmployerDash/Efooter';
 import Eapp from './Pages/EmployerDash/Eapp';
 import Sdashboard from './Pages/SpecialDash/Sdashboard';
+import Sjobs from './Pages/SpecialDash/Sjobs';
+import Scourses from './Pages/SpecialDash/Scourses';
+import Sblogs from './Pages/SpecialDash/Sblogs';
+import Chat from './Pages/ChatApp/Chat';
+import EditProfile from './Components/EditProfile';
 
 const Home = () => (
   <div>
@@ -50,15 +54,14 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<ContactPageWithHeaderFooter />} />
-        <Route path="/login" element={<LoginPageWithHeaderFooter />} />
-        <Route path="/reg" element={<RegWithHeaderFooter />} />
+        <Route path="/login" element={<LoginPageWithoutHeaderFooter />} />
+        <Route path="/reg" element={<RegWithoutHeaderFooter />} />
         <Route path="/jobs" element={<JobsPageWithHeaderFooter />} />
         <Route path="/blogs" element={<BlogsPageWithHeaderFooter />} />
         <Route path="/courses" element={<CoursesPageWithHeaderFooter />} />
         <Route path="/SinglePost" element={<SinglePostWithHeaderFooter />} />
-        <Route path="/write" element={<WriteWithHeaderFooter />} />
+        <Route path="/write" element={<WriteWithoutHeaderFooter />} />
         <Route path="/coursedetail/:id" element={<CourseDetailWithHeaderFooter />} />
-        <Route path="/becomeinstructor" element={<BecomeInstructorWithHeaderFooter />} />
         <Route path="/tutor" element={<TutorWithHeaderFooter />} />
         <Route path="/freelancer" element={<FreelancerWithHeaderFooter />} />
         <Route path="/tdashboard" element={<TdashboardWithHeaderFooter />} />
@@ -70,6 +73,11 @@ const App = () => {
         <Route path="/epostjobs" element={<EpostjobsWithHeaderFooter />} />
         <Route path="/einbox" element={<EinboxWithoutHeaderFooter />} />
         <Route path="/sdashboard" element={<SdashboardWithoutHeaderFooter />} />
+        <Route path="/sjobs" element={<SjobsWithoutHeaderFooter />} />
+        <Route path="/scourses" element={<ScoursesWithoutHeaderFooter />} />
+        <Route path="/sblogs" element={<SblogsWithoutHeaderFooter />} />
+        <Route path="/chat" element={<ChatWithoutHeaderFooter />} />
+        <Route path="/editprofile" element={<EditProfileWithoutHeaderFooter />} />
       </Routes>
     </Router>
   );
@@ -85,21 +93,7 @@ const ContactPageWithHeaderFooter = () => (
   </>
 );
 
-const LoginPageWithHeaderFooter = () => (
-  <>
-    <Header />
-    <LoginPage />
-    <Footer />
-  </>
-);
 
-const RegWithHeaderFooter = () => (
-  <>
-    <Header />
-    <Reg />
-    <Footer />
-  </>
-);
 
 const TutorWithHeaderFooter = () => (
   <>
@@ -149,13 +143,7 @@ const SinglePostWithHeaderFooter = () => (
   </>
 );
 
-const WriteWithHeaderFooter = () => (
-  <>
-    <Header />
-    <Write />
-    <Footer />
-  </>
-);
+
 
 const CourseDetailWithHeaderFooter = () => (
   <>
@@ -165,13 +153,7 @@ const CourseDetailWithHeaderFooter = () => (
   </>
 );
 
-const BecomeInstructorWithHeaderFooter = () => (
-  <>
-    <Header />
-    <BecomeInstructor />
-    <Footer />
-  </>
-);
+
 
 const EdashWithHeaderFooter = () => (
   <>
@@ -230,6 +212,15 @@ const TcoursesWithHeaderFooter = () => (
 
 const TmonitoringWithoutHeaderFooter = () => <Tmonitoring />;
 const SdashboardWithoutHeaderFooter = () => <Sdashboard />;
+const LoginPageWithoutHeaderFooter = () => <LoginPage />;
+const RegWithoutHeaderFooter = () => <Reg />;
+const SjobsWithoutHeaderFooter = () => <Sjobs />;
+const ScoursesWithoutHeaderFooter = () => <Scourses />;
+const SblogsWithoutHeaderFooter = () => <Sblogs />;
+const WriteWithoutHeaderFooter = () => <Write />;
+const ChatWithoutHeaderFooter = () => <Chat />;
+const EditProfileWithoutHeaderFooter = () => <EditProfile />;
+
 
 // Define other components without Header and Footer similarly...
 

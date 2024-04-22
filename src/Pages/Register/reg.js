@@ -3,26 +3,29 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledRegister = styled.div`
-  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #f5f5f5;
 `;
 
 const StyledRegisterFormContainer = styled.div`
   background-color: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  padding: 20px;
-  width: 300px;
+  padding: 40px;
+  margin-top:20px;
+  margin-bottom:20px;
+  width: 350px;
+  max-width: 50%;
 `;
 
-const StyledRegisterTitle = styled.span`
+const StyledRegisterTitle = styled.h2`
   font-size: 24px;
   font-weight: bold;
   color: teal;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
 `;
 
@@ -32,68 +35,77 @@ const StyledRegisterForm = styled.form`
 `;
 
 const StyledRegisterLabel = styled.label`
-  margin: 10px 0;
-  color: teal;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #333333;
 `;
 
 const StyledRegisterInput = styled.input`
-  padding: 10px;
-  background-color: transparent;
-  border: 2px solid teal;
-  border-radius: 10px;
-  color: teal;
+  padding: 12px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #333333;
 
   &:focus {
     outline: none;
+    border-color: teal;
   }
 `;
 
 const StyledRegisterSelect = styled.select`
-  padding: 10px;
-  background-color: transparent;
-  border: 2px solid teal;
-  border-radius: 10px;
-  color: teal;
+  padding: 12px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #333333;
 
   &:focus {
     outline: none;
+    border-color: teal;
   }
+`;
+
+const StyledRegisterButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledRegisterButton = styled.button`
-  width: 98%;
-  margin-top: 20px;
+  padding: 12px 24px;
   cursor: pointer;
   background-color: teal;
   color: white;
-  padding: 10px;
-  border: 1px solid teal;
+  border: none;
   border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 
   &:hover {
-    background-color: white;
-    color: teal;
-    border: 1px solid teal;
+    background-color: #00796b;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }
 `;
 
-const StyledSignUpUsing = styled.div`
-  margin-top: 20px;
+const StyledAlreadyAccount = styled.div`
   text-align: center;
-  color: black;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333333;
 `;
 
-const StyledSocialLoginIcons = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-`;
-
-const StyledSocialLoginIcon = styled.a`
-  font-size: 30px;
+const StyledLoginLink = styled(Link)`
   color: teal;
-  margin: 0 10px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Register = () => {
@@ -101,7 +113,7 @@ const Register = () => {
     username: '',
     email: '',
     password: '',
-    role: 'client' // Default role
+    role: 'client'
   });
   const [registrationError, setRegistrationError] = useState(false);
 
@@ -117,7 +129,6 @@ const Register = () => {
     e.preventDefault();
 
     // Perform form validation here
-    // For simplicity, I'm skipping validation in this example
 
     // Once validation is done, you can proceed with form submission
     console.log('Form submitted:', formData);
@@ -126,7 +137,7 @@ const Register = () => {
       username: '',
       email: '',
       password: '',
-      role: 'client' // Reset role to default
+      role: 'client'
     });
   };
 
@@ -134,7 +145,7 @@ const Register = () => {
   let linkDestination;
   switch (formData.role) {
     case 'teacher':
-      linkDestination = '/tutor';
+      linkDestination = '/freelancer';
       break;
     case 'student/freelancer':
       linkDestination = '/sdashboard';
@@ -150,7 +161,8 @@ const Register = () => {
   return (
     <StyledRegister>
       <StyledRegisterFormContainer>
-        <StyledRegisterTitle>Register</StyledRegisterTitle>
+        <StyledRegisterTitle>
+        Welcome to EmpowerAbility</StyledRegisterTitle>
         <StyledRegisterForm onSubmit={handleSubmit}>
           <StyledRegisterLabel>Username</StyledRegisterLabel>
           <StyledRegisterInput
@@ -186,24 +198,18 @@ const Register = () => {
             <option value="teacher">Teacher</option>
             <option value="student/freelancer">Student/Freelancer</option>
           </StyledRegisterSelect>
-          <Link to={linkDestination}>
-            <StyledRegisterButton type="submit">Register</StyledRegisterButton>
-          </Link>
+          <StyledRegisterButtonContainer>
+            <Link to={linkDestination}>
+              <StyledRegisterButton type="submit">Register</StyledRegisterButton>
+            </Link>
+          </StyledRegisterButtonContainer>
         </StyledRegisterForm>
         {registrationError && (
-          <div style={{ color: 'red', marginTop: '5px' }}>Registration failed. Please check the provided information.</div>
+          <div style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>Registration failed. Please check the provided information.</div>
         )}
-        <StyledSignUpUsing>
-          Sign up using:
-          <StyledSocialLoginIcons>
-            <StyledSocialLoginIcon href="#github">
-              <i className="fab fa-github"></i>
-            </StyledSocialLoginIcon>
-            <StyledSocialLoginIcon href="#google">
-              <i className="fab fa-google"></i>
-            </StyledSocialLoginIcon>
-          </StyledSocialLoginIcons>
-        </StyledSignUpUsing>
+        <StyledAlreadyAccount>
+          Already have an account? <StyledLoginLink to="/login">Login</StyledLoginLink>
+        </StyledAlreadyAccount>
       </StyledRegisterFormContainer>
     </StyledRegister>
   );

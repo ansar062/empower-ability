@@ -114,16 +114,17 @@ const Wrapper = styled.div`
 const RatingWrapper = styled.div`
   display: flex;
   gap: 3px;
+  color:orange;
 `;
 
 const RatingText = styled.p`
-  color: #1c1c1c;
+  color: gray;
   font-size: 0.9rem;
   font-weight: bold;
 `;
 
 const Price = styled.data`
-  color: teal;
+  color: black;
   font-family: 'Arial', sans-serif;
   font-size: 1.2rem;
   font-weight: bold;
@@ -140,6 +141,7 @@ const CardMetaList = styled.ul`
 const CardMetaItem = styled.li`
   position: relative;
   gap: 5px;
+  color: gray;
 
   &:not(:last-child)::after {
     content: "|";

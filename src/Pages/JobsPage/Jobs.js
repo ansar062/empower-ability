@@ -166,20 +166,6 @@ const JobsPage = () => {
     </Styles.StoryCard>
   ))}
 </Styles.SuccessStoriesSection>
-
-      {/* Upload Jobs Section */}
-      <Styles.BecomeInstructorWrapper>
-        <Styles.InstructorContent>
-          <Styles.InstructorHeading>{instructorData.heading}</Styles.InstructorHeading>
-          <Styles.InstructorSubHeading>{instructorData.subHeading}</Styles.InstructorSubHeading>
-          <Link to="/uploadjobs">
-            <Styles.InstructorCTAButton onClick={uploadJobs}>
-              {instructorData.buttonText}
-            </Styles.InstructorCTAButton>
-          </Link>
-        </Styles.InstructorContent>
-        <Styles.InstructorImage src={instructorData.imageSrc} alt={instructorData.heading} />
-      </Styles.BecomeInstructorWrapper>
     </Styles.JobsContainer>
   );
 };

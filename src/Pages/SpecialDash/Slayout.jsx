@@ -3,6 +3,7 @@
 import React from 'react';
 import Sheader from './Sheader';
 import Ssidebar from './Ssidebar';
+import Sfooter from './Sfooter';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -11,7 +12,6 @@ const Container = styled.div`
 
 const Content = styled.div`
   flex: 1;
-  padding: 1rem;
 `;
 
 const Layout = ({ children }) => {
@@ -21,6 +21,7 @@ const Layout = ({ children }) => {
       <Content>
         <Sheader />
         <div style={{ marginLeft: '250px' }}>{children}</div>
+        <Sfooter />
       </Content>
     </Container>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Layout from './Slayout';
 
 // Wrapper for the entire component
 const WriteWrapper = styled.div`
@@ -9,7 +10,7 @@ const WriteWrapper = styled.div`
 // Styled image
 const WriteImg = styled.img`
   margin-left: 150px;
-  width: 70vw;
+  width: 50vw;
   height: 250px;
   border-radius: 10px;
   object-fit: cover;
@@ -46,7 +47,7 @@ const WriteInput = styled.input`
   font-size: 30px;
   border: none;
   padding: 20px;
-  width: 70vw;
+  width: 50vw;
 
   &::placeholder {
     color: rgb(189, 185, 185);
@@ -60,17 +61,18 @@ const WriteInput = styled.input`
 
 // Styled text area
 const WriteText = styled.textarea`
-  width: 70vw;
-  height: 100vh;
+  width: 50vw;
+  height: 50vh;
   font-family: inherit;
   font-size: 20px;
+  margin-bottom: 20px;
 `;
 
 // Styled submit button
 const WriteSubmit = styled.button`
   position: absolute;
   top: 20px;
-  right: 50px;
+  right: 100px;
   color: white;
   background-color: teal;
   padding: 10px;
@@ -84,6 +86,7 @@ const WriteSubmit = styled.button`
 
 export default function Write() {
   return (
+    <Layout>
     <WriteWrapper>
       <WriteImg
         src="\Images\write.png"
@@ -115,5 +118,6 @@ export default function Write() {
         </WriteSubmit>
       </WriteForm>
     </WriteWrapper>
+    </Layout>
   );
 }

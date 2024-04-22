@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaHome, FaBriefcase, FaPaperPlane, FaBell } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import UserDropdownMenu from '../../Components/UserDropdownMenu';
 
@@ -15,19 +15,16 @@ const TutorsHeader = () => {
       <Navigation>
         <NavItem>
           <NavLink to="/tdashboard" activeClassName="active">
-            <NavIcon><FaHome /></NavIcon>
             <NavText>Dashboard</NavText>
           </NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/tcourses" activeClassName="active">
-            <NavIcon><FaBriefcase /></NavIcon>
             <NavText>Manage Courses</NavText>
           </NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/tcommunication" activeClassName="active">
-            <NavIcon><FaPaperPlane /></NavIcon>
             <NavText>Communication</NavText>
           </NavLink>
         </NavItem>
@@ -87,7 +84,7 @@ const NavIcon = styled.div`
 `;
 
 const NavText = styled.span`
-  font-size: 14px;
+  font-size: 16px;
 `;
 
 const RightSection = styled.div`

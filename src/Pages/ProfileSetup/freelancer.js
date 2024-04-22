@@ -268,7 +268,7 @@ const ProfileSetupPage = () => {
             </FormGroup>
           </Column>
         </ColumnsContainer>
-        <Link to="/jobs">
+        <Link to="/tdashboard">
         <Button type="submit">Save Profile</Button>
         </Link>
       </FormContainer>
