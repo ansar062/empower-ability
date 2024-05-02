@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, NavLink } from 'react-router-dom'; 
 import styled from 'styled-components';
 import { FaGoogle, FaFacebookF, FaTwitter } from 'react-icons/fa';
+
+import axios from 'axios';
+import { signInStart, signInSuccess, signInFailure } from '../../store/slices/authSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import { toast } from 'react-toastify';
+
 
 const StyledLogin = styled.div`
   height: calc(100vh - 50px);
@@ -130,11 +136,19 @@ const StyledCreateAccountLink = styled.div`
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {loading, error, currentUser} = useSelector((state) => state.auth);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false, // New state for "Remember Me" checkbox
   });
+  useEffect(() => {
+    if(currentUser){
+      navigate('/');
+    }
+  })
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -148,27 +162,26 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const hardcodedCredentials = {
-      email: 'maidah@gmail.com',
-      password: 'hehe',
-    };
-
-    if (formData.email === hardcodedCredentials.email && formData.password === hardcodedCredentials.password) {
-      console.log('Login successful!');
-      setFormData({
-        email: '',
-        password: '',
-        rememberMe: formData.rememberMe, // Keep the state of "Remember Me" checkbox
-      });
-      setLoginError(false);
-      navigate('/'); // Redirect to home page after successful login
-    } else {
-      console.log('Invalid credentials. Login failed.');
-      setLoginError(true);
-      setErrorMessage('Invalid email or password. Please try again.'); // Set error message
+    try{
+      dispatch(signInStart());
+      await axios.post('http://localhost:8000/login', formData,{
+        withCredentials: true
+      } ).then(response => {
+        const data = response.data;
+        if(data.success === false){
+          toast(data.message)
+          dispatch(signInFailure(data.message));
+          return;
+        }
+        toast(data.message)
+        dispatch(signInSuccess(data.user));
+        navigate('/');
+      })
+    }catch(err){
+      toast(err);
+      dispatch(signInFailure(err));
     }
   };
 

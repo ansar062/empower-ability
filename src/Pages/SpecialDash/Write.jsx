@@ -1,6 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-import Layout from './Slayout';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Layout from "./Slayout";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  postStart,
+  postFail,
+  postSuccess,
+} from "../../store/slices/postBlogSlice";
 
 // Wrapper for the entire component
 const WriteWrapper = styled.div`
@@ -85,39 +93,92 @@ const WriteSubmit = styled.button`
 `;
 
 export default function Write() {
+  const navigate = useNavigate();
+  const [cover, setCover] = useState(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [coverImg, setCoverImg] = useState();
+  const { error, loading } = useSelector((state) => state.postblog);
+  const dispatch = useDispatch();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("file", cover);
+    data.append("title", title);
+    data.append("content", content);
+    try {
+      dispatch(postStart());
+      await axios
+        .post("http://localhost:8000/createblog", data, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          const data = response.data;
+          if (data.status === true) {
+            dispatch(postSuccess());
+            navigate("/blogs");
+          }
+          dispatch(postFail());
+        });
+    } catch (err) {
+      dispatch(postFail(err));
+    }
+  };
   return (
     <Layout>
-    <WriteWrapper>
-      <WriteImg
-        src="\Images\write.png"
-        alt=""
-      />
-      <WriteForm>
-        <WriteFormGroup>
-          <WriteIcon htmlFor="fileInput">
-            <i className="fas fa-plus"></i>
-          </WriteIcon>
-          <input id="fileInput" type="file" style={{ display: "none" }} />
-          <WriteInput
-            className="writeInput"
-            placeholder="Title"
-            type="text"
-            autoFocus={true}
-          />
-        </WriteFormGroup>
-        <WriteFormGroup>
-          <WriteText
-            className="writeInput writeText"
-            placeholder="Tell your story..."
-            type="text"
-            autoFocus={true}
-          />
-        </WriteFormGroup>
-        <WriteSubmit type="submit">
-          Publish
-        </WriteSubmit>
-      </WriteForm>
-    </WriteWrapper>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <WriteWrapper>
+          <WriteImg src="\Images\write.png" alt="" />
+          <WriteForm onSubmit={handleSubmit} enctype={"multipart/form-data"}>
+            <WriteFormGroup>
+              <WriteIcon htmlFor="fileInput">
+                <i className="fas fa-plus"></i>
+              </WriteIcon>
+              <input
+                name="cover"
+                onChange={({ target }) => {
+                  if (target.files) {
+                    const file = target.files[0];
+                    setCoverImg(URL.createObjectURL(file));
+                    setCover(file);
+                  }
+                }}
+                id="fileInput"
+                type="file"
+                style={{ display: "none" }}
+              />
+              {coverImg ? (
+                <img src={coverImg} height={50} width={50} alt="" />
+              ) : (
+                <span>Select Image</span>
+              )}
+              <WriteInput
+                className="writeInput"
+                placeholder="Title"
+                type="text"
+                name="title"
+                autoFocus={true}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </WriteFormGroup>
+            <WriteFormGroup>
+              <WriteText
+                className="writeInput writeText"
+                placeholder="Tell your story..."
+                type="text"
+                name="content"
+                autoFocus={true}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </WriteFormGroup>
+            <WriteSubmit type="submit">Publish</WriteSubmit>
+          </WriteForm>
+        </WriteWrapper>
+      )}
     </Layout>
   );
 }

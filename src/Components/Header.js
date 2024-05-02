@@ -1,7 +1,19 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CgMenu, CgCloseR } from "react-icons/cg";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Avatar,
+  DropdownMenu,
+  Button,
+  AlertDialog,
+  Flex,
+  Dialog,
+} from "@radix-ui/themes";
+import axios from "axios";
+import { logoutUser } from "../store/slices/authSlice";
+import { toast } from "react-toastify";
 
 const UserDropdown = styled.div`
   position: relative;
@@ -154,6 +166,9 @@ const MobileNavLink = styled(NavigationLink)`
 const Header = () => {
   const [hovered, setHovered] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
+  const { currentUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleHover = (link) => {
     setHovered(link);
@@ -165,6 +180,29 @@ const Header = () => {
 
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
+  };
+
+  const logoutHandle = async () => {
+    try {
+      axios
+        .post("http://localhost:8000/logout", "", {
+          withCredentials: true,
+        })
+        .then((response) => {
+          const data = response.data;
+          console.log(data);
+          if (data.success === false) {
+            toast(data.message);
+            return;
+          }
+
+          dispatch(logoutUser());
+          toast(data.message);
+          navigate("/");
+        });
+    } catch (err) {
+      toast(err);
+    }
   };
 
   return (
@@ -217,11 +255,77 @@ const Header = () => {
         </NavigationLink>
       </NavigationContainer>
 
+      {currentUser ? (
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <div>
+              <Avatar
+                src={`${currentUser.profileurl}`}
+                fallback={`${currentUser.firstname[0]}${currentUser.lastname[0]}`}
+              />
+            </div>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item>
+            <DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            {currentUser.role === "Hirer" && (
+              <DropdownMenu.Item>
+                <a href="/myjobs">My Jobs</a>
+              </DropdownMenu.Item>
+            )}
+
+            <DropdownMenu.Sub>
+              <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
+              <DropdownMenu.SubContent>
+                <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
+                <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
+
+                <DropdownMenu.Separator />
+                <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Sub>
+
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item>Share</DropdownMenu.Item>
+            <DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <AlertDialog.Root>
+              <AlertDialog.Trigger>
+                <Button color="red">Logout</Button>
+              </AlertDialog.Trigger>
+              <AlertDialog.Content maxWidth="450px">
+                <AlertDialog.Title>Logout</AlertDialog.Title>
+                <AlertDialog.Description size="2">
+                  Are you sure? This application will no longer be accessible
+                  and any existing sessions will be expired.
+                </AlertDialog.Description>
+
+                <Flex gap="3" mt="4" justify="end">
+                  <AlertDialog.Cancel>
+                    <Button variant="soft" color="gray">
+                      Cancel
+                    </Button>
+                  </AlertDialog.Cancel>
+                  <AlertDialog.Action>
+                    <Button
+                      variant="solid"
+                      color="red"
+                      onClick={() => logoutHandle()}
+                    >
+                      Logout
+                    </Button>
+                  </AlertDialog.Action>
+                </Flex>
+              </AlertDialog.Content>
+            </AlertDialog.Root>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      ) : (
         <LoginRegisterButton to="/login">Log In</LoginRegisterButton>
-       
+      )}
 
-
-       <MobileNavContainer onClick={toggleMenu}>
+      <MobileNavContainer onClick={toggleMenu}>
         {openMenu ? <CgCloseR size={32} /> : <CgMenu size={32} />}
       </MobileNavContainer>
       <MobileNavLinksContainer openMenu={openMenu}>

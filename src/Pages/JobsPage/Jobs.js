@@ -1,104 +1,82 @@
-import React, { useState } from 'react';
-import * as Styles from './styles';
-import { Link } from 'react-router-dom';
-
-// Dummy data for job listings
-const jobsData = [
-  {
-    id: 1,
-    title: 'Accessible Software Engineer',
-    company: 'Inclusive Tech Solutions',
-    location: 'City A',
-    industry: 'Technology',
-    jobType: 'Full-time',
-    description: 'We are seeking an Accessible Software Engineer who is passionate about creating inclusive digital experiences for all users, including those with disabilities. Join us in building a more accessible digital future.',
-  },
-  {
-    id: 2,
-    title: 'Inclusive Healthcare Assistant',
-    company: 'Accessible Health Services',
-    location: 'City B',
-    industry: 'Healthcare',
-    jobType: 'Part-time',
-    description: 'Join our team as an Inclusive Healthcare Assistant and contribute to providing healthcare services that prioritize accessibility and inclusivity. Part-time opportunity available.',
-  },
-  {
-    id: 3,
-    title: 'Senior Accessibility Frontend Developer',
-    company: 'Tech Innovators',
-    location: 'City C',
-    industry: 'Technology',
-    jobType: 'Full-time',
-    description: 'We are looking for an experienced Senior Accessibility Frontend Developer to join our dynamic team. Help us create web applications that are accessible to everyone, regardless of their abilities.',
-  },
-  {
-    id: 4,
-    title: 'Inclusive Nurse Practitioner',
-    company: 'HealthCare Solutions',
-    location: 'City D',
-    industry: 'Healthcare',
-    jobType: 'Full-time',
-    description: 'Exciting opportunity for an Inclusive Nurse Practitioner to provide compassionate and accessible care to our patients. Join us in promoting inclusivity in healthcare.',
-  },
-];
+import React, { useEffect, useState } from "react";
+import * as Styles from "./styles";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import styled from "styled-components";
+import { Oval } from "react-loader-spinner";
 
 const successStoriesData = [
   {
     id: 1,
-    name: 'Alex Johnson',
-    testimonial: 'As a person with a disability, finding a job that accommodates my needs was challenging. Thanks to this platform, I secured an accessible job that values diversity and inclusion.',
-    photo: '/Images/people.jpg',
+    name: "Alex Johnson",
+    testimonial:
+      "As a person with a disability, finding a job that accommodates my needs was challenging. Thanks to this platform, I secured an accessible job that values diversity and inclusion.",
+    photo: "/Images/people.jpg",
   },
   {
     id: 2,
-    name: 'Emily Rodriguez',
-    testimonial: 'This platform not only connected me with disability-friendly employers but also provided resources for professional development. I\'m now thriving in a workplace that embraces accessibility.',
-    photo: '/Images/people.jpg',
+    name: "Emily Rodriguez",
+    testimonial:
+      "This platform not only connected me with disability-friendly employers but also provided resources for professional development. I'm now thriving in a workplace that embraces accessibility.",
+    photo: "/Images/people.jpg",
   },
   {
     id: 3,
-    name: 'Chris Baker',
-    testimonial: 'Having a disability didn\'t hinder my career growth, thanks to the opportunities I found on this platform. I\'m proud to be part of an inclusive workplace that values my unique skills.',
-    photo: '/Images/people.jpg',
+    name: "Chris Baker",
+    testimonial:
+      "Having a disability didn't hinder my career growth, thanks to the opportunities I found on this platform. I'm proud to be part of an inclusive workplace that values my unique skills.",
+    photo: "/Images/people.jpg",
   },
   // Add more success stories as needed
 ];
 
-
-const instructorData = {
-  heading: 'Upload Jobs',
-  subHeading: 'Share exciting job opportunities with our community! Help connect talented individuals with the right companies.',
-  buttonText: 'Upload Jobs',
-  imageSrc: '/Images/upload.png',
-};
+const PostTextContainer = styled.div`
+  max-height: 85px; /* Set your desired height here */
+  overflow: hidden;
+`;
 
 const JobsPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [selectedJobType, setSelectedJobType] = useState('');
+  const [jobs, setJobs] = useState(null);
+  const { currentUser } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    async function fetchAllJobs() {
+      try {
+        await axios
+          .get("http://localhost:8000/all-jobs", { withCredentials: true })
+          .then((response) => {
+            const res = response.data;
+            setJobs(res.jobs);
+            setLoading(false);
+          });
+      } catch (err) {
+        setLoading(false);
+      }
+    }
+    const delay = setTimeout(() => {
+      fetchAllJobs();
+      clearTimeout(delay);
+    }, 3000);
 
-  const filteredJobs = jobsData.filter(job =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory ? job.industry === selectedCategory : true) &&
-    (selectedLocation ? job.location === selectedLocation : true) &&
-    (selectedJobType ? job.jobType === selectedJobType : true)
+    return () => clearTimeout(delay);
+  }, []);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedJobType, setSelectedJobType] = useState("");
+
+  const filteredJobs = jobs?.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategory ? job.industry === selectedCategory : true) &&
+      (selectedLocation ? job.location === selectedLocation : true) &&
+      (selectedJobType ? job.jobType === selectedJobType : true)
   );
 
-  const uniqueLocations = [...new Set(jobsData.map(job => job.location))];
-  const uniqueJobTypes = [...new Set(jobsData.map(job => job.jobType))];
-
-  // Define the becomeInstructor function
-  const becomeInstructor = () => {
-    // Implementation logic for becoming an instructor
-    console.log('Become an Instructor clicked!');
-  };
-
-  const uploadJobs = () => {
-    // Implementation logic for uploading jobs
-    console.log('Upload Jobs clicked!');
-    // You can add navigation logic here if needed
-  };
+  const uniqueLocations = [...new Set(jobs?.map((job) => job.location))];
+  const uniqueJobTypes = [...new Set(jobs?.map((job) => job.jobType))];
 
   return (
     <Styles.JobsContainer>
@@ -120,8 +98,10 @@ const JobsPage = () => {
                 onChange={(e) => setSelectedLocation(e.target.value)}
               >
                 <option value="">All Locations</option>
-                {uniqueLocations.map(location => (
-                  <option key={location} value={location}>{location}</option>
+                {uniqueLocations.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
                 ))}
               </select>
             </label>
@@ -132,8 +112,10 @@ const JobsPage = () => {
                 onChange={(e) => setSelectedJobType(e.target.value)}
               >
                 <option value="">All Job Types</option>
-                {uniqueJobTypes.map(jobType => (
-                  <option key={jobType} value={jobType}>{jobType}</option>
+                {uniqueJobTypes.map((jobType) => (
+                  <option key={jobType} value={jobType}>
+                    {jobType}
+                  </option>
                 ))}
               </select>
             </label>
@@ -142,30 +124,58 @@ const JobsPage = () => {
       </Styles.HeadBar>
 
       <Styles.JobListings>
-        {filteredJobs.map(job => (
-          <Styles.JobCard key={job.id}>
-            <h3 onClick={() => console.log(`Clicked on job: ${job.title}`)}>{job.title}</h3>
-            <p>{job.company} - {job.location}</p>
-            <p>{job.description}</p>
-            <button onClick={() => console.log(`Apply Now for: ${job.title}`)}>Apply Now</button>
-          </Styles.JobCard>
-        ))}
+        {loading ? (
+          <Oval
+          visible={true}
+          height="80"
+          width="80"
+          color="#4fa94d"
+          ariaLabel="oval-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+        ) : (
+          jobs && 
+          jobs.length > 0 ? (
+          filteredJobs.map(
+            (job) =>
+              job.expired === false && (
+                <Styles.JobCard key={job._id}>
+                  <a href={`/jobs/job/${job._id}`}>{job.title}</a>
+                  <p>
+                    {job.company} - {job.location}
+                  </p>
+                  <PostTextContainer>
+                    <p>{job.description}</p>
+                  </PostTextContainer>
+
+                  {currentUser && currentUser.role !== "employer" && (
+                    <button
+                      onClick={() => console.log(`Apply Now for: ${job.title}`)}
+                    >
+                      Apply Now
+                    </button>
+                  )}
+                </Styles.JobCard>
+              )
+          )): (
+            <div>No Jobs found</div>
+          )
+        )}
       </Styles.JobListings>
 
       <Styles.SuccessStoriesSection>
-  <h2>Success Stories</h2>
-  {successStoriesData.map((story, index) => (
-    <Styles.StoryCard key={story.id}>
-      
-      <img src={story.photo} alt={story.name} />
-      <div>
-        <h3>{story.name}</h3>
-        <p>{`"${story.testimonial}"`}</p>
-      </div>
-     
-    </Styles.StoryCard>
-  ))}
-</Styles.SuccessStoriesSection>
+        <h2>Success Stories</h2>
+        {successStoriesData.map((story, index) => (
+          <Styles.StoryCard key={story.id}>
+            <img src={story.photo} alt={story.name} />
+            <div>
+              <h3>{story.name}</h3>
+              <p>{`"${story.testimonial}"`}</p>
+            </div>
+          </Styles.StoryCard>
+        ))}
+      </Styles.SuccessStoriesSection>
     </Styles.JobsContainer>
   );
 };

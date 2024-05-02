@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import axios from 'axios';
+import { signInStart, signInFailure, signInSuccess } from '../../store/slices/authSlice';
+import { useDispatch, useSelector} from 'react-redux';
+import { toast } from 'react-toastify';
 
 const StyledRegister = styled.div`
   display: flex;
@@ -109,12 +114,22 @@ const StyledLoginLink = styled(Link)`
 `;
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {loading, error, currentUser} = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    role: 'client'
+    role: 'client',
+    firstname:'',
+    lastname:''
   });
+  useEffect(() => {
+    if(currentUser){
+      navigate('/');
+    }
+  })
   const [registrationError, setRegistrationError] = useState(false);
 
   const handleChange = (e) => {
@@ -127,27 +142,34 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Perform form validation here
-
-    // Once validation is done, you can proceed with form submission
-    console.log('Form submitted:', formData);
-    // Reset form data after submission
-    setFormData({
-      username: '',
-      email: '',
-      password: '',
-      role: 'client'
-    });
+    try{
+      dispatch(signInStart());
+      axios.post('http://localhost:8000/signup', formData, {
+        withCredentials: true
+      }).then(response => {
+        const data = response.data;
+        if(data.success === false){
+          toast(data.message)
+          dispatch(signInFailure(data.message));
+          return;
+        }
+        toast(data.message)
+        dispatch(signInSuccess(data.user));
+        navigate('/');
+      })
+    }catch(err){
+      toast(err);
+      dispatch(signInFailure(err));
+    }
   };
 
   // Dynamically set the link destination based on the selected role
   let linkDestination;
   switch (formData.role) {
-    case 'teacher':
+    case 'trainer':
       linkDestination = '/freelancer';
       break;
-    case 'student/freelancer':
+    case 'employer':
       linkDestination = '/sdashboard';
       break;
     case 'client':
@@ -164,6 +186,22 @@ const Register = () => {
         <StyledRegisterTitle>
         Welcome to EmpowerAbility</StyledRegisterTitle>
         <StyledRegisterForm onSubmit={handleSubmit}>
+        <StyledRegisterLabel>Fistname</StyledRegisterLabel>
+          <StyledRegisterInput
+            type="text"
+            name="firstname"
+            placeholder="Enter your firstname..."
+            value={formData.firstname}
+            onChange={handleChange}
+          />
+          <StyledRegisterLabel>Lastname</StyledRegisterLabel>
+          <StyledRegisterInput
+            type="text"
+            name="lastname"
+            placeholder="Enter your lastname..."
+            value={formData.lastname}
+            onChange={handleChange}
+          />
           <StyledRegisterLabel>Username</StyledRegisterLabel>
           <StyledRegisterInput
             type="text"
@@ -195,13 +233,11 @@ const Register = () => {
             onChange={handleChange}
           >
             <option value="client">Client/Customer</option>
-            <option value="teacher">Teacher</option>
-            <option value="student/freelancer">Student/Freelancer</option>
+            <option value="trainer">Teacher</option>
+            <option value="employer">Student/Freelancer</option>
           </StyledRegisterSelect>
           <StyledRegisterButtonContainer>
-            <Link to={linkDestination}>
               <StyledRegisterButton type="submit">Register</StyledRegisterButton>
-            </Link>
           </StyledRegisterButtonContainer>
         </StyledRegisterForm>
         {registrationError && (

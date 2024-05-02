@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import UserDropdownMenu from '../../Components/UserDropdownMenu';
 
 const TutorsHeader = () => {
   return (
@@ -33,7 +32,7 @@ const TutorsHeader = () => {
         <NotificationButton>
           <FaBell />
         </NotificationButton>
-        <UserDropdownMenu />
+        {/* <UserDropdownMenu /> */}
       </RightSection>
     </HeaderContainer>
   );

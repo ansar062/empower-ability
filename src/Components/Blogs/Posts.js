@@ -1,49 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-
-const dummyPosts = [
-  {
-    id: 1,
-    category: 'Personal Stories',
-    publicationDate: 'Oct 17, 2023',
-    title: 'Back-End & Web Development Trends For 2024',
-    content:
-      "The ever-shifting landscape of digital innovation can feel like a relentless race, a whirlwind of challenges and opportunities. Your pains as a developer are real — the pressure to deliver cutting-edge products, stay competitive, and keep up with evolving user expectations can be overwhelming.",
-      image: '/Images/blo.jpg', 
-  },
-  {
-  id: 1,
-    category: 'Personal Stories',
-    publicationDate: 'Oct 17, 2023',
-    title: 'Back-End & Web Development Trends For 2024',
-    content:
-      "The ever-shifting landscape of digital innovation can feel like a relentless race, a whirlwind of challenges and opportunities. Your pains as a developer are real — the pressure to deliver cutting-edge products, stay competitive, and keep up with evolving user expectations can be overwhelming.",
-      image: '/Images/blo.jpg', 
-  },
-  {
-    id: 1,
-    category: 'Personal Stories',
-    publicationDate: 'Oct 17, 2023',
-    title: 'Back-End & Web Development Trends For 2024',
-    content: "The ever-shifting landscape of digital innovation can feel like a relentless race, a whirlwind of challenges and opportunities. Your pains as a developer are real — the pressure to deliver cutting-edge products, stay competitive, and keep up with evolving user expectations can be overwhelming.",
-    image: '/Images/blo.jpg'
-},
-  {
-  id: 1,
-    category: 'Personal Stories',
-    publicationDate: 'Oct 17, 2023',
-    title: 'Back-End & Web Development Trends For 2024',
-    content:
-      "The ever-shifting landscape of digital innovation can feel like a relentless race, a whirlwind of challenges and opportunities. Your pains as a developer are real — the pressure to deliver cutting-edge products, stay competitive, and keep up with evolving user expectations can be overwhelming.",
-      image: '/Images/blo.jpg', 
-  },
-];
+import React from "react";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import { Oval } from "react-loader-spinner";
 
 const PostsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
+  align-items: center;
   margin: 0 auto;
   padding: 40px 20px;
 `;
@@ -113,24 +79,92 @@ const PostText = styled.div`
   margin-bottom: 15px;
 `;
 
+const PostTextContainer = styled.div`
+  max-height: 100px; /* Set your desired height here */
+  overflow: hidden;
+`;
+
 const Posts = () => {
+  const [loading, setLoading] = useState(false);
+  const [blogs, setBlogs] = useState([]);
+  useEffect(() => {
+    setLoading(true);
+    const fetchBlogs = async () => {
+      try {
+        await axios
+          .get("http://localhost:8000/blogs", { withCredentials: true })
+          .then((response) => {
+            const res = response.data;
+            setBlogs(res);
+            setLoading(false);
+          });
+      } catch (err) {
+        setLoading(false);
+      }
+    };
+    const delay = setTimeout(() => {
+      fetchBlogs();
+      clearTimeout(delay);
+    }, 3000);
+
+    return () => clearTimeout(delay);
+  }, []);
   return (
     <PostsContainer>
-      {dummyPosts.map((post) => (
-        <PostCard key={post.id}>
-          <PostImage src={post.image} alt="Blog Post" />
-          <PostContent>
-            <PostHeader>
-              <PostCategory>{post.category}</PostCategory>
-              <PostDate>{post.publicationDate}</PostDate>
-            </PostHeader>
-            <PostTitleLink href="/singlepost">{post.title}</PostTitleLink>
-            <PostText>{post.content}</PostText>
-          </PostContent>
-        </PostCard>
-      ))}
+      {loading ? (
+        <Oval
+          visible={true}
+          height="80"
+          width="80"
+          color="#4fa94d"
+          ariaLabel="oval-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      ) : 
+      blogs && 
+      blogs.length > 0 ? (
+        blogs.map((post) => (
+          <PostCard key={post._id}>
+            {post.cover ? (
+              <PostImage
+                src={`http://localhost:8000/${post.cover}`}
+                alt="Blog Post"
+              />
+            ) : (
+              <PostImage src="/Images/blo.jpg" alt="blog post" />
+            )}
+            <PostContent>
+              <PostHeader>
+                <PostCategory>{post.author.username}</PostCategory>
+                <PostDate>{formatDate(post.createdAt)}</PostDate>
+              </PostHeader>
+              <PostTitleLink href={`/blogs/blog/${post._id}`}>
+                {post.title}
+              </PostTitleLink>
+              <PostTextContainer>
+                <PostText dangerouslySetInnerHTML={{ __html: post.content }} />
+              </PostTextContainer>
+            </PostContent>
+          </PostCard>
+        ))
+      ) : (
+        <div>No blogs found</div>
+      )}
     </PostsContainer>
   );
 };
 
 export default Posts;
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}

@@ -46,8 +46,9 @@ export const FilteringOptions = styled.div`
 
 export const JobListings = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: start;
   flex-wrap: wrap;
-  justify-content: space-between;
 `;
 
 export const JobCard = styled.div`
