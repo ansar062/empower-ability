@@ -38,6 +38,8 @@ import EditProfile from "./Components/EditProfile";
 import { useSelector } from "react-redux";
 import PrivateRoute from "./Components/PrivateRoute";
 import EditBlog from "./Pages/SpecialDash/EditBlog";
+import EditJob from "./Pages/EmployerDash/EEditjobs";
+import ApplyToJobs from "./Pages/ApplicationsPage/applytojob";
 
 const Home = () => (
   <div>
@@ -81,33 +83,54 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/write" element={ 
-          
-            <WriteWithoutHeaderFooter />
-        } />
-
+        <Route
+          path="/jobs/:title/:jobId/apply"
+          element={
+            <PrivateRoute roles={["client"]}>
+              {" "}
+              <ApplyToJobs />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/write"
+          element={
+            <PrivateRoute roles={["client"]}>
+              {" "}
+              <WriteWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
 
         {/* Employer Route */}
-        <Route path="/epostjobs" element={
-          <PrivateRoute roles={["employer"]}>
-            <EpostjobsWithHeaderFooter />
-          </PrivateRoute>
-        } />
+        <Route
+          path="/epostjobs"
+          element={
+            <PrivateRoute roles={["employer"]}>
+              <EpostjobsWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/eeditjobs/:id"
+          element={
+            <PrivateRoute roles={["employer"]}>
+              <EeditjobsWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
 
         {/*  */}
         <Route
           path="/tdashboard"
           element={
-            <PrivateRoute roles={["trainer"]}>
-              {" "}
+            // <PrivateRoute roles={["trainer"]}>
+            //   {" "}
               <TdashboardWithHeaderFooter />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
-        
-        
-        
-        
+
         <Route
           path="/coursedetail/:id"
           element={<CourseDetailWithHeaderFooter />}
@@ -123,14 +146,13 @@ const App = () => {
         />
         <Route path="/edash" element={<EdashWithHeaderFooter />} />
         <Route path="/eapp" element={<EappWithHeaderFooter />} />
-        
+
         <Route path="/einbox" element={<EinboxWithoutHeaderFooter />} />
         <Route path="/sdashboard" element={<SdashboardWithoutHeaderFooter />} />
         <Route path="/sjobs" element={<SjobsWithoutHeaderFooter />} />
         <Route path="/scourses" element={<ScoursesWithoutHeaderFooter />} />
         <Route path="/sblogs" element={<SblogsWithoutHeaderFooter />} />
         <Route path="/chat" element={<ChatWithoutHeaderFooter />} />
-        
       </Routes>
     </Router>
   );
@@ -214,6 +236,14 @@ const EpostjobsWithHeaderFooter = () => (
   <>
     <EHeader />
     <Epostjobs />
+    <EFooter />
+  </>
+);
+
+const EeditjobsWithHeaderFooter = () => (
+  <>
+    <EHeader />
+    <EditJob />
     <EFooter />
   </>
 );

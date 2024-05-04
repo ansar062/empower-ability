@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CgMenu, CgCloseR } from "react-icons/cg";
 import { useSelector, useDispatch } from "react-redux";
@@ -267,13 +267,9 @@ const Header = () => {
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
             <DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item>
-            <DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item>
+            <Link to={currentUser.role === 'client' ? 'sdashboard' : currentUser.role === 'employer' ? 'edash' : 'tdashboard'}><DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item></Link>
             <DropdownMenu.Separator />
-            {currentUser.role === "Hirer" && (
-              <DropdownMenu.Item>
-                <a href="/myjobs">My Jobs</a>
-              </DropdownMenu.Item>
-            )}
+            
 
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>

@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 const ApplicationsPage = () => {
   // Sample application data
-  const [applications, setApplications] = useState([
-    { id: 1, jobTitle: 'Software Engineer', applicantName: 'John Doe', status: 'Pending' },
-    { id: 2, jobTitle: 'Data Analyst', applicantName: 'Jane Smith', status: 'Reviewed' },
-    { id: 3, jobTitle: 'Marketing Specialist', applicantName: 'Alice Johnson', status: 'Accepted' },
-    { id: 4, jobTitle: 'UI/UX Designer', applicantName: 'Bob Williams', status: 'Rejected' },
-    // Add more sample data as needed
-  ]);
+  const [applications, setApplications] = useState(null);
 
   // State for filtering and sorting
-  const [filter, setFilter] = useState('');
-  const [sortBy, setSortBy] = useState('id');
+  const [filter, setFilter] = useState("");
+  const [sortBy, setSortBy] = useState("id");
 
   // Function to handle filtering applications
   const handleFilterChange = (e) => {
@@ -26,18 +22,36 @@ const ApplicationsPage = () => {
   };
 
   // Filter applications based on the filter keyword
-  const filteredApplications = applications.filter(application =>
-    application.jobTitle.toLowerCase().includes(filter.toLowerCase()) ||
-    application.applicantName.toLowerCase().includes(filter.toLowerCase()) ||
-    application.status.toLowerCase().includes(filter.toLowerCase())
+  const filteredApplications = applications?.filter(
+    (application) =>
+      application.jobId.title?.toLowerCase().includes(filter.toLowerCase()) ||
+      application.applicantName.toLowerCase().includes(filter.toLowerCase()) ||
+      application.status.toLowerCase().includes(filter.toLowerCase())
   );
 
   // Sort applications based on the selected sorting option
-  const sortedApplications = filteredApplications.sort((a, b) => {
+  const sortedApplications = filteredApplications?.sort((a, b) => {
     if (a[sortBy] < b[sortBy]) return -1;
     if (a[sortBy] > b[sortBy]) return 1;
     return 0;
   });
+
+  const {currentUser} = useSelector((state) => state.auth);
+  const hirerId = currentUser._id;
+  useEffect(() => {
+    try{
+      async function getAllApplication(){
+        await axios.get(`http://localhost:8000/all-applications-request/${hirerId}`, {
+          withCredentials: true
+        }).then((response) => {
+          const applicationData = response.data.applications;
+          setApplications(applicationData);
+        })
+      }
+      getAllApplication();
+    }catch(err){}
+    
+  }, [])
 
   return (
     <Container>
@@ -61,15 +75,25 @@ const ApplicationsPage = () => {
             <th>ID</th>
             <th>Job Title</th>
             <th>Applicant Name</th>
+            <th>Contact No.</th>
+            <th>Email</th>
+            <th>Resume Url</th>
+            <th>Experience</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {sortedApplications.map(application => (
-            <tr key={application.id}>
+          {
+            sortedApplications &&
+          sortedApplications.map((application) => (
+            <tr key={application._id}>
               <td>{application.id}</td>
-              <td>{application.jobTitle}</td>
-              <td>{application.applicantName}</td>
+              <td>{application.jobId.title}</td>
+              <td>{application.applicantId.firstname}{application.applicantId.lastname}</td>
+              <td>{application.contactNo}</td>
+              <td>{application.applicantId.email}</td>
+              <td>{application.resumeUrl}</td>
+              <td>{application.experience}</td>
               <td>{application.status}</td>
             </tr>
           ))}
@@ -104,7 +128,8 @@ const ApplicationsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
 
-  th, td {
+  th,
+  td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;

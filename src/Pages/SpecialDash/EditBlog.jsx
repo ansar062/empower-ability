@@ -95,7 +95,7 @@ export default function EditPost() {
   const [content, setContent] = useState("");
   const [coverImg, setCoverImg] = useState();
   const [blogAuthor, setBlogAuthor] = useState("");
-  console.log(currentUser._id, blogAuthor);
+  
   useEffect(() => {
     async function fetchPost() {
       try {

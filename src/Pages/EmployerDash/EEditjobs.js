@@ -1,14 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ManageJobsPage = () => {
-  // State to manage job listings
-  const [jobListings, setJobListings] = useState([]);
+const EditJobs = () => {
   const [fixedSalary, setFixedSalary] = useState(true);
   const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const id = params.id;
+  const navigate = useNavigate();
+
 
   const handleSalaryTypeChange = (e) => {
     const isFixed = e.target.value === "fixed";
@@ -30,22 +32,25 @@ const ManageJobsPage = () => {
   });
 
   useEffect(() => {
-    async function fetchMyJobs(){
-      await axios.get('http://localhost:8000/all-my-jobs', {withCredentials: true})
+    async function fetchSingleJob(){
+      await axios.get(`http://localhost:8000/jobs/job/${id}`, {withCredentials: true})
       .then((response) => {
         const res = response.data;
-        setJobListings(res.myJobs);
+        setNewJob(res.job);
+        if(!res.job.fixedSalary){
+          setFixedSalary(false)
+        }
       })
     }
-    fetchMyJobs();
-  }, 3000)
+    fetchSingleJob();
+  }, [])
 
   // Function to handle form submission
   const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true)
     try{
-      await axios.post('http://localhost:8000/post-a-job', newJob, {
+      await axios.put(`http://localhost:8000/job/edit/${id}`, newJob, {
         withCredentials: true,
       }).then((response) => {
         const data = response.data;
@@ -54,6 +59,8 @@ const ManageJobsPage = () => {
           return;
         }
         toast(data.message);
+        navigate("/edash")
+        
       })
 
     }catch(err){
@@ -62,8 +69,6 @@ const ManageJobsPage = () => {
     
     clearForm();
   };
-
-  // Function to handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewJob((prevState) => ({
@@ -94,26 +99,7 @@ const ManageJobsPage = () => {
     console.log("Editing job at index:", index);
   };
 
-  // Function to handle deleting job listing
-  const handleDelete = (index) => {
-    console.log(index)
-    async function deleteJob(){
-      await axios.delete(`http://localhost:8000/jobs/delete/${index}`, {withCredentials: true})
-      .then((response) => {
-        const res = response.data;
-        if(res.success === true){
-          toast(res.message);
-
-        }
-      });
-      
-    }
-    deleteJob()
-    setJobListings((prevListings) =>
-      prevListings.filter((_, i) => i !== index)
-    );
-  };
-
+  
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
@@ -245,51 +231,9 @@ const ManageJobsPage = () => {
             required
           />
         </FormField>
-        <SubmitButton type="submit">Post Job</SubmitButton>
+        <SubmitButton type="submit">Edit Job</SubmitButton>
       </Form>
 
-      {/* Display job listings table */}
-      {
-      jobListings && 
-      jobListings.length > 0 && (
-        <JobListingsTable>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Salary From</th>
-              <th>Salary To</th>
-              <th>Fixed Salary</th>
-              <th>Location</th>
-              <th>Company</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {jobListings.map((job) => (
-              <tr key={job._id}>
-                <td>{job.title}</td>
-                <td>{job.description}</td>
-                <td>{job.category}</td>
-                <td>{job.salaryFrom}</td>
-                <td>{job.salaryTo}</td>
-                <td>{job.fixedSalary}</td>
-                <td>{job.location}</td>
-                <td>{job.company}</td>
-                <td>
-                  <Link to={`/eeditjobs/${job._id}`}>
-                    Edit
-                  </Link>
-                  <ActionButton onClick={() => handleDelete(job._id)}>
-                    Delete
-                  </ActionButton>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </JobListingsTable>
-      )}
     </Container>
   );
 };
@@ -381,4 +325,4 @@ const ActionButton = styled.button`
   }
 `;
 
-export default ManageJobsPage;
+export default EditJobs;

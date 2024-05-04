@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as Styles from "./styles";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import styled from "styled-components";
@@ -126,17 +126,15 @@ const JobsPage = () => {
       <Styles.JobListings>
         {loading ? (
           <Oval
-          visible={true}
-          height="80"
-          width="80"
-          color="#4fa94d"
-          ariaLabel="oval-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
-        ) : (
-          jobs && 
-          jobs.length > 0 ? (
+            visible={true}
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="oval-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        ) : jobs && jobs.length > 0 ? (
           filteredJobs.map(
             (job) =>
               job.expired === false && (
@@ -150,17 +148,15 @@ const JobsPage = () => {
                   </PostTextContainer>
 
                   {currentUser && currentUser.role !== "employer" && (
-                    <button
-                      onClick={() => console.log(`Apply Now for: ${job.title}`)}
-                    >
-                      Apply Now
+                    <button>
+                      <NavLink to={`/jobs/${job.title}/${job._id}/apply`}>Apply Now</NavLink>
                     </button>
                   )}
                 </Styles.JobCard>
               )
-          )): (
-            <div>No Jobs found</div>
           )
+        ) : (
+          <div>No Jobs found</div>
         )}
       </Styles.JobListings>
 
