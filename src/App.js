@@ -62,12 +62,15 @@ const App = () => {
       try {
         const response = await axios.get("http://localhost:8000/profile", {
           withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         });
-
         if (response.data.status) {
           dispatch(signInSuccess(response.data.user));
+        }else{
+          dispatch(logoutUser());
         }
-        dispatch(logoutUser());
       } catch (error) {
         // Handle unauthorized access or other errors
         dispatch(logoutUser());

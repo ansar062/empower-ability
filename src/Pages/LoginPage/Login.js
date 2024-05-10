@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, NavLink } from 'react-router-dom'; 
-import styled from 'styled-components';
-import { FaGoogle, FaFacebookF, FaTwitter } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
 
-import axios from 'axios';
-import { signInStart, signInSuccess, signInFailure } from '../../store/slices/authSlice';
-import {useDispatch, useSelector} from 'react-redux';
-import { toast } from 'react-toastify';
-
+import axios from "axios";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const StyledLogin = styled.div`
   height: calc(100vh - 50px);
@@ -16,7 +19,7 @@ const StyledLogin = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
-  margin-top:20px;
+  margin-top: 20px;
 `;
 
 const StyledLoginForm = styled.form`
@@ -50,7 +53,7 @@ const StyledLoginInputContainer = styled.div`
 `;
 
 const StyledLoginInput = styled.input`
-  width:90%; 
+  width: 90%;
   padding: 10px;
   margin-bottom: 15px;
   background-color: white;
@@ -137,25 +140,25 @@ const StyledCreateAccountLink = styled.div`
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {loading, error, currentUser} = useSelector((state) => state.auth);
+  const { loading, error, currentUser } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     rememberMe: false, // New state for "Remember Me" checkbox
   });
   useEffect(() => {
-    if(currentUser){
-      navigate('/');
+    if (currentUser) {
+      navigate("/");
     }
-  })
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const val = type === 'checkbox' ? checked : value;
+    const val = type === "checkbox" ? checked : value;
     setFormData({
       ...formData,
       [name]: val,
@@ -164,22 +167,27 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       dispatch(signInStart());
-      await axios.post('http://localhost:8000/login', formData,{
-        withCredentials: true
-      } ).then(response => {
-        const data = response.data;
-        if(data.success === false){
-          toast(data.message)
-          dispatch(signInFailure(data.message));
-          return;
-        }
-        toast(data.message)
-        dispatch(signInSuccess(data.user));
-        navigate('/');
-      })
-    }catch(err){
+      await axios
+        .post("http://localhost:8000/login", formData, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          const data = response.data;
+          if (data.success === false) {
+            toast(data.message);
+            dispatch(signInFailure(data.message));
+
+            return;
+          }
+          toast(data.message);
+          console.log(data.token);
+          localStorage.setItem("token", data.token);
+          dispatch(signInSuccess(data.user));
+          navigate("/");
+        });
+    } catch (err) {
       toast(err);
       dispatch(signInFailure(err));
     }
@@ -188,7 +196,7 @@ export default function Login() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  
+
   return (
     <StyledLogin>
       <StyledLoginForm onSubmit={handleSubmit}>
@@ -203,21 +211,21 @@ export default function Login() {
           placeholder="Enter your email..."
           value={formData.email}
           onChange={handleChange}
-          style={{ borderColor: loginError ? 'red' : 'teal' }}
+          style={{ borderColor: loginError ? "red" : "teal" }}
         />
         <StyledLoginLabel>Password</StyledLoginLabel>
         <StyledLoginInputContainer>
           <StyledLoginInput
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Enter your password..."
             value={formData.password}
             onChange={handleChange}
-            style={{ borderColor: loginError ? 'red' : 'teal' }}
+            style={{ borderColor: loginError ? "red" : "teal" }}
           />
           {/* Password Visibility Toggle */}
           <StyledPasswordToggle onClick={togglePasswordVisibility}>
-            {showPassword ? 'Hide' : 'Show'}
+            {showPassword ? "Hide" : "Show"}
           </StyledPasswordToggle>
         </StyledLoginInputContainer>
         {/* Remember Me Option */}
@@ -229,10 +237,15 @@ export default function Login() {
             checked={formData.rememberMe}
             onChange={handleChange}
           />
-          <StyledRememberMeLabel htmlFor="rememberMe">Remember Me</StyledRememberMeLabel>
+          <StyledRememberMeLabel htmlFor="rememberMe">
+            Remember Me
+          </StyledRememberMeLabel>
         </StyledRememberMeContainer>
         <StyledLoginButton type="submit">Login</StyledLoginButton>
-        {loginError && <div style={{ color: 'red', marginTop: '5px' }}>{errorMessage}</div>} {/* Display error message */}
+        {loginError && (
+          <div style={{ color: "red", marginTop: "5px" }}>{errorMessage}</div>
+        )}{" "}
+        {/* Display error message */}
         <StyledSocialLoginContainer>
           <StyledLoginWithText>OR LOGIN WITH</StyledLoginWithText>
           <div>
