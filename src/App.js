@@ -67,7 +67,7 @@ const App = () => {
         if (response.data.status) {
           dispatch(signInSuccess(response.data.user));
         }
-        // dispatch(logoutUser());
+        dispatch(logoutUser());
       } catch (error) {
         // Handle unauthorized access or other errors
         dispatch(logoutUser());
