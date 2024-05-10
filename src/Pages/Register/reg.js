@@ -155,6 +155,9 @@ const Register = () => {
         }
         toast(data.message)
         dispatch(signInSuccess(data.user));
+        if(data.user.role === "client"){
+          navigate('/freelancer');
+        }
         navigate('/');
       })
     }catch(err){
@@ -164,21 +167,7 @@ const Register = () => {
   };
 
   // Dynamically set the link destination based on the selected role
-  let linkDestination;
-  switch (formData.role) {
-    case 'trainer':
-      linkDestination = '/freelancer';
-      break;
-    case 'employer':
-      linkDestination = '/sdashboard';
-      break;
-    case 'client':
-      linkDestination = '/edash';
-      break;
-    default:
-      linkDestination = '/';
-      break;
-  }
+ 
 
   return (
     <StyledRegister>
@@ -232,9 +221,9 @@ const Register = () => {
             value={formData.role}
             onChange={handleChange}
           >
-            <option value="client">Client/Customer</option>
+            <option value="client">Freelancer/Students</option>
             <option value="trainer">Teacher</option>
-            <option value="employer">Student/Freelancer</option>
+            <option value="employer">Employer</option>
           </StyledRegisterSelect>
           <StyledRegisterButtonContainer>
               <StyledRegisterButton type="submit">Register</StyledRegisterButton>

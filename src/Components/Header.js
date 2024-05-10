@@ -266,7 +266,7 @@ const Header = () => {
             </div>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
-            <DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item>
+            <Link to={currentUser.role === 'client' ? 'edit-freelancer-profile' : currentUser.role === 'employer' ? 'unauthorized' : 'tutor'}><DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item></Link>
             <Link to={currentUser.role === 'client' ? 'sdashboard' : currentUser.role === 'employer' ? 'edash' : 'tdashboard'}><DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item></Link>
             <DropdownMenu.Separator />
             

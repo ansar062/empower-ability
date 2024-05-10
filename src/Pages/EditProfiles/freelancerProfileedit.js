@@ -99,7 +99,7 @@ const Button = styled.button`
   }
 `;
 
-const ProfileSetupPage = () => {
+const ProfileEdit = () => {
   const { currentUser } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
@@ -128,27 +128,40 @@ const ProfileSetupPage = () => {
 
     async function setProfile() {
       try {
-        const response = await axios.post(
-          `http://localhost:8000/freelancer/set-up-profile`,
+        const response = await axios.put(
+          `http://localhost:8000/freelancer/edit-profile`,
           formData,
           {
             withCredentials: true,
           }
         );
-        
-        if(response.data.status){
-          toast(response.data.message)
+        if (response.data.status) {
+          toast(response.data.message);
         }
       } catch (err) {}
     }
     setProfile();
   };
 
+  useEffect(() => {
+    async function getProfile() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/freelancer/get-profile`,
+          {
+            withCredentials: true,
+          }
+        );
+        setFormData(response.data.freelancerProfile);
+      } catch (err) {}
+    }
+    getProfile();
+  }, []);
 
   return (
     <Container>
       <FormContainer onSubmit={handleSubmit}>
-        <Title>Complete Your Profile</Title>
+        <Title>Your Profile</Title>
         <ColumnsContainer>
           <Column>
             <FormGroup>
@@ -175,7 +188,7 @@ const ProfileSetupPage = () => {
                 required
               />
             </FormGroup>
-           
+
             <FormGroup>
               <Label htmlFor="phoneNumber">Phone Number</Label>
               <Input
@@ -283,4 +296,4 @@ const ProfileSetupPage = () => {
   );
 };
 
-export default ProfileSetupPage;
+export default ProfileEdit;

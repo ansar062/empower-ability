@@ -73,7 +73,7 @@ const navigate = useNavigate();
           <DropdownMenu.Trigger>
             <div>
               <Avatar
-                src={`${currentUser.profileurl}`}
+                // src={`${currentUser.profileurl}`}
                 fallback={`${currentUser.firstname[0]}${currentUser.lastname[0]}`}
               />
             </div>

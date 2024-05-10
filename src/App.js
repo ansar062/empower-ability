@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
@@ -35,12 +35,14 @@ import Scourses from "./Pages/SpecialDash/Scourses";
 import Sblogs from "./Pages/SpecialDash/Sblogs";
 import Chat from "./Pages/ChatApp/Chat";
 import EditProfile from "./Components/EditProfile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PrivateRoute from "./Components/PrivateRoute";
 import EditBlog from "./Pages/SpecialDash/EditBlog";
 import EditJob from "./Pages/EmployerDash/EEditjobs";
 import ApplyToJobs from "./Pages/ApplicationsPage/applytojob";
-
+import axios from "axios";
+import { signInSuccess, logoutUser } from "./store/slices/authSlice";
+import ProfileEdit from "./Pages/EditProfiles/freelancerProfileedit";
 const Home = () => (
   <div>
     <Header />
@@ -54,6 +56,25 @@ const Home = () => (
 );
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/profile", {
+          withCredentials: true,
+        });
+
+        if (response.data.status) {
+          dispatch(signInSuccess(response.data.user));
+        }
+        // dispatch(logoutUser());
+      } catch (error) {
+        // Handle unauthorized access or other errors
+        dispatch(logoutUser());
+      }
+    };
+    checkAuth();
+  }, []);
   return (
     <Router>
       <Routes>
@@ -74,6 +95,22 @@ const App = () => {
           element={<EditProfileWithoutHeaderFooter />}
         />
         {/* Client Routes */}
+        <Route
+          path="/freelancer"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <FreelancerWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-freelancer-profile"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <EditFreelancerWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/blogs/edit/:id"
           element={
@@ -126,7 +163,7 @@ const App = () => {
           element={
             // <PrivateRoute roles={["trainer"]}>
             //   {" "}
-              <TdashboardWithHeaderFooter />
+            <TdashboardWithHeaderFooter />
             // </PrivateRoute>
           }
         />
@@ -136,7 +173,7 @@ const App = () => {
           element={<CourseDetailWithHeaderFooter />}
         />
         <Route path="/tutor" element={<TutorWithHeaderFooter />} />
-        <Route path="/freelancer" element={<FreelancerWithHeaderFooter />} />
+
         {/* <Route path="/tdashboard" element={<TdashboardWithHeaderFooter />} /> */}
         <Route path="/tcourses" element={<TcoursesWithHeaderFooter />} />
         <Route path="/tprofile" element={<TprofileWithHeaderFooter />} />
@@ -180,6 +217,13 @@ const FreelancerWithHeaderFooter = () => (
   <>
     <Header />
     <Freelancer />
+    <Footer />
+  </>
+);
+const EditFreelancerWithHeaderFooter = () => (
+  <>
+    <Header />
+    <ProfileEdit />
     <Footer />
   </>
 );

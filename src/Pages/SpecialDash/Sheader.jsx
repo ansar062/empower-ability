@@ -94,12 +94,6 @@ const Header = () => {
             <DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item>
             <DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item>
             <DropdownMenu.Separator />
-            {currentUser.role === "Hirer" && (
-              <DropdownMenu.Item>
-                <a href="/myjobs">My Jobs</a>
-              </DropdownMenu.Item>
-            )}
-
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>

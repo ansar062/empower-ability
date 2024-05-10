@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const UploadCoursePage = () => {
+  const [videoFile, setVideoFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
   const [courseData, setCourseData] = useState({
-    name: '',
-    instructor: '',
-    description: '',
-    duration: '',
-    image: '',
+    title: "",
+    description: "",
+    category: "",
+    cover: null,
+    video: null,
+    price: 30,
+    duration: "",
+    difficultyLevel: "",
+    assignments: "",
   });
-  const [uploadError, setUploadError] = useState('');
+  const [uploadError, setUploadError] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [courses, setCourses] = useState([]);
   const [metrics, setMetrics] = useState({
@@ -20,55 +26,12 @@ const UploadCoursePage = () => {
   });
 
   const handleCourseUpload = () => {
-    // Validate course data
-    if (!courseData.name || !courseData.instructor || !courseData.description || !courseData.duration || !courseData.image) {
-      setUploadError('Please provide all necessary information.');
-      return;
-    }
-
-    // Mock server-side validation and upload
-    // Here, we simulate successful upload after a brief delay
-    setTimeout(() => {
-      setCourses([...courses, courseData]);
-      setCourseData({
-        name: '',
-        instructor: '',
-        description: '',
-        duration: '',
-        image: '',
-      });
-      setUploadSuccess(true);
-      setUploadError('');
-    }, 1500);
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    // Mock image upload logic
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCourseData({ ...courseData, image: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
+    
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseData({ ...courseData, [name]: value });
-  };
-
-  const handleEditCourse = (index) => {
-    // Implement edit functionality here
-    console.log('Edit course:', courses[index]);
-  };
-
-  const handleDeleteCourse = (index) => {
-    // Implement delete functionality here
-    const updatedCourses = [...courses];
-    updatedCourses.splice(index, 1);
-    setCourses(updatedCourses);
   };
 
   return (
@@ -77,40 +40,112 @@ const UploadCoursePage = () => {
         <UploadForm>
           <h2>Upload New Course</h2>
           <InputField>
-            <label>Course Name</label>
-            <input type="text" name="name" placeholder="Enter Course Name" value={courseData.name} onChange={handleInputChange} />
+            <label>Course Title</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Enter Course Title"
+              value={courseData.title}
+              onChange={handleInputChange}
+            />
           </InputField>
           <InputField>
-            <label>Instructor Name</label>
-            <input type="text" name="instructor" placeholder="Enter Instructor Name" value={courseData.instructor} onChange={handleInputChange} />
+            <label>Course Category</label>
+            <input
+              type="text"
+              name="category"
+              placeholder="Enter Course Category"
+              value={courseData.category}
+              onChange={handleInputChange}
+            />
           </InputField>
           <InputField>
             <label>Course Description</label>
-            <textarea name="description" placeholder="Enter Course Description" value={courseData.description} onChange={handleInputChange}></textarea>
+            <textarea
+              name="description"
+              placeholder="Enter Course Description"
+              value={courseData.description}
+              onChange={handleInputChange}
+            ></textarea>
           </InputField>
           <InputField>
             <label>Duration</label>
-            <input type="text" name="duration" placeholder="Enter Duration" value={courseData.duration} onChange={handleInputChange} />
+            <input
+              type="text"
+              name="duration"
+              placeholder="Enter Duration"
+              value={courseData.duration}
+              onChange={handleInputChange}
+            />
+          </InputField>
+          <InputField>
+            <label>Price (in Dollars)</label>
+            <input
+              type="number"
+              min={"30"}
+              name="price"
+              placeholder="Enter Course Price"
+              value={courseData.price}
+              onChange={handleInputChange}
+            />
+          </InputField>
+          <InputField>
+            <label>Course Difficulty Level</label>
+            <input
+              type="text"
+              name="difficultyLevel"
+              placeholder="Beginner/Intermediate/Advanced/Expert"
+              value={courseData.difficultyLevel}
+              onChange={handleInputChange}
+            />
+          </InputField>
+          <InputField>
+            <label>Course Assignments</label>
+            <input
+              type="text"
+              name="assignments"
+              placeholder="Enter Course Assignment"
+              value={courseData.assignments}
+              onChange={handleInputChange}
+            />
           </InputField>
           <ImageUpload>
-            <label>Upload Image</label>
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
+            <label>Upload Course Video</label>
+            <input type="file"  onChange={({target}) => {
+              if(target.files){
+                const file = target.files[0];
+                setVideoFile(file);
+              }
+            }} />
           </ImageUpload>
-          {courseData.image && <PreviewImage src={courseData.image} alt="Course Preview" />}
+          <ImageUpload>
+            <label>Upload Course Cover</label>
+            <input type="file" accept="image/*" onChange={({target}) => {
+              if(target.files){
+                const file = target.files[0];
+                setCoverFile(file);
+              }
+            }} />
+          </ImageUpload>
+          
           <Button onClick={handleCourseUpload}>Upload Course</Button>
           {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
-          {uploadSuccess && <SuccessMessage>Course uploaded successfully!</SuccessMessage>}
+          {uploadSuccess && (
+            <SuccessMessage>Course uploaded successfully!</SuccessMessage>
+          )}
         </UploadForm>
         <MetricsContainer>
           <h2>Course Metrics</h2>
           <MetricsList>
-            <MetricItem>Number of Students Enrolled: {metrics.studentsEnrolled}</MetricItem>
+            <MetricItem>
+              Number of Students Enrolled: {metrics.studentsEnrolled}
+            </MetricItem>
             <MetricItem>Course Progress: {metrics.courseProgress}%</MetricItem>
             <MetricItem>Feedback: {metrics.feedback.length}</MetricItem>
             <MetricItem>Ratings: {metrics.ratings}</MetricItem>
           </MetricsList>
         </MetricsContainer>
-        <UploadedCourses>
+        {/* <UploadedCourses>
           <h2>Uploaded Courses</h2>
           {courses.map((course, index) => (
             <CourseCard key={index}>
@@ -123,11 +158,13 @@ const UploadCoursePage = () => {
               </CourseDetails>
               <ButtonContainer>
                 <Button onClick={() => handleEditCourse(index)}>Edit</Button>
-                <Button onClick={() => handleDeleteCourse(index)}>Delete</Button>
+                <Button onClick={() => handleDeleteCourse(index)}>
+                  Delete
+                </Button>
               </ButtonContainer>
             </CourseCard>
           ))}
-        </UploadedCourses>
+        </UploadedCourses> */}
       </Container>
     </CoursesContainer>
   );
@@ -213,55 +250,54 @@ const Button = styled.button`
 
 const ErrorMessage = styled.div`
   color: #ff0000;
-  margin-top
-  : 10px;
-  `;
-  
-  const SuccessMessage = styled.div`
-    color: #00aa00;
-    margin-top: 10px;
-  `;
-  
-  const MetricsContainer = styled.div`
-    margin-bottom: 40px;
-  `;
-  
-  const MetricsList = styled.ul`
-    list-style: none;
-    padding: 0;
-  `;
-  
-  const MetricItem = styled.li`
-    margin-bottom: 10px;
-  `;
-  
-  const UploadedCourses = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  `;
-  
-  const CourseCard = styled.div`
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-  `;
-  
-  const CourseImage = styled.img`
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  `;
-  
-  const CourseDetails = styled.div`
-    padding: 20px;
-  `;
-  
-  const CourseTitle = styled.h3`
-    margin-top: 10px;
-  `;
-  
-  const PreviewImage = styled.img`
+  margin-top: 10px;
+`;
+
+const SuccessMessage = styled.div`
+  color: #00aa00;
+  margin-top: 10px;
+`;
+
+const MetricsContainer = styled.div`
+  margin-bottom: 40px;
+`;
+
+const MetricsList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+const MetricItem = styled.li`
+  margin-bottom: 10px;
+`;
+
+const UploadedCourses = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+`;
+
+const CourseCard = styled.div`
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+const CourseImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+
+const CourseDetails = styled.div`
+  padding: 20px;
+`;
+
+const CourseTitle = styled.h3`
+  margin-top: 10px;
+`;
+
+const PreviewImage = styled.img`
   width: 100%;
   max-height: 200px;
   margin-bottom: 20px;
@@ -269,11 +305,10 @@ const ErrorMessage = styled.div`
   object-fit: cover;
 `;
 
-  const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-  `;
-  
-  export default UploadCoursePage;
-  
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+`;
+
+export default UploadCoursePage;
