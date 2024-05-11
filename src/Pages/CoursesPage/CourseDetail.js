@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import Comments from '../../Components/Comments';
+import axios from 'axios';
 
 // Styled components
 const Container = styled.div`
@@ -89,39 +91,34 @@ const AssignmentItem = styled.li`
 `;
 
 const CourseDetails = () => {
+const params = useParams();
+const id = params.id;
+const [course, setCourse] = useState({});
   // Dummy data for the course
-  const course = {
-    title: 'Inclusive Web Design for People with Disabilities',
-    instructor: 'Dr. Sarah Accessibility',
-    description:
-      'Join Dr. Sarah Accessibility in this comprehensive course focusing on inclusive web design for people with disabilities. Learn the principles and best practices of accessibility, ensuring your websites are usable by everyone. The course covers topics such as accessible UI/UX, assistive technologies, and testing for accessibility compliance.',
-    videoUrl: 'https://www.youtube.com/embed/nGCwxDcrpX0', // Replace with your actual video URL
-    imageUrl: '/Images/accessibility-course.jpg', // Replace with your actual image path
-    assignments: [
-      'Design an accessible user interface for a website.',
-      'Create a document outlining the importance of accessible design in web development.',
-    ],
-  };
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(`http://localhost:8000/getcourse/${id}`, {
+        withCredentials: true
+      });
+      const data = await response.data;
+      console.log(data);
+      setCourse(data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <Container>
-      <Header>
+      {course && 
+      <div>
+        <Header>
         <Title>{course.title}</Title>
-        <Subtitle>Instructor: {course.instructor}</Subtitle>
+        {course.publisher && <Subtitle>Instructor: {course.publisher.username}</Subtitle> }
       </Header>
 
       <MediaContainer>
-        <VideoContainer>
-          <ResponsiveIframe
-            src={course.videoUrl}
-            title="Course Video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </VideoContainer>
-
-        <Image src={process.env.PUBLIC_URL + course.imageUrl} alt="Course Preview" />
+       
+        <Image src={course.cover} alt="Course Preview" />
       </MediaContainer>
 
       <ContentSection>
@@ -129,15 +126,17 @@ const CourseDetails = () => {
         <Description>{course.description}</Description>
       </ContentSection>
 
-      <ContentSection>
+      {/* <ContentSection>
         <SectionTitle>Assignments</SectionTitle>
         <AssignmentList>
           {course.assignments.map((assignment, index) => (
             <AssignmentItem key={index}>{assignment}</AssignmentItem>
           ))}
         </AssignmentList>
-      </ContentSection>
+      </ContentSection> */}
       <Comments />
+      </div>
+      }
     </Container>
   );
 };

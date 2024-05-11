@@ -95,7 +95,26 @@ export default function EditPost() {
   const [content, setContent] = useState("");
   const [coverImg, setCoverImg] = useState();
   const [blogAuthor, setBlogAuthor] = useState("");
-  
+  function uploadImage(file) {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "j5uqdyec");
+    data.append("cloud_name", "du1fnqemp");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/du1fnqemp/image/upload", data)
+      .then((response) => {
+        console.log(response);
+        const imageUrl = response.data.url;
+        console.log(imageUrl);
+        // Now you can store imageUrl in your state variable or wherever you need it
+        setCover(imageUrl);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return 0;
+  }
   useEffect(() => {
     async function fetchPost() {
       try {
@@ -120,7 +139,9 @@ export default function EditPost() {
     data.append("id", id);
     try {
       await axios
-        .put(`http://localhost:8000/blog/edit`, data, {
+        .put(`http://localhost:8000/blog/edit`, {
+          cover, title, content, id
+        }, {
           withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -162,7 +183,7 @@ export default function EditPost() {
           />
           {coverImg ? (
             <img
-              src={`http://localhost:8000/${coverImg}`}
+              src={`${coverImg}`}
               height={50}
               width={50}
               alt=""

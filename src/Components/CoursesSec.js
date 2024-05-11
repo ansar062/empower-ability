@@ -171,6 +171,7 @@ const BrowseLink = styled.a`
 
 
 const CoursesSection = () => {
+  
   return (
     <Section id="courses" aria-label="course">
       <Container>

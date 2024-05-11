@@ -1,23 +1,44 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 const UploadCoursePage = () => {
-  const [videoFile, setVideoFile] = useState(null);
-  const [coverFile, setCoverFile] = useState(null);
+
+  const [cover, setCover] = useState(null);
+  function uploadImage(file) {
+    toast("Image is uploading")
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "j5uqdyec");
+    data.append("cloud_name", "du1fnqemp");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/du1fnqemp/image/upload", data)
+      .then((response) => {
+        console.log(response);
+        const imageUrl = response.data.url;
+        console.log(imageUrl);
+        // Now you can store imageUrl in your state variable or wherever you need it
+        setCover(imageUrl);
+        toast("Image uploaded successfully")
+      })
+      .catch((err) => {
+        console.log(err);
+        toast("Image not uploaded, try again later")
+      });
+    return 0;
+  }
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
     category: "",
-    cover: null,
-    video: null,
+    cover: "",
     price: 30,
-    duration: "",
     difficultyLevel: "",
-    assignments: "",
   });
   const [uploadError, setUploadError] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [courses, setCourses] = useState([]);
   const [metrics, setMetrics] = useState({
     studentsEnrolled: 0,
     courseProgress: 0,
@@ -25,15 +46,81 @@ const UploadCoursePage = () => {
     ratings: 0,
   });
 
-  const handleCourseUpload = () => {
-    
+  const handleCourseUpload = async() => {
+    try{
+      const response = await axios.post("http://localhost:8000/postacourse", {
+        title: courseData.title,
+        description: courseData.description,
+        category: courseData.category,
+        cover: cover,
+        price: courseData.price,
+        difficultyLevel: courseData.difficultyLevel,
+      }, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = response.data;
+      if (data.status === true) {
+        setUploadSuccess(true);
+        toast(data.message);
+        setUploadError("");
+      } else {
+        setUploadError(data.message);
+        setUploadSuccess(false);
+      }
+    }catch(err){
+      console.log(err);
+    }
   };
+
+  const [courses, setCourses] = useState([]); // Replace the dummy data with an empty array
+
+  const totalCourses = courses?.length;
+ useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("http://localhost:8000/getmycourses", {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setCourses(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+ }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseData({ ...courseData, [name]: value });
   };
 
+
+
+
+  // 
+  const handleDeleteCourse = async (index) => { 
+    console.log(index)
+    try {
+      const response = await axios.delete(`http://localhost:8000/delete/course/${index}`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },});
+      const data = response.data;
+      if (data.status === true) {
+        toast(data.message);
+        setCourses(courses.filter((course, i) => i !== index));
+      } else {
+        toast(data.message);
+      }
+    } catch (error) { console.log(error); }
+  };
+  const handleEditCourse = (index) => { };
   return (
     <CoursesContainer>
       <Container>
@@ -68,16 +155,7 @@ const UploadCoursePage = () => {
               onChange={handleInputChange}
             ></textarea>
           </InputField>
-          <InputField>
-            <label>Duration</label>
-            <input
-              type="text"
-              name="duration"
-              placeholder="Enter Duration"
-              value={courseData.duration}
-              onChange={handleInputChange}
-            />
-          </InputField>
+          
           <InputField>
             <label>Price (in Dollars)</label>
             <input
@@ -99,31 +177,14 @@ const UploadCoursePage = () => {
               onChange={handleInputChange}
             />
           </InputField>
-          <InputField>
-            <label>Course Assignments</label>
-            <input
-              type="text"
-              name="assignments"
-              placeholder="Enter Course Assignment"
-              value={courseData.assignments}
-              onChange={handleInputChange}
-            />
-          </InputField>
-          <ImageUpload>
-            <label>Upload Course Video</label>
-            <input type="file"  onChange={({target}) => {
-              if(target.files){
-                const file = target.files[0];
-                setVideoFile(file);
-              }
-            }} />
-          </ImageUpload>
+          
+          
           <ImageUpload>
             <label>Upload Course Cover</label>
             <input type="file" accept="image/*" onChange={({target}) => {
               if(target.files){
                 const file = target.files[0];
-                setCoverFile(file);
+                uploadImage(file);
               }
             }} />
           </ImageUpload>
@@ -145,27 +206,31 @@ const UploadCoursePage = () => {
             <MetricItem>Ratings: {metrics.ratings}</MetricItem>
           </MetricsList>
         </MetricsContainer>
-        {/* <UploadedCourses>
+        <UploadedCourses>
           <h2>Uploaded Courses</h2>
-          {courses.map((course, index) => (
-            <CourseCard key={index}>
-              <CourseImage src={course.image} alt={course.name} />
+          {
+            courses &&
+          courses?.map((course, index) => (
+            <CourseCard key={course._id}>
+              <CourseImage src={course.cover} alt={course.name} />
               <CourseDetails>
-                <CourseTitle>{course.name}</CourseTitle>
-                <p>Instructor: {course.instructor}</p>
+                <CourseTitle>{course.title}</CourseTitle>
+                <p>Instructor: {course.publisher.username}</p>
                 <p>Description: {course.description}</p>
                 <p>Duration: {course.duration}</p>
               </CourseDetails>
               <ButtonContainer>
                 <Button onClick={() => handleEditCourse(index)}>Edit</Button>
-                <Button onClick={() => handleDeleteCourse(index)}>
+                <Button onClick={() => handleDeleteCourse(course._id)}>
                   Delete
                 </Button>
               </ButtonContainer>
             </CourseCard>
           ))}
-        </UploadedCourses> */}
+        </UploadedCourses>
+        
       </Container>
+      
     </CoursesContainer>
   );
 };

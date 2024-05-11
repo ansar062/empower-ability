@@ -136,7 +136,7 @@ const JobSearchTipsPost = () => {
                 </>
               )}
             <BlogImage
-              src={`http://localhost:8000/${blog.cover}`}
+              src={`${blog.cover}`}
               alt="Job Search Tips"
             />
             <div dangerouslySetInnerHTML={{ __html: blog.content }} />

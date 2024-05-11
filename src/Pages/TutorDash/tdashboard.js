@@ -1,17 +1,29 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Dashboard = () => {
-  // Dummy data for courses and analytics
-  const courses = [
-    { id: 1, title: 'Course 1', studentsEnrolled: 120 },
-    { id: 2, title: 'Course 2', studentsEnrolled: 95 },
-    { id: 3, title: 'Course 3', studentsEnrolled: 78 },
-  ];
+  
+  const [courses, setCourses] = useState([]); // Replace the dummy data with an empty array
 
-  const totalCourses = courses.length;
-  const totalStudentsEnrolled = courses.reduce((total, course) => total + course.studentsEnrolled, 0);
-
+  const totalCourses = courses?.length;
+ useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("http://localhost:8000/getmycourses", {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setCourses(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+ }, [])
   return (
     <DashboardContainer>
       <DashboardContent>
@@ -24,19 +36,21 @@ const Dashboard = () => {
             <StatValue>{totalCourses}</StatValue>
             <StatLabel>Total Courses</StatLabel>
           </StatCard>
-          <StatCard>
+          {/* <StatCard>
             <StatValue>{totalStudentsEnrolled}</StatValue>
             <StatLabel>Total Students Enrolled</StatLabel>
-          </StatCard>
+          </StatCard> */}
         </DashboardStats>
         <CourseList>
           <CourseListTitle>My Courses</CourseListTitle>
-          {courses.map(course => (
+          {
+          courses &&
+          courses.map(course => (
             <CourseItem key={course.id}>
-              <CourseImage src={process.env.PUBLIC_URL + '/Images/course-3.jpg'} alt={course.title} />
+              <CourseImage src={course.cover} alt={course.title} />
               <CourseDetails>
                 <CourseTitle>{course.title}</CourseTitle>
-                <StudentsEnrolled>{course.studentsEnrolled} Students Enrolled</StudentsEnrolled>
+                
               </CourseDetails>
             </CourseItem>
           ))}

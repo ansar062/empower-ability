@@ -128,7 +128,7 @@ const Posts = () => {
           <PostCard key={post._id}>
             {post.cover ? (
               <PostImage
-                src={`http://localhost:8000/${post.cover}`}
+                src={`${post.cover}`}
                 alt="Blog Post"
               />
             ) : (

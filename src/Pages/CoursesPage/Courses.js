@@ -13,6 +13,7 @@ import {
   TestimonialCard,
   NavigationArrow,
 } from './styles';
+import axios from 'axios';
 
 const CoursePage = () => {
   const [courses, setCourses] = useState([]);
@@ -39,84 +40,17 @@ const CoursePage = () => {
     console.log("Become an instructor button clicked");
   };
 
-  useEffect(() => {
-    const dummyData = [
-      { 
-        id: 1, 
-        title: 'Introduction to Adaptive Physical Education', 
-        category: 'Physically Disabled', 
-        level: 'Beginner', 
-        image: '/Images/course-1.jpg' 
-      },
-      { 
-        id: 2, 
-        title: 'American Sign Language Basics', 
-        category: 'Deaf', 
-        level: 'Intermediate', 
-        image: '/Images/course-2.jpg' 
-      },
-      { 
-        id: 3, 
-        title: 'Inclusive Web Design for Accessibility', 
-        category: 'Physically Disabled', 
-        level: 'Advanced', 
-        image: '/Images/course-1.jpg' 
-      },
-      { 
-        id: 4, 
-        title: 'Communication Strategies for the Deaf', 
-        category: 'Deaf', 
-        level: 'Intermediate', 
-        image: '/Images/course-3.jpg' 
-      },
-      { 
-        id: 5, 
-        title: 'Advanced Mobility Solutions', 
-        category: 'Physically Disabled', 
-        level: 'Expert', 
-        image: '/Images/course-1.jpg' 
-      },
-      { 
-        id: 6, 
-        title: 'Mastering Deaf Culture and Community', 
-        category: 'Deaf', 
-        level: 'Expert', 
-        image: '/Images/course-2.jpg' 
-      },
-    ];
-    
-
-    const dummyTestimonials = [
-      { 
-        id: 1, 
-        name: 'Emily Rodriguez', 
-        image: '/Images/people.jpg', 
-        content: 'The adaptive physical education course empowered me to stay active and live a healthier life. Truly life-changing!' 
-      },
-      { 
-        id: 2, 
-        name: 'Samuel Chen', 
-        image: '/Images/people.jpg', 
-        content: 'Learning American Sign Language opened up new ways for me to communicate and connect with others in the deaf community.' 
-      },
-      { 
-        id: 3, 
-        name: 'Maria Fernandez', 
-        image: '/Images/people.jpg', 
-        content: 'The inclusive web design course provided valuable insights on creating accessible digital experiences. A must for web developers!' 
-      },
-      { 
-        id: 4, 
-        name: 'Ahmed Khan', 
-        image: '/Images/people.jpg', 
-        content: 'I gained advanced mobility skills that significantly improved my independence and confidence in daily life.' 
-      },
-    ];
-    
-
-    setCourses(dummyData);
-    setTestimonials(dummyTestimonials);
-  }, []);
+useEffect(() => {
+    async function fetchCourses() {
+      const response = await axios.get('http://localhost:8000/getallcourses', {
+        withCredentials: true
+      });
+      const data = await response.data;
+      console.log(data);
+      setCourses(data);
+    }
+    fetchCourses();
+}, []); 
 
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
@@ -168,10 +102,10 @@ const CoursePage = () => {
       <CoursesSection>
       {currentCourses.map((course) => (
     <div key={course.id}>
-      <img src={process.env.PUBLIC_URL + course.image} alt={course.title} />
+      <img src={course.cover} alt={course.title} />
       <h3>
       <Link
-        to={`/coursedetail/${course.id}`} 
+        to={`/coursedetail/${course._id}`} 
         style={{ color: 'teal', textDecoration: 'none' }}
         state={{ course }}
       >
@@ -179,10 +113,10 @@ const CoursePage = () => {
       </Link>
       </h3>
             <p>Category: {course.category}</p>
-            <p>Level: {course.level}</p>
+            <p>Level: {course.difficultyLevel}</p>
             <EnrollmentButton>
             <Link
-        to={`/coursedetail/${course.id}`}  
+        to={`/coursedetail/${course._id}`}  
         state={{ course }} style={{color:'white', textDecoration: 'none'}}
       >
         Enroll Now
