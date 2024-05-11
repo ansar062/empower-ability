@@ -25,6 +25,9 @@ const ApplyToJobs = () => {
     try{
       await axios.post(`http://localhost:8000/api/jobs/${id}/applications`, newApplication, {
         withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       }).then((response) => {
         const data = response.data;
         if(data.status === false){

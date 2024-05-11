@@ -133,6 +133,9 @@ const ProfileEdit = () => {
           formData,
           {
             withCredentials: true,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
           }
         );
         if (response.data.status) {
@@ -150,6 +153,9 @@ const ProfileEdit = () => {
           `http://localhost:8000/freelancer/get-profile`,
           {
             withCredentials: true,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
           }
         );
         setFormData(response.data.freelancerProfile);

@@ -153,6 +153,7 @@ const Register = () => {
           dispatch(signInFailure(data.message));
           return;
         }
+        localStorage.setItem("token", data.token)
         toast(data.message)
         dispatch(signInSuccess(data.user));
         if(data.user.role === "client"){

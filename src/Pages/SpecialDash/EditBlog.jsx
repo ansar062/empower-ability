@@ -122,6 +122,9 @@ export default function EditPost() {
       await axios
         .put(`http://localhost:8000/blog/edit`, data, {
           withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         })
         .then((response) => {
           const data = response.data;

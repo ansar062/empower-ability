@@ -52,6 +52,9 @@ const EditJobs = () => {
     try{
       await axios.put(`http://localhost:8000/job/edit/${id}`, newJob, {
         withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       }).then((response) => {
         const data = response.data;
         if(data.status === false){

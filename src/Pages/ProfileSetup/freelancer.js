@@ -133,6 +133,9 @@ const ProfileSetupPage = () => {
           formData,
           {
             withCredentials: true,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
           }
         );
         

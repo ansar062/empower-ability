@@ -31,7 +31,9 @@ const ManageJobsPage = () => {
 
   useEffect(() => {
     async function fetchMyJobs(){
-      await axios.get('http://localhost:8000/all-my-jobs', {withCredentials: true})
+      await axios.get('http://localhost:8000/all-my-jobs', {withCredentials: true, headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }})
       .then((response) => {
         const res = response.data;
         setJobListings(res.myJobs);
@@ -47,6 +49,9 @@ const ManageJobsPage = () => {
     try{
       await axios.post('http://localhost:8000/post-a-job', newJob, {
         withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       }).then((response) => {
         const data = response.data;
         if(data.status === false){
@@ -98,7 +103,9 @@ const ManageJobsPage = () => {
   const handleDelete = (index) => {
     console.log(index)
     async function deleteJob(){
-      await axios.delete(`http://localhost:8000/jobs/delete/${index}`, {withCredentials: true})
+      await axios.delete(`http://localhost:8000/jobs/delete/${index}`, {withCredentials: true, headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }})
       .then((response) => {
         const res = response.data;
         if(res.success === true){

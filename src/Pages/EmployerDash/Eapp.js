@@ -42,7 +42,10 @@ const ApplicationsPage = () => {
     try{
       async function getAllApplication(){
         await axios.get(`http://localhost:8000/all-applications-request/${hirerId}`, {
-          withCredentials: true
+          withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         }).then((response) => {
           const applicationData = response.data.applications;
           setApplications(applicationData);

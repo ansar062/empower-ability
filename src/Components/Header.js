@@ -195,7 +195,7 @@ const Header = () => {
             toast(data.message);
             return;
           }
-
+          localStorage.removeItem("token");
           dispatch(logoutUser());
           toast(data.message);
           navigate("/");

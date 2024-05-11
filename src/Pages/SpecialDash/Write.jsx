@@ -111,6 +111,9 @@ export default function Write() {
       await axios
         .post("http://localhost:8000/createblog", data, {
           withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         })
         .then((response) => {
           const data = response.data;

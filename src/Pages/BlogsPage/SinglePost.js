@@ -92,6 +92,9 @@ const JobSearchTipsPost = () => {
       await axios
         .delete(`http://localhost:8000/blog/delete/${id}`, {
           withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         })
         .then((response) => {
           if (response.data.status === true) {
