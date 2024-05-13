@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import EditCourseForm from "./EditCourseForm";
 
 const UploadCoursePage = () => {
-
+  const [editingCourseIndex, setEditingCourseIndex] = useState(null);
+  const [editingCourseId, setEditingCourseId] = useState("");
   const [cover, setCover] = useState(null);
   function uploadImage(file) {
     toast("Image is uploading")
@@ -120,7 +122,11 @@ const UploadCoursePage = () => {
       }
     } catch (error) { console.log(error); }
   };
-  const handleEditCourse = (index) => { };
+  const handleEditCourse = (index) => { 
+    console.log(index)
+    setEditingCourseId(index);
+    setEditingCourseIndex(index);
+  };
   return (
     <CoursesContainer>
       <Container>
@@ -220,7 +226,7 @@ const UploadCoursePage = () => {
                 <p>Duration: {course.duration}</p>
               </CourseDetails>
               <ButtonContainer>
-                <Button onClick={() => handleEditCourse(index)}>Edit</Button>
+                <Button onClick={() => handleEditCourse(course._id)}>Edit</Button>
                 <Button onClick={() => handleDeleteCourse(course._id)}>
                   Delete
                 </Button>
@@ -230,7 +236,13 @@ const UploadCoursePage = () => {
         </UploadedCourses>
         
       </Container>
-      
+      {
+        editingCourseIndex !== null && (
+          <EditCourseForm
+          id = {`${editingCourseId}`}
+          />
+        )
+      }
     </CoursesContainer>
   );
 };
