@@ -11,6 +11,8 @@ import {
 } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import { loginSchema } from "../../schemas";
 
 const StyledLogin = styled.div`
   height: calc(100vh - 50px);
@@ -137,6 +139,11 @@ const StyledCreateAccountLink = styled.div`
   }
 `;
 
+const initialValues = {
+  email: "",
+  password: "",
+};
+
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -156,42 +163,42 @@ export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const val = type === "checkbox" ? checked : value;
-    setFormData({
-      ...formData,
-      [name]: val,
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema: loginSchema,
+      onSubmit: async (values, action) => {
+        try {
+          dispatch(signInStart());
+          await axios
+            .post(
+              "https://empowerabilitybackend56dcdfs4q43srd.vercel.app/login",
+              values,
+              {
+                withCredentials: true,
+              }
+            )
+            .then((response) => {
+              const data = response.data;
+              if (data.success === false) {
+                toast(data.message);
+                dispatch(signInFailure(data.message));
+
+                return;
+              }
+              toast(data.message);
+              console.log(data.token);
+              localStorage.setItem("token", data.token);
+              dispatch(signInSuccess(data.user));
+              navigate("/");
+            });
+        } catch (err) {
+          console.log(err);
+          toast(err);
+          dispatch(signInFailure(err));
+        }
+      },
     });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      dispatch(signInStart());
-      await axios
-        .post("http://localhost:8000/login", formData, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          const data = response.data;
-          if (data.success === false) {
-            toast(data.message);
-            dispatch(signInFailure(data.message));
-
-            return;
-          }
-          toast(data.message);
-          console.log(data.token);
-          localStorage.setItem("token", data.token);
-          dispatch(signInSuccess(data.user));
-          navigate("/");
-        });
-    } catch (err) {
-      toast(err);
-      dispatch(signInFailure(err));
-    }
-  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -209,24 +216,35 @@ export default function Login() {
           type="text"
           name="email"
           placeholder="Enter your email..."
-          value={formData.email}
+          value={values.email}
           onChange={handleChange}
+          onBlur={handleBlur}
           style={{ borderColor: loginError ? "red" : "teal" }}
         />
+        {errors.email && touched.email ? (
+          <p style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}>{errors.email}*</p>
+        ) : null}
         <StyledLoginLabel>Password</StyledLoginLabel>
         <StyledLoginInputContainer>
           <StyledLoginInput
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Enter your password..."
-            value={formData.password}
+            value={values.password}
             onChange={handleChange}
+            onBlur={handleBlur}
             style={{ borderColor: loginError ? "red" : "teal" }}
           />
+
           {/* Password Visibility Toggle */}
           <StyledPasswordToggle onClick={togglePasswordVisibility}>
             {showPassword ? "Hide" : "Show"}
           </StyledPasswordToggle>
+          {errors.password && touched.password ? (
+            <p style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}>
+              {errors.password}*
+            </p>
+          ) : null}
         </StyledLoginInputContainer>
         {/* Remember Me Option */}
         <StyledRememberMeContainer>

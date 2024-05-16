@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import axios from 'axios';
-import { signInStart, signInFailure, signInSuccess } from '../../store/slices/authSlice';
-import { useDispatch, useSelector} from 'react-redux';
-import { toast } from 'react-toastify';
+import axios from "axios";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import { registerSchema } from "../../schemas";
 
 const StyledRegister = styled.div`
   display: flex;
@@ -20,8 +26,8 @@ const StyledRegisterFormContainer = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 40px;
-  margin-top:20px;
-  margin-bottom:20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   width: 350px;
   max-width: 50%;
 `;
@@ -116,110 +122,174 @@ const StyledLoginLink = styled(Link)`
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {loading, error, currentUser} = useSelector((state) => state.auth);
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    role: 'client',
-    firstname:'',
-    lastname:''
-  });
+  const { loading, error, currentUser } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    if(currentUser){
-      navigate('/');
+    if (currentUser) {
+      navigate("/");
     }
-  })
+  });
   const [registrationError, setRegistrationError] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   try{
+  //     dispatch(signInStart());
+  //     axios.post('http://localhost:8000/signup', formData, {
+  //       withCredentials: true
+  //     }).then(response => {
+  //       const data = response.data;
+  //       if(data.success === false){
+  //         toast(data.message)
+  //         dispatch(signInFailure(data.message));
+  //         return;
+  //       }
+  //       localStorage.setItem("token", data.token)
+  //       toast(data.message)
+  //       dispatch(signInSuccess(data.user));
+  //       if(data.user.role === "client"){
+  //         navigate('/freelancer');
+  //       }
+  //       navigate('/');
+  //     })
+  //   }catch(err){
+  //     toast(err);
+  //     dispatch(signInFailure(err));
+  //   }
+  // };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    try{
-      dispatch(signInStart());
-      axios.post('http://localhost:8000/signup', formData, {
-        withCredentials: true
-      }).then(response => {
-        const data = response.data;
-        if(data.success === false){
-          toast(data.message)
-          dispatch(signInFailure(data.message));
-          return;
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        email: "",
+        password: "",
+        username: "",
+        role: "client",
+        firstname: "",
+        lastname: "",
+      },
+      validationSchema: registerSchema,
+      onSubmit: (values) => {
+        try {
+          dispatch(signInStart());
+          axios
+            .post("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/signup", values, {
+              withCredentials: true,
+            })
+            .then((response) => {
+              const data = response.data;
+              if (data.success === false) {
+                toast(data.message);
+                dispatch(signInFailure(data.message));
+                return;
+              }
+              localStorage.setItem("token", data.token);
+              toast(data.message);
+              dispatch(signInSuccess(data.user));
+              if (data.user.role === "client") {
+                navigate("/freelancer");
+              }
+              navigate("/");
+            });
+        } catch (err) {
+          toast(err);
+          dispatch(signInFailure(err));
         }
-        localStorage.setItem("token", data.token)
-        toast(data.message)
-        dispatch(signInSuccess(data.user));
-        if(data.user.role === "client"){
-          navigate('/freelancer');
-        }
-        navigate('/');
-      })
-    }catch(err){
-      toast(err);
-      dispatch(signInFailure(err));
-    }
-  };
+      },
+    });
 
   // Dynamically set the link destination based on the selected role
- 
 
   return (
     <StyledRegister>
       <StyledRegisterFormContainer>
-        <StyledRegisterTitle>
-        Welcome to EmpowerAbility</StyledRegisterTitle>
+        <StyledRegisterTitle>Welcome to EmpowerAbility</StyledRegisterTitle>
         <StyledRegisterForm onSubmit={handleSubmit}>
-        <StyledRegisterLabel>Fistname</StyledRegisterLabel>
+          <StyledRegisterLabel>Fistname</StyledRegisterLabel>
           <StyledRegisterInput
             type="text"
             name="firstname"
             placeholder="Enter your firstname..."
-            value={formData.firstname}
+            value={values.firstname}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.firstname && touched.firstname ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.firstname}*
+            </p>
+          ) : null}
           <StyledRegisterLabel>Lastname</StyledRegisterLabel>
+
           <StyledRegisterInput
             type="text"
             name="lastname"
             placeholder="Enter your lastname..."
-            value={formData.lastname}
+            value={values.lastname}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.lastname && touched.lastname ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.lastname}*
+            </p>
+          ) : null}
           <StyledRegisterLabel>Username</StyledRegisterLabel>
           <StyledRegisterInput
             type="text"
             name="username"
             placeholder="Enter your username..."
-            value={formData.username}
+            value={values.username}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.username && touched.username ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.username}*
+            </p>
+          ) : null}
           <StyledRegisterLabel>Email</StyledRegisterLabel>
           <StyledRegisterInput
             type="text"
             name="email"
             placeholder="Enter your email..."
-            value={formData.email}
+            value={values.email}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.email && touched.email ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.email}*
+            </p>
+          ) : null}
           <StyledRegisterLabel>Password</StyledRegisterLabel>
           <StyledRegisterInput
             type="password"
             name="password"
             placeholder="Enter your password..."
-            value={formData.password}
+            value={values.password}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.password && touched.password ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.password}*
+            </p>
+          ) : null}
           <StyledRegisterLabel>Role</StyledRegisterLabel>
           <StyledRegisterSelect
             name="role"
-            value={formData.role}
+            value={values.role}
             onChange={handleChange}
           >
             <option value="client">Freelancer/Students</option>
@@ -227,14 +297,17 @@ const Register = () => {
             <option value="employer">Employer</option>
           </StyledRegisterSelect>
           <StyledRegisterButtonContainer>
-              <StyledRegisterButton type="submit">Register</StyledRegisterButton>
+            <StyledRegisterButton type="submit">Register</StyledRegisterButton>
           </StyledRegisterButtonContainer>
         </StyledRegisterForm>
         {registrationError && (
-          <div style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>Registration failed. Please check the provided information.</div>
+          <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
+            Registration failed. Please check the provided information.
+          </div>
         )}
         <StyledAlreadyAccount>
-          Already have an account? <StyledLoginLink to="/login">Login</StyledLoginLink>
+          Already have an account?{" "}
+          <StyledLoginLink to="/login">Login</StyledLoginLink>
         </StyledAlreadyAccount>
       </StyledRegisterFormContainer>
     </StyledRegister>

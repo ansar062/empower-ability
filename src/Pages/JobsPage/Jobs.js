@@ -45,7 +45,7 @@ const JobsPage = () => {
     async function fetchAllJobs() {
       try {
         await axios
-          .get("http://localhost:8000/all-jobs", { withCredentials: true })
+          .get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/all-jobs", { withCredentials: true })
           .then((response) => {
             const res = response.data;
             setJobs(res.jobs);

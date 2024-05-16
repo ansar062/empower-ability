@@ -68,7 +68,7 @@ const JobSearchTipsPost = () => {
     setLoading(true);
     async function fetchSinglePost() {
       try {
-        await axios.get(`http://localhost:8000/blog/${id}`).then((response) => {
+        await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/blog/${id}`).then((response) => {
           const blogdata = response.data;
           setBlog(blogdata);
           setLoading(false);

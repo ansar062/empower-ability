@@ -42,7 +42,7 @@ const CoursePage = () => {
 
 useEffect(() => {
     async function fetchCourses() {
-      const response = await axios.get('http://localhost:8000/getallcourses', {
+      const response = await axios.get('https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getallcourses', {
         withCredentials: true
       });
       const data = await response.data;

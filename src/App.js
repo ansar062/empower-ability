@@ -43,6 +43,7 @@ import ApplyToJobs from "./Pages/ApplicationsPage/applytojob";
 import axios from "axios";
 import { signInSuccess, logoutUser } from "./store/slices/authSlice";
 import ProfileEdit from "./Pages/EditProfiles/freelancerProfileedit";
+import JobDetailPage from "./Pages/JobsPage/DetailedJob";
 const Home = () => (
   <div>
     <Header />
@@ -60,7 +61,7 @@ const App = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/profile", {
+        const response = await axios.get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/profile", {
           withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -89,6 +90,7 @@ const App = () => {
         <Route path="/jobs" element={<JobsPageWithHeaderFooter />} />
         <Route path="/blogs" element={<BlogsPageWithHeaderFooter />} />
         <Route path="/courses" element={<CoursesPageWithHeaderFooter />} />
+        <Route path="/jobs/job/:id" element={<JobsDetailWithHeaderFooter />} />
         <Route
           path="/blogs/blog/:id"
           element={<SinglePostWithHeaderFooter />}
@@ -300,6 +302,13 @@ const EappWithHeaderFooter = () => (
     <EHeader />
     <Eapp />
     <EFooter />
+  </>
+);
+const JobsDetailWithHeaderFooter = () => (
+  <>
+    <Header />
+    <JobDetailPage />
+    <Footer />
   </>
 );
 

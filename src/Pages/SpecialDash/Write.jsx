@@ -127,10 +127,7 @@ export default function Write() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("cover", cover);
-    data.append("title", title);
-    data.append("content", content);
+    
     try {
       dispatch(postStart());
       await axios

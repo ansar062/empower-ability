@@ -3,119 +3,106 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { useFormik } from "formik";
+import { postajobSchema } from "../../schemas";
 
+const initialValues = {
+  title: "",
+  description: "",
+  category: "",
+  country: "",
+  city: "",
+  location: "",
+  company: "",
+  fixedSalary: "",
+  salaryFrom: "",
+  salaryTo: "",
+};
 const ManageJobsPage = () => {
   // State to manage job listings
   const [jobListings, setJobListings] = useState([]);
   const [fixedSalary, setFixedSalary] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   const handleSalaryTypeChange = (e) => {
     const isFixed = e.target.value === "fixed";
     setFixedSalary(isFixed);
   };
 
-  // State for new job form
-  const [newJob, setNewJob] = useState({
-    title: "",
-    description: "",
-    category: "",
-    country: "",
-    city: "",
-    location: "",
-    company: "",
-    fixedSalary: "",
-    salaryFrom: "",
-    salaryTo: "",
-  });
-
   useEffect(() => {
-    async function fetchMyJobs(){
-      await axios.get('http://localhost:8000/all-my-jobs', {withCredentials: true, headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }})
-      .then((response) => {
-        const res = response.data;
-        setJobListings(res.myJobs);
-      })
+    async function fetchMyJobs() {
+      await axios
+        .get(
+          "https://empowerabilitybackend56dcdfs4q43srd.vercel.app/all-my-jobs",
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          const res = response.data;
+          setJobListings(res.myJobs);
+        });
     }
     fetchMyJobs();
-  }, 3000)
+  }, 3000);
 
   // Function to handle form submission
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    setLoading(true)
-    try{
-      await axios.post('http://localhost:8000/post-a-job', newJob, {
-        withCredentials: true,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      }).then((response) => {
-        const data = response.data;
-        if(data.status === false){
-          toast(data.message);
-          return;
-        }
-        toast(data.message);
-      })
 
-    }catch(err){
-      toast(err);
-    }
-    
-    clearForm();
-  };
-
-  // Function to handle form field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewJob((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  // Function to clear form fields
-  const clearForm = () => {
-    setNewJob({
-      title: "",
-      description: "",
-      category: "",
-      country: "",
-      city: "",
-      location: "",
-      company: "",
-      fixedSalary: "",
-      salaryFrom: "",
-      salaryTo: "",
-    });
-  };
-
-  // Function to handle editing job listing
-  const handleEdit = (index) => {
-    // Add logic to edit job listing
-    console.log("Editing job at index:", index);
-  };
+  const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+    initialValues,
+    validationSchema: postajobSchema,
+    onSubmit: async (values, action) => {
+      try {
+        await axios
+          .post(
+            "https://empowerabilitybackend56dcdfs4q43srd.vercel.app/post-a-job",
+            values,
+            {
+              withCredentials: true,
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            const data = response.data;
+            if (data.status === false) {
+              toast(data.message);
+              return;
+            }
+            toast(data.message);
+          });
+      } catch (err) {
+        toast(err);
+      }
+      action.resetForm();
+    },
+  });
 
   // Function to handle deleting job listing
   const handleDelete = (index) => {
-    console.log(index)
-    async function deleteJob(){
-      await axios.delete(`http://localhost:8000/jobs/delete/${index}`, {withCredentials: true, headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }})
-      .then((response) => {
-        const res = response.data;
-        if(res.success === true){
-          toast(res.message);
-
-        }
-      });
-      
+    console.log(index);
+    async function deleteJob() {
+      await axios
+        .delete(
+          `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/jobs/delete/${index}`,
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          const res = response.data;
+          if (res.success === true) {
+            toast(res.message);
+          }
+        });
     }
-    deleteJob()
+    deleteJob();
     setJobListings((prevListings) =>
       prevListings.filter((_, i) => i !== index)
     );
@@ -130,60 +117,102 @@ const ManageJobsPage = () => {
           <Input
             type="text"
             name="title"
-            value={newJob.title}
+            value={values.title}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.title && touched.title ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.title}*
+            </p>
+          ) : null}
         <FormField>
           <Label>Description:</Label>
           <Textarea
             name="description"
-            value={newJob.description}
+            value={values.description}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.description && touched.description ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.description}*
+            </p>
+          ) : null}
         <FormField>
           <Label>Category:</Label>
           <Input
             type="text"
             name="category"
-            value={newJob.category}
+            value={values.category}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.category && touched.category ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.category}*
+            </p>
+          ) : null}
         <FormField>
           <Label>Country:</Label>
           <Input
             type="text"
             name="country"
-            value={newJob.country}
+            value={values.country}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.country && touched.country ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.country}*
+            </p>
+          ) : null}
         <FormField>
           <Label>City:</Label>
           <Input
             type="text"
             name="city"
-            value={newJob.city}
+            value={values.city}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.city && touched.city ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.city}*
+            </p>
+          ) : null}
         <FormField>
           <Label>Location:</Label>
           <Input
             type="text"
             name="location"
-            value={newJob.location}
+            value={values.location}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.location && touched.location ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.location}*
+            </p>
+          ) : null}
         <input
           type="radio"
           id="fixed"
@@ -209,7 +238,7 @@ const ManageJobsPage = () => {
             <Input
               type="number"
               name="fixedSalary"
-              value={newJob.fixedSalary}
+              value={values.fixedSalary}
               onChange={handleChange}
               required
               min={1000}
@@ -222,7 +251,7 @@ const ManageJobsPage = () => {
               <Input
                 type="number"
                 name="salaryFrom"
-                value={newJob.salaryFrom}
+                value={values.salaryFrom}
                 onChange={handleChange}
                 required
                 min={500}
@@ -233,7 +262,7 @@ const ManageJobsPage = () => {
               <Input
                 type="number"
                 name="salaryTo"
-                value={newJob.salaryTo}
+                value={values.salaryTo}
                 onChange={handleChange}
                 required
                 min={1000}
@@ -247,18 +276,23 @@ const ManageJobsPage = () => {
           <Input
             type="text"
             name="company"
-            value={newJob.company}
+            value={values.company}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
           />
         </FormField>
+        {errors.company && touched.company ? (
+            <p
+              style={{ color: "#FF5363", fontSize: "12px", marginTop: "-14px" }}
+            >
+              {errors.company}*
+            </p>
+          ) : null}
         <SubmitButton type="submit">Post Job</SubmitButton>
       </Form>
 
       {/* Display job listings table */}
-      {
-      jobListings && 
-      jobListings.length > 0 && (
+      {jobListings && jobListings.length > 0 && (
         <JobListingsTable>
           <thead>
             <tr>
@@ -285,9 +319,7 @@ const ManageJobsPage = () => {
                 <td>{job.location}</td>
                 <td>{job.company}</td>
                 <td>
-                  <Link to={`/eeditjobs/${job._id}`}>
-                    Edit
-                  </Link>
+                  <Link to={`/eeditjobs/${job._id}`}>Edit</Link>
                   <ActionButton onClick={() => handleDelete(job._id)}>
                     Delete
                   </ActionButton>

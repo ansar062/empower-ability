@@ -42,7 +42,6 @@ const Blogs = () => {
 
       <MainContent>
         <Posts />
-        <Sidebar />
       </MainContent>
     </BlogsPageContainer>
   );

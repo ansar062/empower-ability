@@ -23,7 +23,7 @@ const ApplyToJobs = () => {
     e.preventDefault();
     setLoading(true)
     try{
-      await axios.post(`http://localhost:8000/api/jobs/${id}/applications`, newApplication, {
+      await axios.post(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/api/jobs/${id}/applications`, newApplication, {
         withCredentials: true,
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

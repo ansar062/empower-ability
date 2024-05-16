@@ -41,7 +41,7 @@ const ApplicationsPage = () => {
   useEffect(() => {
     try{
       async function getAllApplication(){
-        await axios.get(`http://localhost:8000/all-applications-request/${hirerId}`, {
+        await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/all-applications-request/${hirerId}`, {
           withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -75,7 +75,6 @@ const ApplicationsPage = () => {
       <ApplicationsTable>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Job Title</th>
             <th>Applicant Name</th>
             <th>Contact No.</th>
@@ -90,7 +89,6 @@ const ApplicationsPage = () => {
             sortedApplications &&
           sortedApplications.map((application) => (
             <tr key={application._id}>
-              <td>{application.id}</td>
               <td>{application.jobId.title}</td>
               <td>{application.applicantId.firstname}{application.applicantId.lastname}</td>
               <td>{application.contactNo}</td>

@@ -84,6 +84,7 @@ const PostTextContainer = styled.div`
   overflow: hidden;
 `;
 
+
 const Posts = () => {
   const [loading, setLoading] = useState(false);
   const [blogs, setBlogs] = useState([]);
@@ -92,7 +93,7 @@ const Posts = () => {
     const fetchBlogs = async () => {
       try {
         await axios
-          .get("http://localhost:8000/blogs", { withCredentials: true })
+          .get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/blogs", { withCredentials: true })
           .then((response) => {
             const res = response.data;
             setBlogs(res);

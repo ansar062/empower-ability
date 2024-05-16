@@ -33,7 +33,7 @@ const EditJobs = () => {
 
   useEffect(() => {
     async function fetchSingleJob(){
-      await axios.get(`http://localhost:8000/jobs/job/${id}`, {withCredentials: true})
+      await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/jobs/job/${id}`, {withCredentials: true})
       .then((response) => {
         const res = response.data;
         setNewJob(res.job);
@@ -50,7 +50,15 @@ const EditJobs = () => {
     e.preventDefault();
     setLoading(true)
     try{
-      await axios.put(`http://localhost:8000/job/edit/${id}`, newJob, {
+      if(!newJob.fixedSalary && !newJob.salaryFrom && !newJob.salaryTo){
+        toast("Please enter a salary");
+        return;
+      }
+      if(!newJob.title && !newJob.description && !newJob.category && !newJob.country && !newJob.city && !newJob.location && !newJob.company){
+        toast("Please fill in all fields");
+        return;
+      }
+      await axios.put(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/job/edit/${id}`, newJob, {
         withCredentials: true,
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

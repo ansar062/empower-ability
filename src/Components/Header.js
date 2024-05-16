@@ -185,7 +185,7 @@ const Header = () => {
   const logoutHandle = async () => {
     try {
       axios
-        .post("http://localhost:8000/logout", "", {
+        .post("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/logout", "", {
           withCredentials: true,
         })
         .then((response) => {

@@ -97,7 +97,7 @@ const [course, setCourse] = useState({});
   // Dummy data for the course
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`http://localhost:8000/getcourse/${id}`, {
+      const response = await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getcourse/${id}`, {
         withCredentials: true
       });
       const data = await response.data;
