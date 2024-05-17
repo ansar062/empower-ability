@@ -129,7 +129,7 @@ const ProfileSetupPage = () => {
     async function setProfile() {
       try {
         const response = await axios.post(
-          `http://localhost:8000/freelancer/set-up-profile`,
+          `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/freelancer/set-up-profile`,
           formData,
           {
             withCredentials: true,

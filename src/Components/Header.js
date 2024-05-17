@@ -209,7 +209,7 @@ const Header = () => {
     <HeaderContainer>
       <LogoContainer>
         <NavLink to="/">
-          <LogoImage src="/images/logo.png" alt="logo" />
+          <LogoImage src="/logo.png" alt="logo" />
         </NavLink>
       </LogoContainer>
       <NavigationContainer>

@@ -131,32 +131,6 @@ const Register = () => {
   });
   const [registrationError, setRegistrationError] = useState(false);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   try{
-  //     dispatch(signInStart());
-  //     axios.post('http://localhost:8000/signup', formData, {
-  //       withCredentials: true
-  //     }).then(response => {
-  //       const data = response.data;
-  //       if(data.success === false){
-  //         toast(data.message)
-  //         dispatch(signInFailure(data.message));
-  //         return;
-  //       }
-  //       localStorage.setItem("token", data.token)
-  //       toast(data.message)
-  //       dispatch(signInSuccess(data.user));
-  //       if(data.user.role === "client"){
-  //         navigate('/freelancer');
-  //       }
-  //       navigate('/');
-  //     })
-  //   }catch(err){
-  //     toast(err);
-  //     dispatch(signInFailure(err));
-  //   }
-  // };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({

@@ -90,7 +90,7 @@ const JobSearchTipsPost = () => {
     try {
       console.log(id);
       await axios
-        .delete(`http://localhost:8000/blog/delete/${id}`, {
+        .delete(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/blog/delete/${id}`, {
           withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`

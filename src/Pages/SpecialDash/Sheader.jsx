@@ -54,7 +54,7 @@ const Header = () => {
   const logoutHandle = async () => {
     try {
       axios
-        .post("http://localhost:8000/logout", "", {
+        .post("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/logout", "", {
           withCredentials: true,
         })
         .then((response) => {
@@ -76,7 +76,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <NavLink to="/">
-          <Logo src="/images/logo.png" alt="logo" />
+          <Logo src="/logo.png" alt="logo" />
         </NavLink>
       <SearchBar type="text" placeholder="Search..." />
       <UserDropdownMenuContainer>

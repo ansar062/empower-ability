@@ -209,7 +209,7 @@ export default function Login() {
       <StyledLoginForm onSubmit={handleSubmit}>
         <StyledLoginTitle>Welcome back!</StyledLoginTitle>
         <NavLink to="/">
-          <LogoImage src="/images/logo.png" alt="logo" />
+          <LogoImage src="/logo.png" alt="logo" />
         </NavLink>
         <StyledLoginLabel>Email</StyledLoginLabel>
         <StyledLoginInput

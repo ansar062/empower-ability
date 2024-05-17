@@ -7,8 +7,10 @@ import EditCourseForm from "./EditCourseForm";
 const UploadCoursePage = () => {
   const [editingCourseIndex, setEditingCourseIndex] = useState(null);
   const [editingCourseId, setEditingCourseId] = useState("");
+  const [disabled, setdisabled] = useState(true);
   const [cover, setCover] = useState(null);
   function uploadImage(file) {
+    setdisabled(true)
     toast("Image is uploading")
     const data = new FormData();
     data.append("file", file);
@@ -23,11 +25,13 @@ const UploadCoursePage = () => {
         console.log(imageUrl);
         // Now you can store imageUrl in your state variable or wherever you need it
         setCover(imageUrl);
+        setdisabled(false);
         toast("Image uploaded successfully")
       })
       .catch((err) => {
         console.log(err);
         toast("Image not uploaded, try again later")
+        setdisabled(true);
       });
     return 0;
   }
@@ -50,7 +54,7 @@ const UploadCoursePage = () => {
 
   const handleCourseUpload = async() => {
     try{
-      const response = await axios.post("http://localhost:8000/postacourse", {
+      const response = await axios.post("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/postacourse", {
         title: courseData.title,
         description: courseData.description,
         category: courseData.category,
@@ -83,7 +87,7 @@ const UploadCoursePage = () => {
  useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://localhost:8000/getmycourses", {
+        const response = await axios.get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getmycourses", {
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -110,7 +114,7 @@ const UploadCoursePage = () => {
   const handleDeleteCourse = async (index) => { 
     console.log(index)
     try {
-      const response = await axios.delete(`http://localhost:8000/delete/course/${index}`, {
+      const response = await axios.delete(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/delete/course/${index}`, {
         withCredentials: true,
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },});
       const data = response.data;
@@ -195,7 +199,7 @@ const UploadCoursePage = () => {
             }} />
           </ImageUpload>
           
-          <Button onClick={handleCourseUpload}>Upload Course</Button>
+          <Button onClick={handleCourseUpload} disabled={disabled} >Upload Course</Button>
           {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
           {uploadSuccess && (
             <SuccessMessage>Course uploaded successfully!</SuccessMessage>

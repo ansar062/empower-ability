@@ -5,10 +5,16 @@ import styled from "styled-components";
 import { toast } from "react-toastify";
 import { Dialog, Flex, Text, TextField } from "@radix-ui/themes";
 import LecturesList from "./lectures";
+import './slider.css';
 
 const EditCourseForm = (props) => {
   const { id } = props;
   const [cover, setCover] = useState("");
+  const [disabled, setdisabled] = useState(false);
+  const [coverVideo, setCoverVideo] = useState();
+  const [videoUploading, setvideoUploading] = useState(true);
+  
+
   const [lectureData, setLectureData] = useState({
     title: "",
     video: "",
@@ -22,13 +28,14 @@ const EditCourseForm = (props) => {
     price: 30,
     difficultyLevel: "",
     Lecture: [],
+    isPublished: false,
   });
 
 
   useEffect(() => {
     async function fetchCourse() {
       const response = await axios.get(
-        `http://localhost:8000/getcourse/${id}`,
+        `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getcourse/${id}`,
         {
           withCredentials: true,
         }
@@ -47,6 +54,7 @@ const EditCourseForm = (props) => {
   };
 
   function uploadImage(file) {
+    setdisabled(true);
     toast("Image is uploading");
     const data = new FormData();
     data.append("file", file);
@@ -61,11 +69,14 @@ const EditCourseForm = (props) => {
         console.log(imageUrl);
         // Now you can store imageUrl in your state variable or wherever you need it
         setCover(imageUrl);
+        courseData.cover = imageUrl;
         toast("Image uploaded successfully");
+        setdisabled(false);
       })
       .catch((err) => {
         console.log(err);
         toast("Image not uploaded, try again later");
+        setdisabled(false);
       });
     return 0;
   }
@@ -73,7 +84,7 @@ const EditCourseForm = (props) => {
   const updateCourse = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/update/course/${id}`,
+        `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/update/course/${id}`,
         courseData,
         {
           withCredentials: true,
@@ -96,7 +107,8 @@ const EditCourseForm = (props) => {
   };
 
   function uploadVideo(file) {
-    toast("Image is uploading");
+    setvideoUploading(true);
+    toast("Video is uploading");
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "j5uqdyec");
@@ -109,18 +121,23 @@ const EditCourseForm = (props) => {
         const videoUrl = response.data.url;
         setLectureData({ ...lectureData, video: videoUrl });
         toast("Video uploaded successfully");
+        setvideoUploading(false);
       })
       .catch((err) => {
         console.log(err);
         toast("Video not uploaded, try again later");
+        setvideoUploading(true);
       });
     return 0;
   }
 
   async function uploadLecture() {
+    if(!lectureData.title){
+      return 0;
+    }
     try {
       const response = await axios.post(
-        `http://localhost:8000/addlecture/${id}`,
+        `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/addlecture/${id}`,
         lectureData,
         {
           withCredentials: true,
@@ -142,10 +159,32 @@ const EditCourseForm = (props) => {
     }
   }
 
+  
+  const handlePublishToggle = () => {
+    if(courseData.isPublished){
+      setCourseData({...courseData, isPublished: false})
+    }else{
+      setCourseData({...courseData, isPublished: true})
+    }
+  };
+
   return (
     <Container>
       <UploadForm>
         <h2>Update The Course & Add Lectures</h2>
+        <InputField>
+          <label>Published</label>
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={courseData.isPublished}
+              onChange={handlePublishToggle}
+              disabled={courseData.Lecture.length <= 4}
+            />
+            <span className="slider round"></span>
+          </label>
+          {courseData.Lecture.length <= 4 && (<p style={{fontSize: "12px", color: "red"}}>To Published add minimun 4 lectures</p>)}
+        </InputField>
         <InputField>
           <label>Course Title</label>
           <input
@@ -256,9 +295,13 @@ const EditCourseForm = (props) => {
                     if (target.files) {
                       const file = target.files[0];
                       uploadVideo(file);
+                      setCoverVideo(URL.createObjectURL(file));
                     }
                   }}
                 />
+                {coverVideo && (
+                  <video height={50} width={50} alt="video" src={coverVideo} />
+                )}
               </label>
             </Flex>
 
@@ -268,14 +311,14 @@ const EditCourseForm = (props) => {
                   Cancel
                 </Button>
               </Dialog.Close>
-              <Dialog.Close>
-                <Button onClick={uploadLecture}>Save</Button>
+              <Dialog.Close >
+                <Button onClick={uploadLecture} disabled={videoUploading} >Save</Button>
               </Dialog.Close>
             </Flex>
           </Dialog.Content>
         </Dialog.Root>
 
-        <Button onClick={updateCourse}>Update Course</Button>
+        <Button onClick={updateCourse} disabled={disabled} >Update Course</Button>
       </UploadForm>
     </Container>
   );

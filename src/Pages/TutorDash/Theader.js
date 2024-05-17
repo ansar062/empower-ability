@@ -8,7 +8,7 @@ const TutorsHeader = () => {
     <HeaderContainer>
       <LogoContainer>
         <Link to="/">
-          <LogoImage src="/images/logo.png" alt="logo" />
+          <LogoImage src="/logo.png" alt="logo" />
         </Link>
       </LogoContainer>
       <Navigation>

@@ -129,7 +129,7 @@ const ProfileEdit = () => {
     async function setProfile() {
       try {
         const response = await axios.put(
-          `http://localhost:8000/freelancer/edit-profile`,
+          `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/freelancer/edit-profile`,
           formData,
           {
             withCredentials: true,
@@ -150,7 +150,7 @@ const ProfileEdit = () => {
     async function getProfile() {
       try {
         const response = await axios.get(
-          `http://localhost:8000/freelancer/get-profile`,
+          `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/freelancer/get-profile`,
           {
             withCredentials: true,
             headers: {

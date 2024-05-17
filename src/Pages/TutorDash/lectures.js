@@ -8,7 +8,7 @@ export default function LecturesList(props) {
   useEffect(() => {
     async function fetchLecture() {
       const response = await axios.get(
-        `http://localhost:8000/getlecture/${id}`,
+        `https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getlecture/${id}`,
         {
           withCredentials: true,
         }
@@ -19,12 +19,25 @@ export default function LecturesList(props) {
     }
     fetchLecture();
   }, []);
+  async function deleteLecture() {
+    try {
+      await axios.delete(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/deletelecture/${id}`, {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <LectureWrapper>
       <Thumbnail alt="Lecture Thumbnail" src={lectures.video} />
       <LectureDetails>
         <Title>{lectures.title}</Title>
       </LectureDetails>
+      <button type="button" onClick={deleteLecture}>Delete</button>
     </LectureWrapper>
   );
 }

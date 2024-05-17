@@ -10,7 +10,7 @@ const Dashboard = () => {
  useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://localhost:8000/getmycourses", {
+        const response = await axios.get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getmycourses", {
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

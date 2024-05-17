@@ -94,8 +94,11 @@ export default function EditPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [coverImg, setCoverImg] = useState();
+  const [disabled, setdisabled] = useState(false);
   const [blogAuthor, setBlogAuthor] = useState("");
   function uploadImage(file) {
+    setdisabled(true);
+    toast("Uploading Image...");
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "j5uqdyec");
@@ -109,16 +112,20 @@ export default function EditPost() {
         console.log(imageUrl);
         // Now you can store imageUrl in your state variable or wherever you need it
         setCover(imageUrl);
+        setdisabled(false);
+        toast("Image Uploaded");
       })
       .catch((err) => {
         console.log(err);
+        setdisabled(false);
+        toast("Error Uploading Image");
       });
     return 0;
   }
   useEffect(() => {
     async function fetchPost() {
       try {
-        await axios.get(`http://localhost:8000/blog/${id}`).then((response) => {
+        await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/blog/${id}`).then((response) => {
           const data = response.data;
           setTitle(data.title);
           setContent(data.content);
@@ -139,7 +146,7 @@ export default function EditPost() {
     data.append("id", id);
     try {
       await axios
-        .put(`http://localhost:8000/blog/edit`, {
+        .put(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/blog/edit`, {
           cover, title, content, id
         }, {
           withCredentials: true,
@@ -173,8 +180,8 @@ export default function EditPost() {
             onChange={({ target }) => {
               if (target.files) {
                 const file = target.files[0];
+                uploadImage(file);
                 setCoverImg(URL.createObjectURL(file));
-                setCover(file);
               }
             }}
             id="fileInput"
@@ -212,7 +219,7 @@ export default function EditPost() {
             onChange={(e) => setContent(e.target.value)}
           />
         </WriteFormGroup>
-        <WriteSubmit type="submit">Update</WriteSubmit>
+        <WriteSubmit type="submit" disabled={disabled} >Update</WriteSubmit>
       </WriteForm>
     </WriteWrapper>
   );

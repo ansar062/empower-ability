@@ -100,6 +100,7 @@ export default function Write() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [coverImg, setCoverImg] = useState();
+  const [disabled, setdisabled] = useState(true);
   const { error, loading } = useSelector((state) => state.postblog);
   const dispatch = useDispatch();
   function uploadImage(file) {
@@ -117,6 +118,7 @@ export default function Write() {
         console.log(imageUrl);
         // Now you can store imageUrl in your state variable or wherever you need it
         setCover(imageUrl);
+        setdisabled(false);
         toast("Image uploaded successfully")
       })
       .catch((err) => {
@@ -131,7 +133,7 @@ export default function Write() {
     try {
       dispatch(postStart());
       await axios
-        .post("http://localhost:8000/createblog", {
+        .post("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/createblog", {
           cover, title, content
         }, {
           withCredentials: true,
@@ -144,8 +146,10 @@ export default function Write() {
           if (data.status === true) {
             dispatch(postSuccess());
             navigate("/blogs");
+          }else{
+            toast(data.message)
+            dispatch(postFail());
           }
-          dispatch(postFail());
         });
     } catch (err) {
       dispatch(postFail(err));
@@ -203,7 +207,7 @@ export default function Write() {
                 onChange={(e) => setContent(e.target.value)}
               />
             </WriteFormGroup>
-            <WriteSubmit type="submit">Publish</WriteSubmit>
+            <WriteSubmit type="submit" disabled={disabled} >Publish</WriteSubmit>
           </WriteForm>
         </WriteWrapper>
       )}
