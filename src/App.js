@@ -44,6 +44,7 @@ import axios from "axios";
 import { signInSuccess, logoutUser } from "./store/slices/authSlice";
 import ProfileEdit from "./Pages/EditProfiles/freelancerProfileedit";
 import JobDetailPage from "./Pages/JobsPage/DetailedJob";
+import ViewCourse from "./Pages/SpecialDash/ViewCourse";
 const Home = () => (
   <div>
     <Header />
@@ -108,6 +109,14 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route
+        path="/course/view/:id"
+        element={
+          <PrivateRoute roles={["client"]}>
+            <ViewCourse />
+          </PrivateRoute>
+        }
+         />
         <Route
           path="/edit-freelancer-profile"
           element={
