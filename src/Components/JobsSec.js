@@ -8,13 +8,9 @@ const JobSection = () => {
     <Container>
       <TextContainer>
         <SectionHeading>
-          <IconWrapper>
-          </IconWrapper>
           Unlocking Potential, Embracing Diversity
         </SectionHeading>
         <SubHeading>
-          <IconWrapper>
-          </IconWrapper>
           Welcome to our Inclusive Job Hub!
         </SubHeading>
         <SubHeading>
@@ -36,7 +32,7 @@ const JobSection = () => {
           Ready to empower and be empowered? Explore our diverse range of jobs or seamlessly post opportunities now!
         </SubHeading>
         <Link to="/jobs" style={{ textDecoration: 'none' }}>
-        <CTAButton>Explore Job Openings</CTAButton>
+          <CTAButton>Explore Job Openings</CTAButton>
         </Link>
       </TextContainer>
       <ImageContainer>
@@ -52,18 +48,11 @@ const Container = styled.section`
   max-width: 1100px;
   margin: 0px auto 10px;
   padding: 60px 20px;
-`;
 
-const ImageContainer = styled.div`
-  flex: 1;
-  position: relative;
-`;
-
-const BackgroundImage = styled.img`
-  width: 105%;
-  height: 97%;
-  border-radius: 10px;
-  z-index: 1;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -86,6 +75,14 @@ const TextContainer = styled.div`
       opacity: 1;
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 2px solid teal;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const SectionHeading = styled.h2`
@@ -99,6 +96,11 @@ const SectionHeading = styled.h2`
   svg {
     margin-right: 10px;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
 `;
 
 const SubHeading = styled.p`
@@ -110,6 +112,11 @@ const SubHeading = styled.p`
 
   svg {
     margin-right: 10px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
   }
 `;
 
@@ -127,6 +134,9 @@ const IconWrapper = styled.div`
 
   &:hover {
     transform: scale(1.1);
+  }
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
   }
 `;
 
@@ -147,6 +157,28 @@ const CTAButton = styled.button`
     border-color: teal;
     transform: scale(1.1);
   }
+
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+    font-size: 0.7rem;
+  }
+`;
+
+const ImageContainer = styled.div`
+  display: block;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const BackgroundImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 `;
 
 export default JobSection;

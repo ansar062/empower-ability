@@ -347,16 +347,29 @@ function PlusIcon(props) {
 }
 
 const Container = styled.div`
+  width: 70%;
   background-color: #ffffff;
   padding: 20px;
   margin: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center; /* Center the form horizontally */
+
+  @media screen and (max-width: 768px) {
+    width: 90%; /* Adjust width for smaller screens */
+    margin: 20px auto; /* Center and reduce margin for smaller screens */
+  }
 `;
 
 const UploadForm = styled.div`
-  max-width: 600px;
+  width: 100%; /* Make the form occupy the entire available width */
+  max-width: 800px; /* Set a maximum width to prevent the form from becoming too wide */
   margin-bottom: 40px;
+
+  @media screen and (max-width: 768px) {
+    max-width: 90%; /* Adjust max-width for smaller screens */
+  }
 `;
 
 const InputField = styled.div`
@@ -365,6 +378,8 @@ const InputField = styled.div`
   label {
     display: block;
     margin-bottom: 5px;
+    color: #333333; /* Darker gray */
+    font-weight: bold;
   }
 
   input,
@@ -374,6 +389,7 @@ const InputField = styled.div`
     border-radius: 5px;
     border: 1px solid #cccccc;
     transition: border-color 0.3s ease;
+    font-size: 14px; /* Adjust font size */
 
     &:focus {
       outline: none;
@@ -392,6 +408,8 @@ const ImageUpload = styled.div`
   label {
     display: block;
     margin-bottom: 5px;
+    color: #333333; /* Darker gray */
+    font-weight: bold;
   }
 
   input[type="file"] {
@@ -400,7 +418,7 @@ const ImageUpload = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: #00796b; /* Teal */
+  background-color: teal; /* Teal */
   border: none;
   color: #ffffff;
   padding: 10px 20px;
@@ -417,3 +435,4 @@ const Button = styled.button`
     background-color: #005b4f; /* Darker Teal */
   }
 `;
+

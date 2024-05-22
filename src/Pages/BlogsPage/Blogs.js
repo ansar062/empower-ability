@@ -1,14 +1,6 @@
 import React from 'react';
 import Posts from '../../Components/Blogs/Posts';
-import Sidebar from '../../Components/Blogs/Sidebar';
-import {
-  BlogsPageContainer,
-  PageHeading,
-  SearchBar,
-  CategoriesContainer,
-  CategoryCard,
-  MainContent,
-} from './styles';
+import * as Styles from './styles';
 
 const Blogs = () => {
   const categories = [
@@ -19,31 +11,32 @@ const Blogs = () => {
   ];
 
   return (
-    <BlogsPageContainer>
-      <PageHeading>
+    <Styles.BlogsPageContainer>
+    <Styles.BlogsHeader>
+      <Styles.PageHeading>
         <h1>Blogs</h1>
         <p>Home/Blogs</p>
-      </PageHeading>
-
-      <SearchBar>
+      </Styles.PageHeading>
+      <Styles.SearchBar>
         <input type="text" placeholder="Search..." />
-      </SearchBar>
+      </Styles.SearchBar>
+      </Styles.BlogsHeader>
 
-      <CategoriesContainer>
+      <Styles.CategoriesContainer>
         <div className="category-cards">
           {categories.map((category) => (
-            <CategoryCard key={category.id}>
+            <Styles.CategoryCard key={category.id}>
               <h3>{category.name}</h3>
               {/* Add a description if needed */}
-            </CategoryCard>
+            </Styles.CategoryCard>
           ))}
         </div>
-      </CategoriesContainer>
+      </Styles.CategoriesContainer>
 
-      <MainContent>
+      <Styles.MainContent>
         <Posts />
-      </MainContent>
-    </BlogsPageContainer>
+      </Styles.MainContent>
+    </Styles.BlogsPageContainer>
   );
 };
 

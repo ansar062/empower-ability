@@ -1,22 +1,12 @@
 // CoursePage.js
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  CoursePageWrapper,
-  CoursesHeader,
-  Header,
-  SearchSection,
-  CoursesSection,
-  EnrollmentButton,
-  Pagination,
-  TestimonialsSection,
-  TestimonialCard,
-  NavigationArrow,
-} from "./styles";
+import * as Styles from "./styles";
 import axios from "axios";
 
 const CoursePage = () => {
   const [courses, setCourses] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all categories");
+  const [selectedLevel, setSelectedLevel] = useState("all levels");
   const [testimonials, setTestimonials] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,10 +28,6 @@ const CoursePage = () => {
     console.log(`Enrolling in course with ID: ${courseId}`);
   };
 
-  const becomeInstructor = () => {
-    console.log("Become an instructor button clicked");
-  };
-
   useEffect(() => {
     async function fetchCourses() {
       const response = await axios.get(
@@ -59,12 +45,13 @@ const CoursePage = () => {
 
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const filteredCourses = courses.filter(
-    (course) =>
-      course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.level.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCourses = courses.filter((course) =>
+    (selectedCategory === "all categories" || course.category.toLowerCase() === selectedCategory.toLowerCase()) &&
+    (selectedLevel === "all levels" || (course.level && course.level.toLowerCase() === selectedLevel.toLowerCase())) &&
+    (course.title.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+  
+  
   const currentCourses = filteredCourses.slice(
     indexOfFirstCourse,
     indexOfLastCourse
@@ -92,16 +79,16 @@ const CoursePage = () => {
   }
 
   return (
-    <CoursePageWrapper>
-      <CoursesHeader>
-        <Header>
+    <Styles.CoursePageWrapper>
+      <Styles.CoursesHeader>
+        <Styles.Header>
           <h1>Our Courses</h1>
           <div>
             <span>Home / Courses</span>
           </div>
-        </Header>
+        </Styles.Header>
 
-        <SearchSection>
+        <Styles.SearchSection>
           <input
             type="text"
             placeholder="Search for courses"
@@ -110,62 +97,69 @@ const CoursePage = () => {
           />
           <div>
             <label>Category:</label>
-            <select>
-              <option value="physically disabled">physically disabled</option>
-              <option value="deaf">deaf</option>
+            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <option value="all categories">All categories</option>
+              <option value="mute">Mute</option>
+              <option value="physically disabled">Physically disabled</option>
+              <option value="deaf">Deaf</option>
             </select>
             <label>Level:</label>
-            <select>
-              <option value="beginner">Beginner</option>
-              <option value="expert">Expert</option>
-            </select>
-          </div>
-        </SearchSection>
-      </CoursesHeader>
+            <select value={selectedLevel} onChange={(e) => setSelectedLevel(e.target.value)}>
+  <option value="all levels">All levels</option>
+  <option value="beginner">Beginner</option>
+  <option value="expert">Expert</option>
+</select>
 
-      <CoursesSection>
+          </div>
+        </Styles.SearchSection>
+      </Styles.CoursesHeader>
+
+      <Styles.CoursesSection>
         {currentCourses.map((course) => (
           <div key={course.id}>
             <img src={course.cover} alt={course.title} />
             <h3>
-              <Link
+              <Styles.CourseLink
                 to={`/coursedetail/${course._id}`}
-                style={{ color: "teal", textDecoration: "none" }}
                 state={{ course }}
               >
                 {course.title}
-              </Link>
+              
+              </Styles.CourseLink>
             </h3>
             <p>Category: {course.category}</p>
             <p>Level: {course.difficultyLevel}</p>
-            <EnrollmentButton
+            <Styles.EnrollmentButton
               onClick={()=>{buyCourse(course._id)}}
               state={{ course }}
               style={{ color: "white", textDecoration: "none" }}
             >
               Enroll Now
-            </EnrollmentButton>
+            </Styles.EnrollmentButton>
           </div>
         ))}
         {currentCourses.length === 0 && <p>No results found.</p>}
-      </CoursesSection>
+      </Styles.CoursesSection>
 
-      <Pagination>
-        {/* Pagination */}
-        {Array.from({
-          length: Math.ceil(filteredCourses.length / coursesPerPage),
-        }).map((_, index) => (
-          <button key={index} onClick={() => paginate(index + 1)}>
-            {index + 1}
-          </button>
-        ))}
-      </Pagination>
+      {filteredCourses.length > coursesPerPage && (
+  <Styles.Pagination>
+    {/* Pagination */}
+    {Array.from({
+      length: Math.ceil(filteredCourses.length / coursesPerPage),
+    }).map((_, index) => (
+      <button key={index} onClick={() => paginate(index + 1)}>
+        {index + 1}
+      </button>
+    ))}
+  </Styles.Pagination>
+)}
 
-      <TestimonialsSection>
+
+      <Styles.TestimonialsSection>
         {/* Testimonials section */}
         <h2>What Our Students Say</h2>
         {testimonials.length > 0 && testimonials[currentTestimonialIndex] && (
-          <TestimonialCard>
+          <Styles.TestimonialCard>
             <img
               src={
                 process.env.PUBLIC_URL +
@@ -177,14 +171,14 @@ const CoursePage = () => {
             <p style={{ color: "teal" }}>
               - {testimonials[currentTestimonialIndex].name}
             </p>
-          </TestimonialCard>
+          </Styles.TestimonialCard>
         )}
         <div>
-          <NavigationArrow onClick={prevTestimonial}>&#9664;</NavigationArrow>
-          <NavigationArrow onClick={nextTestimonial}>&#9654;</NavigationArrow>
+          <Styles.NavigationArrow onClick={prevTestimonial}>&#9664;</Styles.NavigationArrow>
+          <Styles.NavigationArrow onClick={nextTestimonial}>&#9654;</Styles.NavigationArrow>
         </div>
-      </TestimonialsSection>
-    </CoursePageWrapper>
+      </Styles.TestimonialsSection>
+    </Styles.CoursePageWrapper>
   );
 };
 

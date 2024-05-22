@@ -248,11 +248,15 @@ const EditJobs = () => {
     </Container>
   );
 };
-
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    width: 90%;
+  }
 `;
 
 const Form = styled.form`
@@ -263,7 +267,12 @@ const FormHeader = styled.h3`
   font-size: 20px;
   margin-bottom: 60px;
   text-align: center;
-  color: #666;
+  color: teal;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+  }
 `;
 
 const FormField = styled.div`
@@ -282,6 +291,11 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  @media screen and (max-width: 768px) {
+    padding: 8px;
+    width: 85%;
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -289,6 +303,11 @@ const Textarea = styled.textarea`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  @media screen and (max-width: 768px) {
+    padding: 8px;
+    width: 85%;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -298,6 +317,10 @@ const SubmitButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    padding: 8px 16px;
+  }
 `;
 
 const JobListingsTable = styled.table`
@@ -316,6 +339,13 @@ const JobListingsTable = styled.table`
     background-color: teal;
     color: white;
   }
+
+  @media screen and (max-width: 768px) {
+    th,
+    td {
+      padding: 6px;
+    }
+  }
 `;
 
 const ActionButton = styled.button`
@@ -333,6 +363,10 @@ const ActionButton = styled.button`
 
   &:hover {
     background-color: darkorange;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 4px 8px;
   }
 `;
 

@@ -8,14 +8,21 @@ export const MainContent = styled.div`
   margin-top: 20px;
 `;
 
-const tealColor = '#008080';
-
 export const BlogsPageContainer = styled.div`
-  /* Add your global styles for the entire page here */
+  margin-left:1%;
+  margin-right:1%;
+`;
+
+export const BlogsHeader = styled.div`
+background-color: teal;
+border-radius:5px;
+@media (max-width: 600px) {
+margin-left:2%;
+margin-right:2%;
+}
 `;
 
 export const PageHeading = styled.div`
-  background-color: ${tealColor};
   padding: 10px;
   text-align: center;
 
@@ -23,12 +30,18 @@ export const PageHeading = styled.div`
     color: #fff;
     font-size: 24px;
   }
+  
+  p{
+    color: #fff;
+    font-size: 13px;
+    margin-top: -20px;
+  }
 `;
 
 export const SearchBar = styled.div`
-  background-color: ${tealColor};
   padding: 10px;
   text-align: center;
+  margin-top: 3%;
 
   input {
     padding: 12px;
@@ -38,7 +51,9 @@ export const SearchBar = styled.div`
 
   @media (max-width: 600px) {
     input {
-      width: 100%;
+      width: 80%; 
+    padding: 6px;
+    margin-top: 10%;
     }
   }
 `;
@@ -47,16 +62,19 @@ export const CategoriesContainer = styled.div`
   .category-cards {
     display: flex;
     gap: 16px;
-    overflow-x: auto;
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  
+  @media (max-width: 600px) {
+    width: 100%;
+    }
 `;
 
 export const CategoryCard = styled.div`
-  background-color: ${(props) => (props.tealBackground ? tealColor : '#fff')};
-  border: 1px solid ${tealColor};
+  background-color: white;
+  border: 1px solid teal;
   padding: 16px;
   text-align: center;
   border-radius: var(--radius-10);
@@ -66,13 +84,17 @@ export const CategoryCard = styled.div`
 
   h3 {
     font-family: var(--ff-league_spartan);
-    color: ${(props) => (props.tealBackground ? '#fff' : tealColor)};
+    color:teal;
     font-size: var(--fs-2);
     line-height: 1.1;
     margin-top: 8px;
   }
 
   @media (max-width: 600px) {
-    width: calc(100% - 32px); /* Adjust the value as needed for spacing */
+    width: 10%; 
+    h3 {
+      
+      font-size: 0.4rem;
+    }
   }
 `;

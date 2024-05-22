@@ -10,11 +10,22 @@ const Container = styled.section`
   color: black;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: none;
+  }
 `;
 
 const LeftSection = styled.div`
   flex: 1;
   margin-right: 20px;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
 `;
 
 const RightSection = styled.div`
@@ -22,17 +33,31 @@ const RightSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const SectionHeading = styled.h2`
   font-size: 2rem;
   margin-bottom: 20px;
   color: teal;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
 `;
 
 const Description = styled.p`
   font-size: 1.2rem;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
 `;
 
 const NewsletterBox = styled.div`
@@ -43,6 +68,11 @@ const NewsletterHeading = styled.h3`
   font-size: 1.5rem;
   margin-bottom: 15px;
   color: teal;
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
 `;
 
 const Input = styled.input`
@@ -52,6 +82,11 @@ const Input = styled.input`
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 5px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    margin: 6px 0;
+  }
 `;
 
 const SubscribeButton = styled.button`
@@ -67,6 +102,11 @@ const SubscribeButton = styled.button`
   &:hover {
     background-color: #00528c;
   }
+
+  @media (max-width: 768px) {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
 `;
 
 const ContactForm = styled.div`
@@ -75,6 +115,10 @@ const ContactForm = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -86,6 +130,10 @@ const Label = styled.label`
   margin-bottom: 5px;
   display: block;
   color: teal;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const TextArea = styled.textarea`
@@ -96,6 +144,11 @@ const TextArea = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 5px;
   resize: vertical;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    margin: 6px 0;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -110,6 +163,11 @@ const SubmitButton = styled.button`
 
   &:hover {
     background-color: #00528c;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 18px;
+    font-size: 0.9rem;
   }
 `;
 

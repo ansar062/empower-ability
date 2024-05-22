@@ -12,7 +12,9 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/ReactToastify.css'
-
+const customTheme = {
+  fontFamily: 'Playfair Display, serif',
+};
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
@@ -23,9 +25,11 @@ root.render(
         redirectUri={window.location.origin}
       >
         <React.StrictMode>
-          <Theme>
-          <App />
-          <ToastContainer />
+        <Theme>
+            <div style={customTheme}>
+              <App />
+              <ToastContainer />
+            </div>
           </Theme>
         </React.StrictMode>
       </Auth0Provider>

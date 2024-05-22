@@ -32,6 +32,7 @@
     "react-scripts": "5.0.1",
     "react-sf-building-blocks": "^1.0.87",
     "react-slick": "^0.29.0",
+    "react-swipeable": "^7.0.1",
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",

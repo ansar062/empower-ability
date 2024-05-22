@@ -90,52 +90,78 @@ const AssignmentItem = styled.li`
   margin-bottom: 10px;
 `;
 
+const DownloadLink = styled.a`
+  color: teal;
+  text-decoration: none;
+  font-size: 18px;
+  margin-top: 10px;
+  display: block;
+`;
+
 const CourseDetails = () => {
-const params = useParams();
-const id = params.id;
-const [course, setCourse] = useState({});
-  // Dummy data for the course
+  const params = useParams();
+  const id = params.id;
+  const [course, setCourse] = useState({});
+  
+  // Fetch course data
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getcourse/${id}`, {
-        withCredentials: true
-      });
-      const data = await response.data;
-      console.log(data);
-      setCourse(data);
+      try {
+        const response = await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getcourse/${id}`, {
+          withCredentials: true
+        });
+        const data = response.data;
+        setCourse(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <Container>
       {course && 
-      <div>
-        <Header>
-        <Title>{course.title}</Title>
-        {course.publisher && <Subtitle>Instructor: {course.publisher.username}</Subtitle> }
-      </Header>
+        <div>
+          <Header>
+            <Title>{course.title}</Title>
+            {course.publisher && <Subtitle>Instructor: {course.publisher.username}</Subtitle>}
+          </Header>
 
-      <MediaContainer>
-       
-        <Image src={course.cover} alt="Course Preview" />
-      </MediaContainer>
+          <MediaContainer>
+            {course.video && (
+              <VideoContainer>
+                <ResponsiveIframe src={course.video} title="Course Video" allowFullScreen />
+              </VideoContainer>
+            )}
+            <Image src={course.cover} alt="Course Preview" />
+          </MediaContainer>
 
-      <ContentSection>
-        <SectionTitle>About the Course</SectionTitle>
-        <Description>{course.description}</Description>
-      </ContentSection>
+          <ContentSection>
+            <SectionTitle>About the Course</SectionTitle>
+            <Description>{course.description}</Description>
+          </ContentSection>
 
-      {/* <ContentSection>
-        <SectionTitle>Assignments</SectionTitle>
-        <AssignmentList>
-          {course.assignments.map((assignment, index) => (
-            <AssignmentItem key={index}>{assignment}</AssignmentItem>
-          ))}
-        </AssignmentList>
-      </ContentSection> */}
-      <Comments />
-      </div>
+          <ContentSection>
+            <SectionTitle>PDF Notes</SectionTitle>
+            {course.notes && (
+              <DownloadLink href={course.notes} download>
+                Download PDF Notes
+              </DownloadLink>
+            )}
+          </ContentSection>
+
+          <ContentSection>
+            <SectionTitle>Assignments</SectionTitle>
+            <AssignmentList>
+              {course.assignments && course.assignments.map((assignment, index) => (
+                <AssignmentItem key={index}>{assignment}</AssignmentItem>
+              ))}
+            </AssignmentList>
+          </ContentSection>
+          
+          <Comments />
+        </div>
       }
     </Container>
   );

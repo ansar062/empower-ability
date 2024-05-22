@@ -105,39 +105,95 @@ const ApplicationsPage = () => {
 };
 
 const Container = styled.div`
-  max-width: 800px;
+  width: 77.5%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2%;
+
+  @media (max-width: 768px) {
+    width: 95%;
+    padding: 1%;
+  }
 `;
 
 const Filters = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 2%;
+
+  @media (max-width: 768px) {
+    gap: 30%;
+    align-items: stretch;
+  }
 `;
 
 const FilterInput = styled.input`
-  padding: 8px;
-  width: 200px;
+  padding: 0.5%;
+  width: 17%;
+
+  @media (max-width: 768px) {
+    width: 50%;
+    margin-bottom: 1%;
+  }
 `;
 
 const SortSelect = styled.select`
-  padding: 8px;
+  padding: 0.5%;
+
+  @media (max-width: 768px) {
+    width: 50%;
+  }
 `;
 
 const ApplicationsTable = styled.table`
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
+  margin: 0 auto;
 
   th,
   td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    border: 1px solid teal;
+    padding: 0.5%;
     text-align: left;
   }
 
   th {
     background-color: #f2f2f2;
+  }
+
+  @media (max-width: 1024px) {
+    width: 90%;
+    th, td {
+      padding: 0.75%;
+      font-size: 14px;
+    }
+
+    th {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    th, td {
+      padding: 1%;
+      font-size: 13px;
+    }
+
+    th {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 90%;
+    th, td {
+      padding: 0.25%;
+      font-size: 0.3rem;
+    }
+
+    th {
+      font-size: 0.5rem;
+    }
   }
 `;
 

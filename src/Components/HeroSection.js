@@ -8,8 +8,13 @@ const HeroContainer = styled.section`
   text-align: center;
   padding: 20px 10px;
   background-color: white;
-  margin-top: 35px;
+  margin-top: -30px;
+
+  @media (max-width: 768px) {
+    margin-top: -10px; 
+  }
 `;
+
 
 const ContentContainer = styled.div`
   position: relative;
@@ -18,6 +23,11 @@ const ContentContainer = styled.div`
   justify-content: space-between;
   max-width: 1100px;
   margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    flex-direction: column; 
+    justify-content: center;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -25,17 +35,31 @@ const TextContainer = styled.div`
   text-align: left;
   padding-right: 20px;
   z-index: 1;
+  
+  @media (max-width: 768px) {
+    padding-right: 0; 
+  }
 `;
 
 const ImageContainer = styled.div`
   flex: 1;
   position: relative;
   width: 40%;
+  
+  @media (max-width: 768px) {
+    width: 100%; /* Set width to 100% on small screens */
+    margin-bottom: 20px; /* Add margin bottom for spacing on small screens */
+  }
 `;
 
 const Image = styled.img`
   width: 100%;
   height: auto;
+  display: block; /* Ensure image is displayed */
+  
+  @media (max-width: 768px) {
+    display: none; /* Hide image on small screens */
+  }
 `;
 
 const EmpowerSpan = styled.span`
@@ -43,22 +67,39 @@ const EmpowerSpan = styled.span`
   font-family: 'Roboto, sans-serif';
   font-size: 4rem;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 3rem;
+  }
 `;
 
 const HStyle = styled.span`
   font-size: 4rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const Subtitle = styled.p`
   font-size: 1.2rem;
   margin-bottom: 30px;
   color: grey;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: row; /* Stack buttons vertically on small screens */
+  }
 `;
+
 
 const GetStartedButton = styled.button`
   background-color: #008080;
@@ -72,6 +113,11 @@ const GetStartedButton = styled.button`
 
   &:hover {
     background-color: #005757;
+  }
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  font-size: 0.8rem;
   }
 `;
 
@@ -90,6 +136,10 @@ const FindJobsButton = styled.button`
   &:hover {
     background-color: teal;
     color:white;
+  }
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  font-size: 0.8rem;
   }
 `;
 

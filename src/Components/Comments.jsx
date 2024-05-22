@@ -1,5 +1,3 @@
-// Comment.js
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -12,6 +10,12 @@ const CommentInput = styled.input`
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding doesn't increase the width */
+
+  @media (max-width: 768px) {
+    padding: 6px;
+    font-size: 14px;
+  }
 `;
 
 const CommentButton = styled.button`
@@ -22,6 +26,11 @@ const CommentButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 `;
 
 const Comment = ({ user }) => {

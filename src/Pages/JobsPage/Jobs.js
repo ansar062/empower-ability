@@ -91,34 +91,30 @@ const JobsPage = () => {
           />
 
           <Styles.FilteringOptions>
-            <label>
-              Location:
-              <select
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-              >
-                <option value="">All Locations</option>
-                {uniqueLocations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Job Type:
-              <select
-                value={selectedJobType}
-                onChange={(e) => setSelectedJobType(e.target.value)}
-              >
-                <option value="">All Job Types</option>
-                {uniqueJobTypes.map((jobType) => (
-                  <option key={jobType} value={jobType}>
-                    {jobType}
-                  </option>
-                ))}
-              </select>
-            </label>
+          <label>
+  Location:
+  <select
+    value={selectedLocation}
+    onChange={(e) => setSelectedLocation(e.target.value)}
+  >
+    <option value="">All Locations</option>
+    <option value="Remote">Remote</option>
+    <option value="On-site">On-site</option>
+  </select>
+</label>
+<label>
+  Categories:
+  <select
+    value={selectedCategory}
+    onChange={(e) => setSelectedCategory(e.target.value)}
+  >
+    <option value="">All Categories</option>
+    <option value="Hearing Impaired">Hearing Impaired</option>
+    <option value="Motor Impaired">Motor Impaired</option>
+    <option value="Speech Impaired">Speech Impaired</option>
+  </select>
+</label>
+
           </Styles.FilteringOptions>
         </Styles.Header>
       </Styles.HeadBar>

@@ -71,6 +71,12 @@ const LogoContainer = styled.div`
 const LogoImage = styled.img`
   height: auto;
   max-width: 150px;
+
+  @media (max-width: 768px) {
+     height: auto;
+  max-width: 100px;
+  margin-left: -20px;
+  }
 `;
 
 const NavigationContainer = styled.nav`
@@ -95,21 +101,6 @@ const NavigationLink = styled(NavLink)`
   }
 `;
 
-const ActiveLinkStyle = styled(NavigationLink)`
-  color: #008080;
-  border-bottom: 2px solid #008080;
-`;
-
-const AuthContainer = styled.div`
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    margin-left: auto;
-  }
-`;
-
 const LoginRegisterButton = styled(NavLink)`
   color: white;
   background-color: #008080;
@@ -122,14 +113,23 @@ const LoginRegisterButton = styled(NavLink)`
   display: inline-block; /* Ensures the button doesn't take full width */
 
   &:hover {
-    background-color: #006666; /* Darker color on hover */
+    background-color: #006666; 
   }
 
   /* Apply styles when the button is inside a navigation link */
   &.active {
     background-color: #006666;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.4rem 0.8rem; 
+    font-size: 0.5rem;
+    margin-left: 6rem; 
+    margin-right: -15px;
+  border-radius: 20px;
+  }
 `;
+
 
 const MobileNavContainer = styled.div`
   display: none;
@@ -137,6 +137,7 @@ const MobileNavContainer = styled.div`
 
   @media (max-width: 768px) {
     display: block;
+    margin-right:-20px;
   }
 `;
 

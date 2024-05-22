@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaBell } from 'react-icons/fa';
+import { FaBell, FaBars } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import NotificationIcon from '../../Components/NotificationIcon'; 
 import { Flex, AlertDialog, Button, DropdownMenu, Avatar } from '@radix-ui/themes';
@@ -9,11 +9,12 @@ import { logoutUser } from '../../store/slices/authSlice';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-
 const EHeader = () => {
-  const {currentUser} = useSelector((state) => state.auth);
-const dispatch = useDispatch();
-const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showMenu, setShowMenu] = useState(false);
+
   const logoutHandle = async () => {
     try {
       axios
@@ -36,6 +37,7 @@ const navigate = useNavigate();
       toast(err);
     }
   };
+
   return (
     <HeaderContainer>
       <LogoContainer>
@@ -43,7 +45,10 @@ const navigate = useNavigate();
           <LogoImage src="/logo.png" alt="logo" />
         </Link>
       </LogoContainer>
-      <Navigation>
+      <MobileMenuToggle onClick={() => setShowMenu(!showMenu)}>
+        <FaBars />
+      </MobileMenuToggle>
+      <Navigation showMenu={showMenu}>
         <NavItem>
           <NavLink to="/edash" activeClassName="active">
             <NavText>Dashboard</NavText>
@@ -55,20 +60,12 @@ const navigate = useNavigate();
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/chat" activeClassName="active">
-            <NavText>Messages</NavText>
-          </NavLink>
-        </NavItem>
-        <NavItem>
           <NavLink to="/eapp" activeClassName="active">
             <NavText>Applications</NavText>
           </NavLink>
         </NavItem>
       </Navigation>
       <RightSection>
-        <NotificationButton>
-          <NotificationIcon />
-        </NotificationButton>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <div>
@@ -145,6 +142,10 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   background-color: #ffffff;
   padding: 10px 20px;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -156,9 +157,40 @@ const LogoImage = styled.img`
   height: auto;
 `;
 
+const MobileMenuToggle = styled.div`
+  display: none;
+  cursor: pointer;
+  padding: 10px;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 2.2%;
+    right: 17%;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+`;
+
 const Navigation = styled.nav`
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: ${({ showMenu }) => (showMenu ? '0' : '-100%')};
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 1em;
+    transition: left 0.3s ease;
+  }
 `;
 
 const NavItem = styled.div`
@@ -177,10 +209,13 @@ const NavLink = styled(Link)`
   &.active {
     color: teal;
   }
-`;
 
-const NavIcon = styled.div`
-  margin-right: 5px;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 10px;
+  }  &:hover {
+    color: teal;
+  text-decoration: underline;
+  }
 `;
 
 const NavText = styled.span`
@@ -190,22 +225,10 @@ const NavText = styled.span`
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-`;
 
-const NotificationButton = styled.div`
-  cursor: pointer;
-  margin-right: 20px;
-`;
-
-const StudentLink = styled(Link)`
-  cursor: pointer;
-  text-decoration: none;
-  color: #333;
-  margin-right: 20px;
-`;
-
-const UserIcon = styled.div`
-  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+  }
 `;
 
 export default EHeader;

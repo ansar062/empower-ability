@@ -2,42 +2,55 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BlogSectionWrapper = styled.section`
-  text-align: center;
-  margin: 2px 0 80px; 
+text-align: center;
+margin: 2px 0 80px; 
 
-  h2 {
-    color: teal;
-    font-size: 2rem;
-  }
+h2 {
+  color: teal;
+  font-size: 2rem;
+}
 
-  &:hover h2 {
-    color: teal;
-  }
+&:hover h2 {
+  color: teal;
+}
 `;
 
 const GridList = styled.ul`
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+display: flex;
+gap: 20px;
+justify-content: center;
+list-style: none;
+margin: 0;
+padding: 0;
+@media (max-width: 480px) {
+
+  flex-wrap: wrap;
+}
 `;
 
 const BlogCard = styled.li`
-  width: 250px;
-  height: 350px;
-  border: 2px solid teal;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  transition: transform 0.3s ease-in-out;
+width: 250px;
+height: 350px;
+border: 2px solid teal;
+border-radius: 10px;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+align-items: center;
+position: relative;
+transition: transform 0.3s ease-in-out;
 
-  &:hover {
-    transform: scale(1.05);
+&:hover {
+  transform: scale(1.05);
+}
+
+  @media (max-width: 768px) {
+    width: calc(50% - 30px); /* Adjusted width to fit 2 cards per row with gap */
+  }
+
+  @media (max-width: 480px) {
+    width: calc(100% - 30%); /* Adjusted width to fit 1 card per row with no gap */
+    height: 250px;
   }
 `;
 
@@ -58,6 +71,13 @@ const CardBanner = styled.figure`
   &:hover img {
     transform: scale(1.1);
   }
+  @media (max-width: 480px) {
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
 `;
 
 const CardContent = styled.div`
@@ -74,6 +94,10 @@ const CardSubtitle = styled.p`
   font-size: 14px;
   color: black;
   margin-bottom: 2px;
+
+  @media (max-width: 480px) {
+    font-size: 0.5rem;
+    }
 `;
 
 const CardTitle = styled.h3`
@@ -86,12 +110,20 @@ const CardTitle = styled.h3`
   &:hover {
     color: teal;
   }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    }
 `;
 
 const CardMetaList = styled.ul`
   display: flex;
   gap: 5px;
   font-size: 14px;
+
+  @media (max-width: 480px) {
+    font-size: 0.5rem;
+    margin-left: 20px;
+    }
 `;
 
 const CardMetaItem = styled.li`
@@ -125,6 +157,12 @@ const Arrow = styled.div`
   ${BlogCard}:hover & {
     opacity: 1;
   }
+
+  @media (max-width: 480px) {
+    font-size: 0.5rem;
+    width: 20px;
+    height: 10px;
+    }
 `;
 
 

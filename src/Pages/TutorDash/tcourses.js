@@ -218,6 +218,7 @@ const UploadCoursePage = () => {
         </MetricsContainer>
         <UploadedCourses>
           <h2>Uploaded Courses</h2>
+          <CourseCardContainer>
           {
             courses &&
           courses?.map((course, index) => (
@@ -237,6 +238,7 @@ const UploadCoursePage = () => {
               </ButtonContainer>
             </CourseCard>
           ))}
+          </CourseCardContainer>
         </UploadedCourses>
         
       </Container>
@@ -252,36 +254,45 @@ const UploadCoursePage = () => {
 };
 
 // Styled Components
-
 const CoursesContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh; /* Ensure it takes the full viewport height */
 `;
 
 const Container = styled.div`
   background-color: #ffffff;
-  padding: 20px;
+  padding: 40px;
   margin: 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px; /* Center and constrain the container width */
+  display: flex;
+  flex-direction: column;
 `;
 
 const UploadForm = styled.div`
-  max-width: 600px;
-  margin-bottom: 40px;
+  width: 100%; /* Ensure the form takes the full width of the container */
 `;
 
 const InputField = styled.div`
   margin-bottom: 20px;
+  width: 100%;
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: bold;
   }
 
   input,
   textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
     border: 1px solid #cccccc;
     transition: border-color 0.3s ease;
@@ -293,16 +304,19 @@ const InputField = styled.div`
   }
 
   textarea {
-    height: 100px;
+    height: 150px;
+    resize: vertical;
   }
 `;
 
 const ImageUpload = styled.div`
   margin-bottom: 20px;
+  width: 100%;
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: bold;
   }
 
   input[type="file"] {
@@ -314,7 +328,7 @@ const Button = styled.button`
   background-color: #00796b; /* Teal */
   border: none;
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 12px 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -332,11 +346,13 @@ const Button = styled.button`
 const ErrorMessage = styled.div`
   color: #ff0000;
   margin-top: 10px;
+  font-weight: bold;
 `;
 
 const SuccessMessage = styled.div`
   color: #00aa00;
   margin-top: 10px;
+  font-weight: bold;
 `;
 
 const MetricsContainer = styled.div`
@@ -350,18 +366,36 @@ const MetricsList = styled.ul`
 
 const MetricItem = styled.li`
   margin-bottom: 10px;
+  font-weight: bold;
 `;
 
 const UploadedCourses = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  justify-content: center; /* Center the child elements horizontally */
+  flex-wrap: wrap;
   gap: 20px;
+  width: 100%;
+`;
+
+const CourseCardContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const CourseCard = styled.div`
   border: 1px solid #ddd;
   border-radius: 10px;
+  align-items: center;
   overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  max-width: 300px; /* Set a maximum width to prevent it from becoming too wide */
+
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
 const CourseImage = styled.img`
@@ -376,6 +410,7 @@ const CourseDetails = styled.div`
 
 const CourseTitle = styled.h3`
   margin-top: 10px;
+  font-size: 1.2em;
 `;
 
 const PreviewImage = styled.img`
@@ -391,5 +426,6 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   padding: 10px;
 `;
+
 
 export default UploadCoursePage;

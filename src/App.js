@@ -33,6 +33,7 @@ import Sdashboard from "./Pages/SpecialDash/Sdashboard";
 import Sjobs from "./Pages/SpecialDash/Sjobs";
 import Scourses from "./Pages/SpecialDash/Scourses";
 import Sblogs from "./Pages/SpecialDash/Sblogs";
+import Sfeedback from "./Pages/SpecialDash/Sfeedback";
 import Chat from "./Pages/ChatApp/Chat";
 import EditProfile from "./Components/EditProfile";
 import { useDispatch, useSelector } from "react-redux";
@@ -92,10 +93,7 @@ const App = () => {
         <Route path="/blogs" element={<BlogsPageWithHeaderFooter />} />
         <Route path="/courses" element={<CoursesPageWithHeaderFooter />} />
         <Route path="/jobs/job/:id" element={<JobsDetailWithHeaderFooter />} />
-        <Route
-          path="/blogs/blog/:id"
-          element={<SinglePostWithHeaderFooter />}
-        />
+        <Route path="/blogs/blog/:id" element={<SinglePostWithHeaderFooter />}/>
         <Route
           path="/editprofile"
           element={<EditProfileWithoutHeaderFooter />}
@@ -202,6 +200,7 @@ const App = () => {
         <Route path="/sdashboard" element={<SdashboardWithoutHeaderFooter />} />
         <Route path="/sjobs" element={<SjobsWithoutHeaderFooter />} />
         <Route path="/scourses" element={<ScoursesWithoutHeaderFooter />} />
+        <Route path="/sfeedback" element={<SfeedbackWithoutHeaderFooter />} />
         <Route path="/sblogs" element={<SblogsWithoutHeaderFooter />} />
         <Route path="/chat" element={<ChatWithoutHeaderFooter />} />
       </Routes>
@@ -358,6 +357,7 @@ const LoginPageWithoutHeaderFooter = () => <LoginPage />;
 const RegWithoutHeaderFooter = () => <Reg />;
 const SjobsWithoutHeaderFooter = () => <Sjobs />;
 const ScoursesWithoutHeaderFooter = () => <Scourses />;
+const SfeedbackWithoutHeaderFooter = () => <Sfeedback />;
 const SblogsWithoutHeaderFooter = () => <Sblogs />;
 const WriteWithoutHeaderFooter = () => <Write />;
 const ChatWithoutHeaderFooter = () => <Chat />;

@@ -1,5 +1,5 @@
-// styles.js
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const CoursePageWrapper = styled.div`
   font-family: 'Arial', sans-serif;
@@ -58,30 +58,54 @@ export const SearchSection = styled.div`
       padding: 8px;
       border-radius: 5px;
       margin-right: 10px;
+      height: 30px; /* Adjust the height of select elements */
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column; 
+    align-items: center; 
+
+    select {
+      height: 26px;
+      width: 30%;
+      font-size: 0.8rem; 
+    }
+    
+    input {
+      margin-bottom: 10px; 
+      padding: 9px;
+      width:90%;
+    }
+
+    div {
+      margin-top: 10px; 
     }
   }
 `;
-
 export const CoursesSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center; /* Center align the cards horizontally */
+  justify-content: center; 
 
   div {
     background-color: #fff;
-    border: 1px solid teal;
-    padding: 15px; /* Reduced padding */
-    width: calc(30% - 20px); /* Adjusted width */
+    border: 2px solid teal;
+    padding: 10px; 
+    width: 20%; /* Adjusted width */
+    height: auto;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 7px;
     overflow: hidden;
-    transition: transform 0.3s ease-in-out;
-
-    margin-top: 30px; /* Adjusted margin top for spacing */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin-top: 30px; 
+    margin-bottom: 30px;
 
     &:hover {
       transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
     }
   }
 
@@ -90,11 +114,11 @@ export const CoursesSection = styled.div`
     height: 150px; /* Adjusted height */
     object-fit: cover;
     border-radius: 10px;
-    margin-bottom: 10px; /* Reduced margin */
+    margin-bottom: 15px; /* Increased margin */
   }
 
   h3 {
-    margin: 10px 0;
+    margin-top: -10px;
     font-size: 1.5rem;
     color: teal;
   }
@@ -102,22 +126,41 @@ export const CoursesSection = styled.div`
   p {
     margin: 5px 0;
     color: #777;
+    line-height: 1.3; 
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to keep all cards in a single row */
+    gap: 55px; /* No gap between cards */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding-bottom: 20px; /* Add some bottom padding to ensure space for scrolling */
+
+    div {
+      width: 75%; /* Adjust width to fit screen */
+      flex: 0 0 auto; /* Ensure cards don't shrink */
+    }
   }
 `;
 
-
+export const CourseLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+  &:hover {
+    color: teal;
+  }
+`;
 
 export const EnrollmentButton = styled.button`
   background-color: teal;
   color: white;
-  padding: 15px 30px;
+  padding: 10px 20px;
   border: 2px solid teal;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.8rem;
 `;
-
-
 
 export const Pagination = styled.div`
   display: flex;
@@ -195,4 +238,3 @@ export const NavigationArrow = styled.span`
     color: teal;
   }
 `;
-

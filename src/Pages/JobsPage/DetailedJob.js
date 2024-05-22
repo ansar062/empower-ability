@@ -15,6 +15,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 768px) {
     padding: 20px;
+    margin: 10px;
   }
 `;
 
@@ -38,16 +39,6 @@ const Description = styled.p`
   font-size: 16px;
   line-height: 1.6;
   margin-bottom: 20px;
-  color: #333333;
-`;
-
-const RequirementsList = styled.ul`
-  margin-bottom: 20px;
-`;
-
-const RequirementItem = styled.li`
-  font-size: 16px;
-  line-height: 1.6;
   color: #333333;
 `;
 
@@ -75,9 +66,14 @@ const ApplyButton = styled.button`
 
 const SalaryCategoryWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 20px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const Salary = styled.span`
@@ -126,24 +122,22 @@ const JobDetailPage = () => {
             {job.description}
           </Description>
           <hr />
-          {/* <RequirementsList>
-        <h3>Requirements</h3>
-        {job.requirements.map((requirement, index) => (
-          <RequirementItem key={index}>{requirement}</RequirementItem>
-        ))}
-      </RequirementsList> */}
           <SalaryCategoryWrapper>
-          {job.fixedSalary && <Salary>Salary: {job.fixedSalary}</Salary>}
-        {job.salaryFrom && <Salary>Salary: {job.salaryFrom} - {job.salaryTo}</Salary>}
+            {job.fixedSalary && <Salary>Salary: {job.fixedSalary}</Salary>}
+            {job.salaryFrom && (
+              <Salary>
+                Salary: {job.salaryFrom} - {job.salaryTo}
+              </Salary>
+            )}
             <Category>Category: {job.category}</Category>
           </SalaryCategoryWrapper>
           <ApplyText>{job.howToApply}</ApplyText>
           {currentUser && currentUser.role !== "employer" && (
-            <button>
+            <ApplyButton>
               <NavLink to={`/jobs/${job.title}/${job._id}/apply`}>
                 Apply Now
               </NavLink>
-            </button>
+            </ApplyButton>
           )}
         </>
       )}
