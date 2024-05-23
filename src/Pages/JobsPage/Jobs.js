@@ -5,31 +5,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import styled from "styled-components";
 import { Oval } from "react-loader-spinner";
-
-const successStoriesData = [
-  {
-    id: 1,
-    name: "Alex Johnson",
-    testimonial:
-      "As a person with a disability, finding a job that accommodates my needs was challenging. Thanks to this platform, I secured an accessible job that values diversity and inclusion.",
-    photo: "/Images/people.jpg",
-  },
-  {
-    id: 2,
-    name: "Emily Rodriguez",
-    testimonial:
-      "This platform not only connected me with disability-friendly employers but also provided resources for professional development. I'm now thriving in a workplace that embraces accessibility.",
-    photo: "/Images/people.jpg",
-  },
-  {
-    id: 3,
-    name: "Chris Baker",
-    testimonial:
-      "Having a disability didn't hinder my career growth, thanks to the opportunities I found on this platform. I'm proud to be part of an inclusive workplace that values my unique skills.",
-    photo: "/Images/people.jpg",
-  },
-  // Add more success stories as needed
-];
+import { Avatar } from "@radix-ui/themes";
 
 const PostTextContainer = styled.div`
   max-height: 85px; /* Set your desired height here */
@@ -40,12 +16,16 @@ const JobsPage = () => {
   const [jobs, setJobs] = useState(null);
   const { currentUser } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
+  const [feedbacks, setfeedbacks] = useState(null);
   useEffect(() => {
     setLoading(true);
     async function fetchAllJobs() {
       try {
         await axios
-          .get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/all-jobs", { withCredentials: true })
+          .get(
+            "https://empowerabilitybackend56dcdfs4q43srd.vercel.app/all-jobs",
+            { withCredentials: true }
+          )
           .then((response) => {
             const res = response.data;
             setJobs(res.jobs);
@@ -61,6 +41,24 @@ const JobsPage = () => {
     }, 3000);
 
     return () => clearTimeout(delay);
+  }, []);
+
+  useEffect(() => {
+    async function fetchFeedbacks() {
+      try {
+        await axios
+          .get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/getallfeedbacks", {
+            withCredentials: true,
+          })
+          .then((response) => {
+            const res = response.data;
+            setfeedbacks(res.data);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchFeedbacks();
   }, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -91,30 +89,29 @@ const JobsPage = () => {
           />
 
           <Styles.FilteringOptions>
-          <label>
-  Location:
-  <select
-    value={selectedLocation}
-    onChange={(e) => setSelectedLocation(e.target.value)}
-  >
-    <option value="">All Locations</option>
-    <option value="Remote">Remote</option>
-    <option value="On-site">On-site</option>
-  </select>
-</label>
-<label>
-  Categories:
-  <select
-    value={selectedCategory}
-    onChange={(e) => setSelectedCategory(e.target.value)}
-  >
-    <option value="">All Categories</option>
-    <option value="Hearing Impaired">Hearing Impaired</option>
-    <option value="Motor Impaired">Motor Impaired</option>
-    <option value="Speech Impaired">Speech Impaired</option>
-  </select>
-</label>
-
+            <label>
+              Location:
+              <select
+                value={selectedLocation}
+                onChange={(e) => setSelectedLocation(e.target.value)}
+              >
+                <option value="">All Locations</option>
+                <option value="Remote">Remote</option>
+                <option value="On-site">On-site</option>
+              </select>
+            </label>
+            <label>
+              Categories:
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="">All Categories</option>
+                <option value="Hearing Impaired">Hearing Impaired</option>
+                <option value="Motor Impaired">Motor Impaired</option>
+                <option value="Speech Impaired">Speech Impaired</option>
+              </select>
+            </label>
           </Styles.FilteringOptions>
         </Styles.Header>
       </Styles.HeadBar>
@@ -145,7 +142,9 @@ const JobsPage = () => {
 
                   {currentUser && currentUser.role !== "employer" && (
                     <button>
-                      <NavLink to={`/jobs/${job.title}/${job._id}/apply`}>Apply Now</NavLink>
+                      <NavLink to={`/jobs/${job.title}/${job._id}/apply`}>
+                        Apply Now
+                      </NavLink>
                     </button>
                   )}
                 </Styles.JobCard>
@@ -158,15 +157,23 @@ const JobsPage = () => {
 
       <Styles.SuccessStoriesSection>
         <h2>Success Stories</h2>
-        {successStoriesData.map((story, index) => (
-          <Styles.StoryCard key={story.id}>
-            <img src={story.photo} alt={story.name} />
-            <div>
-              <h3>{story.name}</h3>
-              <p>{`"${story.testimonial}"`}</p>
-            </div>
-          </Styles.StoryCard>
-        ))}
+        {feedbacks &&
+          feedbacks.map((feedback, index) => (
+            <Styles.StoryCard key={feedback._id}>
+              <Avatar
+                size={"5"}
+                radius={"full"}
+                src={feedback.user.image}
+                fallback={`${feedback.user.firstname[0]}${feedback.user.lastname[0]}`}
+              />
+              <div>
+                <h3>
+                  {feedback.user.firstname} {feedback.user.lastname}
+                </h3>
+                <p>{`"${feedback.feedback}"`}</p>
+              </div>
+            </Styles.StoryCard>
+          ))}
       </Styles.SuccessStoriesSection>
     </Styles.JobsContainer>
   );

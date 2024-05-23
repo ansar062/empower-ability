@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const CoursePageWrapper = styled.div`
   font-family: 'Arial', sans-serif;
@@ -32,6 +32,16 @@ export const Header = styled.header`
   span {
     font-size: 14px;
   }
+`;
+
+export const NavigationLink = styled(NavLink)`
+  background-color: teal;
+  color: white;
+  padding: 10px 20px;
+  border: 2px solid teal;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
 `;
 
 export const SearchSection = styled.div`

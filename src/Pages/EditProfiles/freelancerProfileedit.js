@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Avatar } from "@radix-ui/themes";
 
 const Container = styled.div`
   background-color: #f8f9fa;
@@ -101,10 +102,12 @@ const Button = styled.button`
 
 const ProfileEdit = () => {
   const { currentUser } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstname: currentUser.firstname,
-    lastname: currentUser.lastname,
+    firstname: currentUser?.firstname,
+    lastname: currentUser?.lastname,
+    image: currentUser?.image || "",
     phoneNumber: "",
     address: "",
     skills: "",
@@ -134,8 +137,8 @@ const ProfileEdit = () => {
           {
             withCredentials: true,
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
         if (response.data.status) {
@@ -146,6 +149,8 @@ const ProfileEdit = () => {
     setProfile();
   };
 
+  console.log(formData);
+
   useEffect(() => {
     async function getProfile() {
       try {
@@ -154,15 +159,59 @@ const ProfileEdit = () => {
           {
             withCredentials: true,
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
-        setFormData(response.data.freelancerProfile);
+        if (response.data.status === true) {
+          setFormData({
+            ...response.data.freelancerProfile,
+            firstname:
+              response.data.freelancerProfile.firstname ||
+              currentUser?.firstname,
+            lastname:
+              response.data.freelancerProfile.lastname || currentUser?.lastname,
+              image: response.data.freelancerProfile.image || currentUser?.image || "",
+          });
+        } else {
+          navigate("/freelancer");
+          toast("Set up your profile first");
+          return;
+        }
       } catch (err) {}
     }
     getProfile();
   }, []);
+
+  const [disabled, setdisabled] = useState(false);
+
+  function uploadImage(file) {
+    setdisabled(true);
+    toast("Image is uploading");
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "j5uqdyec");
+    data.append("cloud_name", "du1fnqemp");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/du1fnqemp/image/upload", data)
+      .then((response) => {
+        console.log(response);
+        const image = response.data.url;
+        console.log(image)
+        setFormData(prevState => ({
+          ...prevState,
+          image,
+        }));
+        setdisabled(false);
+        toast("Image uploaded successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast("Image not uploaded, try again later");
+      });
+    return 0;
+  }
 
   return (
     <Container>
@@ -170,6 +219,26 @@ const ProfileEdit = () => {
         <Title>Your Profile</Title>
         <ColumnsContainer>
           <Column>
+            {formData.firstname && formData.lastname && (
+              <Avatar
+                src={formData.image}
+                fallback={`${formData.firstname[0]}${formData.lastname[0]}`}
+                size={"8"}
+                radius="full"
+              />
+            )}
+            <input
+              name="image"
+              onChange={({ target }) => {
+                if (target.files) {
+                  const file = target.files[0];
+                  uploadImage(file);
+                }
+              }}
+              id="fileInput"
+              type="file"
+              style={{  }}
+            />
             <FormGroup>
               <Label htmlFor="firstName">First Name</Label>
               <Input

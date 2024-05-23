@@ -46,6 +46,7 @@ import { signInSuccess, logoutUser } from "./store/slices/authSlice";
 import ProfileEdit from "./Pages/EditProfiles/freelancerProfileedit";
 import JobDetailPage from "./Pages/JobsPage/DetailedJob";
 import ViewCourse from "./Pages/SpecialDash/ViewCourse";
+import SMyBuyedCourses from "./Pages/SpecialDash/SMyBuyedCourses";
 const Home = () => (
   <div>
     <Header />
@@ -80,6 +81,10 @@ const App = () => {
       }
     };
     checkAuth();
+    const intervalId = setInterval(checkAuth, 300000);
+
+  // Clear interval on component unmount
+  return () => clearInterval(intervalId);
   }, []);
   return (
     <Router>
@@ -112,6 +117,14 @@ const App = () => {
         element={
           <PrivateRoute roles={["client"]}>
             <ViewCourse />
+          </PrivateRoute>
+        }
+         />
+         <Route
+        path="/mycourses"
+        element={
+          <PrivateRoute roles={["client"]}>
+            <SMyBuyedCourses />
           </PrivateRoute>
         }
          />
@@ -150,6 +163,16 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route path="/sfeedback" element={<PrivateRoute roles={["client"]}>
+          <SfeedbackWithoutHeaderFooter />
+        </PrivateRoute>} />
+        <Route path="/sdashboard" element={<PrivateRoute roles={["client"]}><SdashboardWithoutHeaderFooter /></PrivateRoute>} />
+        <Route path="/sjobs" element={<PrivateRoute roles={["client"]}><SjobsWithoutHeaderFooter /></PrivateRoute>} />
+        <Route path="/scourses" element={<PrivateRoute roles={["client"]}><ScoursesWithoutHeaderFooter /></PrivateRoute>} />
+        
+        <Route path="/sblogs" element={<PrivateRoute roles={["client"]}><SblogsWithoutHeaderFooter /></PrivateRoute>} />
+
+
 
         {/* Employer Route */}
         <Route
@@ -197,11 +220,7 @@ const App = () => {
         <Route path="/eapp" element={<EappWithHeaderFooter />} />
 
         <Route path="/einbox" element={<EinboxWithoutHeaderFooter />} />
-        <Route path="/sdashboard" element={<SdashboardWithoutHeaderFooter />} />
-        <Route path="/sjobs" element={<SjobsWithoutHeaderFooter />} />
-        <Route path="/scourses" element={<ScoursesWithoutHeaderFooter />} />
-        <Route path="/sfeedback" element={<SfeedbackWithoutHeaderFooter />} />
-        <Route path="/sblogs" element={<SblogsWithoutHeaderFooter />} />
+        
         <Route path="/chat" element={<ChatWithoutHeaderFooter />} />
       </Routes>
     </Router>

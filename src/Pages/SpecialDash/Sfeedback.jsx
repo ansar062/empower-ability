@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Layout from "./Slayout";
 import styled from 'styled-components';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const FeedbackPage = () => {
   const [feedback, setFeedback] = useState('');
@@ -10,15 +12,26 @@ const FeedbackPage = () => {
     setFeedback(event.target.value);
   };
 
-  const handleSubmitFeedback = (event) => {
+  const handleSubmitFeedback = async (event) => {
     event.preventDefault();
-    // You can add code here to handle the submission of feedback
-    console.log('Submitting feedback:', feedback);
-    // Simulate submission success
-    setTimeout(() => {
-      setSubmitted(true);
-      setFeedback('');
-    }, 1000);
+    setSubmitted(false);
+    await axios.post('https://empowerabilitybackend56dcdfs4q43srd.vercel.app/addfeedback', { feedback }, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }).then((response) => {
+      console.log(response);
+      if(response.data.status){
+        toast(response.data.message);
+        setSubmitted(true);
+      }else{
+        toast(response.data.message);
+        setSubmitted(false);
+      }
+    });
+    
+    
   };
 
   return (

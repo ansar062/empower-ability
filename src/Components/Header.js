@@ -261,7 +261,8 @@ const Header = () => {
           <DropdownMenu.Trigger>
             <div>
               <Avatar
-                src={`${currentUser.profileurl}`}
+              radius="full"
+                src={`${currentUser.image}`}
                 fallback={`${currentUser.firstname[0]}${currentUser.lastname[0]}`}
               />
             </div>
