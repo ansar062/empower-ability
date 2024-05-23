@@ -9,8 +9,8 @@ export const MainContent = styled.div`
 `;
 
 export const BlogsPageContainer = styled.div`
-  margin-left:1%;
-  margin-right:1%;
+  margin-left:2%;
+  margin-right:2%;
 `;
 
 export const BlogsHeader = styled.div`

@@ -269,27 +269,13 @@ const Header = () => {
           <DropdownMenu.Content>
             <Link to={currentUser.role === 'client' ? 'edit-freelancer-profile' : currentUser.role === 'employer' ? 'unauthorized' : 'tutor'}><DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item></Link>
             <Link to={currentUser.role === 'client' ? 'sdashboard' : currentUser.role === 'employer' ? 'edash' : 'tdashboard'}><DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item></Link>
-            <DropdownMenu.Separator />
-            
-
-            <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
-              <DropdownMenu.SubContent>
-                <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
-                <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
-
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Sub>
 
             <DropdownMenu.Separator />
-            <DropdownMenu.Item>Share</DropdownMenu.Item>
-            <DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
+            <DropdownMenu.Item>Edit Your Profile</DropdownMenu.Item>
             <DropdownMenu.Separator />
             <AlertDialog.Root>
               <AlertDialog.Trigger>
-                <Button color="red">Logout</Button>
+                <Button color="teal">Logout</Button>
               </AlertDialog.Trigger>
               <AlertDialog.Content maxWidth="450px">
                 <AlertDialog.Title>Logout</AlertDialog.Title>
@@ -307,7 +293,7 @@ const Header = () => {
                   <AlertDialog.Action>
                     <Button
                       variant="solid"
-                      color="red"
+                      color="teal"
                       onClick={() => logoutHandle()}
                     >
                       Logout

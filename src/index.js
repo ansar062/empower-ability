@@ -33,7 +33,6 @@ root.render(
           </Theme>
         </React.StrictMode>
       </Auth0Provider>
-      ,
     </PersistGate>
   </Provider>
 );

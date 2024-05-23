@@ -5,35 +5,50 @@ import Sidebar from '../../Components/Blogs/Sidebar';
 
 import styled from "styled-components";
 
-const BlogsContainer = styled.div`
-  padding: 0.5rem;
-  margin-top: 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-`;
+const tealColor = "#008080";
 
 const MainContent = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
   margin-top: 20px;
+  
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
-const tealColor = "#008080";
-
 const BlogsPageContainer = styled.div`
-  /* Add your global styles for the entire page here */
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 8%;
+
+  @media (max-width: 600px) {
+    margin-top: 30%;
+  }
+`;
+
+const BlogsHeader = styled.div`
+  background-color: ${tealColor};
+  border-radius: 5px;
+  @media (max-width: 600px) {
+    width: 95%;
+  }
 `;
 
 const PageHeading = styled.div`
-  background-color: ${tealColor};
   padding: 10px;
   text-align: center;
 
   h1 {
-    color: #fff;
+    color: #fff !important; /* Override color */
     font-size: 24px;
+  }
+
+  p {
+    color: #fff !important; /* Override color */
+    font-size: 13px;
+    margin-top: -20px;
   }
 `;
 
@@ -41,16 +56,16 @@ const SearchBar = styled.div`
   background-color: ${tealColor};
   padding: 10px;
   text-align: center;
+  margin-top: 3%;
 
   input {
     padding: 12px;
     width: 80%;
     max-width: 400px;
-  }
 
-  @media (max-width: 600px) {
-    input {
-      width: 100%;
+    @media (max-width: 600px) {
+      width: 80%;
+      padding: 6px;
     }
   }
 `;
@@ -64,27 +79,9 @@ const CategoriesContainer = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
   }
-`;
-const CategoryCard = styled.div`
-  background-color: ${(props) => (props.tealBackground ? tealColor : "#fff")};
-  border: 1px solid ${tealColor};
-  padding: 16px;
-  text-align: center;
-  border-radius: var(--radius-10);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
-  margin-bottom: 10px;
-
-  h3 {
-    font-family: var(--ff-league_spartan);
-    color: ${(props) => (props.tealBackground ? "#fff" : tealColor)};
-    font-size: var(--fs-2);
-    line-height: 1.1;
-    margin-top: 8px;
-  }
 
   @media (max-width: 600px) {
-    width: calc(100% - 32px); /* Adjust the value as needed for spacing */
+    display: none;
   }
 `;
 
@@ -98,34 +95,22 @@ const Sblogs = () => {
 
   return (
     <Layout>
-      <BlogsContainer>
-        <BlogsPageContainer>
+      <BlogsPageContainer>
+        <BlogsHeader>
           <PageHeading>
             <h1>Blogs</h1>
             <p>Home/Blogs</p>
           </PageHeading>
-
           <SearchBar>
             <input type="text" placeholder="Search..." />
           </SearchBar>
+        </BlogsHeader>
 
-          <CategoriesContainer>
-            <div className="category-cards">
-              {categories.map((category) => (
-                <CategoryCard key={category.id}>
-                  <h3>{category.name}</h3>
-                  {/* Add a description if needed */}
-                </CategoryCard>
-              ))}
-            </div>
-          </CategoriesContainer>
-
-          <MainContent>
-            <Posts />
-            <Sidebar />
-          </MainContent>
-        </BlogsPageContainer>
-      </BlogsContainer>
+        <MainContent>
+          <Posts />
+          <Sidebar />
+        </MainContent>
+      </BlogsPageContainer>
     </Layout>
   );
 };

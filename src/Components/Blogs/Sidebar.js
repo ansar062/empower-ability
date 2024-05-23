@@ -11,8 +11,24 @@ const SidebarWrapper = styled.aside`
   align-items: center; 
 `;
 
-const SidebarSection = styled.div`
+const StaffSection = styled.div`
   margin-bottom: 20px;
+  @media (max-width: 600px) {
+   display:none;
+  }
+`;
+const SubscribeSection = styled.div`
+  margin-bottom: 20px;
+  @media (max-width: 600px) {
+    display:none;
+   }
+`;
+const WritingSection = styled.div`
+  margin-bottom: 20px;
+
+  @media (max-width: 600px) {
+    margin-top: -20%;
+   }
 `;
 
 const CenteredSidebarHeader = styled.h2`
@@ -107,7 +123,7 @@ const Sidebar = () => {
 
   return (
     <SidebarWrapper>
-      <SidebarSection>
+      <StaffSection>
         <h2>Staff Picks</h2>
         <SidebarList>
           <SidebarListItem>
@@ -123,9 +139,9 @@ const Sidebar = () => {
             <SidebarLink href="#">See the full list</SidebarLink>
           </SidebarListItem>
         </SidebarList>
-      </SidebarSection>
+      </StaffSection>
 
-      <SidebarSection>
+      <WritingSection>
         <CenteredSideHeader>Writing on Medium</CenteredSideHeader>
         <CenteredSidebarParagraph>
           Express yourself, share your unique perspective, connect with a global community, contribute to discussions,
@@ -138,16 +154,16 @@ const Sidebar = () => {
             </SidebarSubButton>
           </SidebarListItem>
         </SidebarList>
-      </SidebarSection>
+      </WritingSection>
 
-      <SidebarSection>
+      <SubscribeSection>
         <CenteredSidebarHeader>Subscribe to Our Newsletter</CenteredSidebarHeader>
         <CenteredSubParagraph>Get updates and exclusive content straight to your inbox.</CenteredSubParagraph>
         <SidebarSubscriptionForm>
           <SidebarSubscribeInput type="email" placeholder="Enter your email" />
           <SidebarSubscribeButton type="submit">Subscribe</SidebarSubscribeButton>
         </SidebarSubscriptionForm>
-      </SidebarSection>
+      </SubscribeSection>
     </SidebarWrapper>
   );
 };

@@ -23,21 +23,6 @@ const HeaderContainer = styled.div`
 
 const Logo = styled.img`
   width: 120px;
-  height: 50px;
-`;
-
-const SearchBar = styled.input`
-  width: 300px;
-  height: 17px;
-  border-radius: 5px;
-  border: 1px solid #ccc; /* Add a border */
-  padding: 0.5rem;
-  font-size: 1rem;
-`;
-
-const NotificationIcon = styled(FaBell)`
-  font-size: 1.1rem;
-  cursor: pointer;
 `;
 
 const UserDropdownMenuContainer = styled.div`
@@ -78,9 +63,7 @@ const Header = () => {
       <NavLink to="/">
           <Logo src="/logo.png" alt="logo" />
         </NavLink>
-      <SearchBar type="text" placeholder="Search..." />
       <UserDropdownMenuContainer>
-        <NotificationIcon />
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <div>
@@ -94,24 +77,11 @@ const Header = () => {
             <DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item>
             <DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item>
             <DropdownMenu.Separator />
-            <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
-              <DropdownMenu.SubContent>
-                <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
-                <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
-
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Sub>
-
-            <DropdownMenu.Separator />
-            <DropdownMenu.Item>Share</DropdownMenu.Item>
-            <DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
+            <DropdownMenu.Item>Edit Your Profile</DropdownMenu.Item>
             <DropdownMenu.Separator />
             <AlertDialog.Root>
               <AlertDialog.Trigger>
-                <Button color="red">Logout</Button>
+                <Button color="teal">Logout</Button>
               </AlertDialog.Trigger>
               <AlertDialog.Content maxWidth="450px">
                 <AlertDialog.Title>Logout</AlertDialog.Title>
@@ -129,7 +99,7 @@ const Header = () => {
                   <AlertDialog.Action>
                     <Button
                       variant="solid"
-                      color="red"
+                      color="teal"
                       onClick={() => logoutHandle()}
                     >
                       Logout

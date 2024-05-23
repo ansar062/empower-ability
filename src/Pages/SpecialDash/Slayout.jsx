@@ -20,7 +20,7 @@ const Layout = ({ children }) => {
       <Ssidebar />
       <Content>
         <Sheader />
-        <div style={{ marginLeft: '250px' }}>{children}</div>
+        <div style={{ marginLeft: '3%' }}>{children}</div>
         <Sfooter />
       </Content>
     </Container>
