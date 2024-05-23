@@ -142,9 +142,14 @@ const JobsPage = () => {
 
                   {currentUser && currentUser.role !== "employer" && (
                     <button>
-                      <NavLink to={`/jobs/${job.title}/${job._id}/apply`}>
-                        Apply Now
-                      </NavLink>
+                      <NavLink to={`/jobs/${job.title}/${job._id}/apply`} style={{
+          color: "white",
+          textDecoration: "none",
+          fontSize: "0.8rem",
+        }}
+        onMouseEnter={(e) => e.target.style.color = "teal"} // Change color on hover
+        onMouseLeave={(e) => e.target.style.color = "white"} // Change back to white on mouse leave
+      >Apply Now</NavLink>
                     </button>
                   )}
                 </Styles.JobCard>

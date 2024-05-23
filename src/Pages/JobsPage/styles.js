@@ -141,29 +141,32 @@ export const JobCard = styled.div`
     }
   }
 
-  p {
-    color: #666;
-    margin-bottom: 15px;
-  }
-
   button {
     background-color: teal;
-    color: #fff;
-    padding: 8px 12px;
+    color: white;
+    padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 1rem;
+
+    &:hover {
+      background-color: white;
+      border: 2px teal solid;
+      color: teal;
+    }
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 15px;
   }
 
   &:hover {
     h3 {
       color: teal;
       text-decoration: underline;
-    }
-
-    button {
-      background-color: teal;
     }
   }
 

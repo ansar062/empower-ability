@@ -68,6 +68,14 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  padding: 20px; /* Add padding to prevent content from touching edges on small screens */
+
+  @media (max-width: 768px) {
+    margin-top: 50%;
+    margin-bottom: 50%;
+    height: auto; /* Adjust height for better layout on small screens */
+    padding: 10px; /* Add padding for small screens */
+  }
 `;
 
 const FeedbackForm = styled.form`
@@ -75,16 +83,29 @@ const FeedbackForm = styled.form`
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: 100%; /* Make the form take full width on small screens */
+    padding: 10px; /* Adjust padding for small screens */
+  }
 `;
 
 const Title = styled.h2`
   margin-bottom: 20px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem; /* Adjust font size for small screens */
+  }
 `;
 
 const InputLabel = styled.label`
   display: block;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem; /* Adjust font size for small screens */
+  }
 `;
 
 const FeedbackInput = styled.input`
@@ -92,6 +113,11 @@ const FeedbackInput = styled.input`
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+
+  @media (max-width: 768px) {
+    width: 94%; /* Make input take full width on small screens */
+    padding: 8px; /* Adjust padding for small screens */
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -110,12 +136,20 @@ const SubmitButton = styled.button`
     border: 2px teal solid;
     color: teal;
   }
+
+  @media (max-width: 768px) {
+    padding: 8px; /* Adjust padding for small screens */
+  }
 `;
 
 const FeedbackSubmitted = styled.p`
   text-align: center;
   color: #00796b;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem; /* Adjust font size for small screens */
+  }
 `;
 
 export default FeedbackPage;

@@ -3,12 +3,6 @@ import Posts from '../../Components/Blogs/Posts';
 import * as Styles from './styles';
 
 const Blogs = () => {
-  const categories = [
-    { id: 1, name: 'Personal Stories' },
-    { id: 3, name: 'Skill Development' },
-    { id: 4, name: 'Job Search Tips' },
-    { id: 5, name: 'Accessibility in Daily Life' },
-  ];
 
   return (
     <Styles.BlogsPageContainer>
@@ -21,17 +15,6 @@ const Blogs = () => {
         <input type="text" placeholder="Search..." />
       </Styles.SearchBar>
       </Styles.BlogsHeader>
-
-      <Styles.CategoriesContainer>
-        <div className="category-cards">
-          {categories.map((category) => (
-            <Styles.CategoryCard key={category.id}>
-              <h3>{category.name}</h3>
-              {/* Add a description if needed */}
-            </Styles.CategoryCard>
-          ))}
-        </div>
-      </Styles.CategoriesContainer>
 
       <Styles.MainContent>
         <Posts />
