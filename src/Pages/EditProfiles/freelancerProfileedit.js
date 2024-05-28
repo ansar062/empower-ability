@@ -365,7 +365,7 @@ const ProfileEdit = () => {
           </Column>
         </ColumnsContainer>
 
-        <Button type="submit">Save Profile</Button>
+        <Button type="submit" disabled={disabled}>Save Profile</Button>
       </FormContainer>
     </Container>
   );

@@ -5,14 +5,17 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Avatar } from '@radix-ui/themes';
 
 
-const ProfileSettingsPage = () => {
+const EditTutorProfileSettingsPage = () => {
+  const [disabled, setdisabled] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     firstname: currentUser?.firstname,
     lastname: currentUser?.lastname,
+    image: currentUser?.image || "",
     expertise: '',
     teachingExperience: '',
     bio: '',
@@ -21,6 +24,33 @@ const ProfileSettingsPage = () => {
     specialNeeds: ''
   });
 
+  function uploadImage(file) {
+    setdisabled(true);
+    toast("Image is uploading");
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "j5uqdyec");
+    data.append("cloud_name", "du1fnqemp");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/du1fnqemp/image/upload", data)
+      .then((response) => {
+        console.log(response);
+        const image = response.data.url;
+        console.log(image)
+        setFormData(prevState => ({
+          ...prevState,
+          image,
+        }));
+        setdisabled(false);
+        toast("Image uploaded successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast("Image not uploaded, try again later");
+      });
+    return 0;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +72,7 @@ const ProfileSettingsPage = () => {
     e.preventDefault();
     async function setProfile(){
       try{
-        const response = await axios.post(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/tutors/set-up-profile`, formData,
+        const response = await axios.put(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/tutors/edit-profile`, formData,
           {
             withCredentials: true,
             headers: {
@@ -50,6 +80,9 @@ const ProfileSettingsPage = () => {
             }
           }
         );
+        if(response.data.status){
+            toast(response.data.message)
+          }
       }catch(err){
         console.log(err)
       }
@@ -57,11 +90,62 @@ const ProfileSettingsPage = () => {
     setProfile()
   };
 
+  useEffect(()=> {
+    async function getProfile(){
+      try{
+        const response = await axios.get(`https://empowerabilitybackend56dcdfs4q43srd.vercel.app/tutors/getprofile`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
+        });
+        if (response.data.status === true) {
+          setFormData({
+            ...response.data.tutorProfile,
+            firstname:
+              response.data.tutorProfile.firstname ||
+              currentUser?.firstname,
+            lastname:
+              response.data.tutorProfile.lastname || currentUser?.lastname,
+              image: response.data.tutorProfile.image || currentUser?.image || "",
+          });
+        } else {
+          navigate("/set-tutor-profile");
+          toast("Set up your profile first");
+          return;
+        }
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getProfile();
+  }, [])
+
   return (
     <Container>
       <ContentWrapper>
+        {formData.firstname && formData.lastname && (
+              <Avatar
+                src={formData.image}
+                fallback={`${formData.firstname[0]}${formData.lastname[0]}`}
+                size={"8"}
+                radius="full"
+              />
+            )}
+            <input
+              name="image"
+              onChange={({ target }) => {
+                if (target.files) {
+                  const file = target.files[0];
+                  uploadImage(file);
+                }
+              }}
+              id="fileInput"
+              type="file"
+              style={{  }}
+            />
         <ProfileDetails>
-          <FormTitle>Set up Your Profile</FormTitle>
+          <FormTitle>Update Your Profile</FormTitle>
           <InputLabel>First Name</InputLabel>
           <Input
             type="text"
@@ -134,7 +218,7 @@ const ProfileSettingsPage = () => {
           />
           
           <Link to="/tdashboard">
-  <SubmitButton type="submit" onClick={(e) => {handleSubmit(e)}} >Save Changes</SubmitButton>
+  <SubmitButton type="submit" disabled={disabled} onClick={(e) => {handleSubmit(e)}} >Save Changes</SubmitButton>
 </Link>
 
         </ProfileDetails>
@@ -227,4 +311,4 @@ const SubmitButton = styled.button`
   }
 `;
 
-export default ProfileSettingsPage;
+export default EditTutorProfileSettingsPage;

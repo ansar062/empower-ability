@@ -162,7 +162,7 @@ export const CourseLink = styled(Link)`
   }
 `;
 
-export const EnrollmentButton = styled.button`
+export const EnrollmentButton = styled(NavLink)`
   background-color: teal;
   color: white;
   padding: 10px 20px;

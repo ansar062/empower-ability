@@ -147,13 +147,16 @@ const ManageJobsPage = () => {
           ) : null}
         <FormField>
           <Label>Category:</Label>
-          <Input
-            type="text"
+          <select
             name="category"
             value={values.category}
             onChange={handleChange}
             onBlur={handleBlur}
-          />
+          >
+            <option value="hearing impaired">Hearing Impaired</option>
+            <option value="motor impaired">Motor Impaired</option>
+            <option value="speech impaired">Speech Impaired</option>
+          </select>
         </FormField>
         {errors.category && touched.category ? (
             <p
@@ -198,13 +201,15 @@ const ManageJobsPage = () => {
           ) : null}
         <FormField>
           <Label>Location:</Label>
-          <Input
-            type="text"
+          <select
             name="location"
             value={values.location}
             onChange={handleChange}
             onBlur={handleBlur}
-          />
+          >
+            <option value="remote">Remote</option>
+            <option value="onsite">On Site</option>
+          </select>
         </FormField>
         {errors.location && touched.location ? (
             <p

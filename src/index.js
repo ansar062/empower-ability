@@ -19,20 +19,16 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor} loading={null}>
-      <Auth0Provider
-        domain="dev-moe2dpruzsk0wwyn.us.auth0.com"
-        clientId="gcVJOVi3cf9s6qIArqB1USq6tCf04AU5"
-        redirectUri={window.location.origin}
-      >
+      
         <React.StrictMode>
         <Theme>
             <div style={customTheme}>
               <App />
               <ToastContainer />
             </div>
+            
           </Theme>
         </React.StrictMode>
-      </Auth0Provider>
     </PersistGate>
   </Provider>
 );

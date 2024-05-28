@@ -145,7 +145,7 @@ const CoursePage = () => {
             <p>Category: {course.category}</p>
             <p>Level: {course.difficultyLevel}</p>
 
-            {course.enrolledStudents.includes(currentUser._id) ? (
+            {currentUser && course.enrolledStudents.includes(currentUser._id) ? (
               <Styles.NavigationLink
               to={`/course/view/${course._id}`}
                 state={{ course }}
@@ -182,33 +182,7 @@ const CoursePage = () => {
         </Styles.Pagination>
       )}
 
-      <Styles.TestimonialsSection>
-        {/* Testimonials section */}
-        <h2>What Our Students Say</h2>
-        {testimonials.length > 0 && testimonials[currentTestimonialIndex] && (
-          <Styles.TestimonialCard>
-            <img
-              src={
-                process.env.PUBLIC_URL +
-                testimonials[currentTestimonialIndex].image
-              }
-              alt={testimonials[currentTestimonialIndex].name}
-            />
-            <p>{testimonials[currentTestimonialIndex].content}</p>
-            <p style={{ color: "teal" }}>
-              - {testimonials[currentTestimonialIndex].name}
-            </p>
-          </Styles.TestimonialCard>
-        )}
-        <div>
-          <Styles.NavigationArrow onClick={prevTestimonial}>
-            &#9664;
-          </Styles.NavigationArrow>
-          <Styles.NavigationArrow onClick={nextTestimonial}>
-            &#9654;
-          </Styles.NavigationArrow>
-        </div>
-      </Styles.TestimonialsSection>
+      
     </Styles.CoursePageWrapper>
   );
 };

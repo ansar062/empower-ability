@@ -47,6 +47,7 @@ import ProfileEdit from "./Pages/EditProfiles/freelancerProfileedit";
 import JobDetailPage from "./Pages/JobsPage/DetailedJob";
 import ViewCourse from "./Pages/SpecialDash/ViewCourse";
 import SMyBuyedCourses from "./Pages/SpecialDash/SMyBuyedCourses";
+import EditTutorProfileSettingsPage from "./Pages/EditProfiles/tutorProfileedit";
 const Home = () => (
   <div>
     <Header />
@@ -64,15 +65,18 @@ const App = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get("https://empowerabilitybackend56dcdfs4q43srd.vercel.app/profile", {
-          withCredentials: true,
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        const response = await axios.get(
+          "https://empowerabilitybackend56dcdfs4q43srd.vercel.app/profile",
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-        });
+        );
         if (response.data.status) {
           dispatch(signInSuccess(response.data.user));
-        }else{
+        } else {
           dispatch(logoutUser());
         }
       } catch (error) {
@@ -83,8 +87,8 @@ const App = () => {
     checkAuth();
     const intervalId = setInterval(checkAuth, 300000);
 
-  // Clear interval on component unmount
-  return () => clearInterval(intervalId);
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
   return (
     <Router>
@@ -98,7 +102,14 @@ const App = () => {
         <Route path="/blogs" element={<BlogsPageWithHeaderFooter />} />
         <Route path="/courses" element={<CoursesPageWithHeaderFooter />} />
         <Route path="/jobs/job/:id" element={<JobsDetailWithHeaderFooter />} />
-        <Route path="/blogs/blog/:id" element={<SinglePostWithHeaderFooter />}/>
+        <Route
+          path="/coursedetail/:id"
+          element={<CourseDetailWithHeaderFooter />}
+        />
+        <Route
+          path="/blogs/blog/:id"
+          element={<SinglePostWithHeaderFooter />}
+        />
         <Route
           path="/editprofile"
           element={<EditProfileWithoutHeaderFooter />}
@@ -113,21 +124,21 @@ const App = () => {
           }
         />
         <Route
-        path="/course/view/:id"
-        element={
-          <PrivateRoute roles={["client"]}>
-            <ViewCourse />
-          </PrivateRoute>
-        }
-         />
-         <Route
-        path="/mycourses"
-        element={
-          <PrivateRoute roles={["client"]}>
-            <SMyBuyedCourses />
-          </PrivateRoute>
-        }
-         />
+          path="/course/view/:id"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <ViewCourse />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/mycourses"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <SMyBuyedCourses />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/edit-freelancer-profile"
           element={
@@ -155,6 +166,14 @@ const App = () => {
           }
         />
         <Route
+          path="/chat"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <ChatWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/write"
           element={
             <PrivateRoute roles={["client"]}>
@@ -163,16 +182,47 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/sfeedback" element={<PrivateRoute roles={["client"]}>
-          <SfeedbackWithoutHeaderFooter />
-        </PrivateRoute>} />
-        <Route path="/sdashboard" element={<PrivateRoute roles={["client"]}><SdashboardWithoutHeaderFooter /></PrivateRoute>} />
-        <Route path="/sjobs" element={<PrivateRoute roles={["client"]}><SjobsWithoutHeaderFooter /></PrivateRoute>} />
-        <Route path="/scourses" element={<PrivateRoute roles={["client"]}><ScoursesWithoutHeaderFooter /></PrivateRoute>} />
-        
-        <Route path="/sblogs" element={<PrivateRoute roles={["client"]}><SblogsWithoutHeaderFooter /></PrivateRoute>} />
+        <Route
+          path="/sfeedback"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <SfeedbackWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/sdashboard"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <SdashboardWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/sjobs"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <SjobsWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/scourses"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <ScoursesWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
 
-
+        <Route
+          path="/sblogs"
+          element={
+            <PrivateRoute roles={["client"]}>
+              <SblogsWithoutHeaderFooter />
+            </PrivateRoute>
+          }
+        />
 
         {/* Employer Route */}
         <Route
@@ -191,37 +241,77 @@ const App = () => {
             </PrivateRoute>
           }
         />
-
-        {/*  */}
         <Route
-          path="/tdashboard"
+          path="/edash"
           element={
-            // <PrivateRoute roles={["trainer"]}>
-            //   {" "}
-            <TdashboardWithHeaderFooter />
-            // </PrivateRoute>
+            <PrivateRoute roles={["employer"]}>
+              <EdashWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/eapp"
+          element={
+            <PrivateRoute roles={["employer"]}>
+              <EappWithHeaderFooter />
+            </PrivateRoute>
           }
         />
 
         <Route
-          path="/coursedetail/:id"
-          element={<CourseDetailWithHeaderFooter />}
+          path="/einbox"
+          element={
+            <PrivateRoute roles={["employer"]}>
+              <EinboxWithoutHeaderFooter />
+            </PrivateRoute>
+          }
         />
-        <Route path="/tutor" element={<TutorWithHeaderFooter />} />
 
-        {/* <Route path="/tdashboard" element={<TdashboardWithHeaderFooter />} /> */}
-        <Route path="/tcourses" element={<TcoursesWithHeaderFooter />} />
-        <Route path="/tprofile" element={<TprofileWithHeaderFooter />} />
+        {/* trainer route  */}
+        <Route
+          path="/tdashboard"
+          element={
+            <PrivateRoute roles={["trainer"]}>
+              {" "}
+              <TdashboardWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/set-tutor-profile"
+          element={
+            <PrivateRoute roles={["trainer"]}>
+              <TutorWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tutor"
+          element={
+            <PrivateRoute roles={["trainer"]}>
+              <EditTutorWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/tcourses"
+          element={
+            <PrivateRoute roles={["trainer"]}>
+              <TcoursesWithHeaderFooter />
+            </PrivateRoute>
+          }
+        />
+        {/* <Route path="/tprofile" element={<TprofileWithHeaderFooter />} /> */}
         <Route
           path="/tmonitoring"
-          element={<TmonitoringWithoutHeaderFooter />}
+          element={
+            <PrivateRoute roles={["trainer"]}>
+              <TmonitoringWithoutHeaderFooter />
+            </PrivateRoute>
+          }
         />
-        <Route path="/edash" element={<EdashWithHeaderFooter />} />
-        <Route path="/eapp" element={<EappWithHeaderFooter />} />
-
-        <Route path="/einbox" element={<EinboxWithoutHeaderFooter />} />
-        
-        <Route path="/chat" element={<ChatWithoutHeaderFooter />} />
       </Routes>
     </Router>
   );
@@ -241,6 +331,14 @@ const TutorWithHeaderFooter = () => (
   <>
     <Header />
     <Tutor />
+    <Footer />
+  </>
+);
+
+const EditTutorWithHeaderFooter = () => (
+  <>
+    <Header />
+    <EditTutorProfileSettingsPage />
     <Footer />
   </>
 );

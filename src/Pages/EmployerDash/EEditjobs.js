@@ -136,13 +136,15 @@ const EditJobs = () => {
         </FormField>
         <FormField>
           <Label>Category:</Label>
-          <Input
-            type="text"
+          <select
             name="category"
             value={newJob.category}
             onChange={handleChange}
-            required
-          />
+          >
+            <option value="hearing impaired">Hearing Impaired</option>
+            <option value="motor impaired">Motor Impaired</option>
+            <option value="speech impaired">Speech Impaired</option>
+          </select>
         </FormField>
         <FormField>
           <Label>Country:</Label>
@@ -166,13 +168,14 @@ const EditJobs = () => {
         </FormField>
         <FormField>
           <Label>Location:</Label>
-          <Input
-            type="text"
+          <select
             name="location"
             value={newJob.location}
             onChange={handleChange}
-            required
-          />
+          >
+            <option value="remote">Remote</option>
+            <option value="onsite">On Site</option>
+          </select>
         </FormField>
         <input
           type="radio"

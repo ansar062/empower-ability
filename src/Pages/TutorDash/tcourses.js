@@ -148,13 +148,15 @@ const UploadCoursePage = () => {
           </InputField>
           <InputField>
             <label>Course Category</label>
-            <input
-              type="text"
+            <select
               name="category"
-              placeholder="Enter Course Category"
               value={courseData.category}
               onChange={handleInputChange}
-            />
+            >
+              <option value="mute">Mute</option>
+              <option value="physically disabled">Physically Disabled</option>
+              <option value="deaf">Deaf</option>
+            </select>
           </InputField>
           <InputField>
             <label>Course Description</label>
@@ -179,13 +181,16 @@ const UploadCoursePage = () => {
           </InputField>
           <InputField>
             <label>Course Difficulty Level</label>
-            <input
-              type="text"
+            <select
               name="difficultyLevel"
-              placeholder="Beginner/Intermediate/Advanced/Expert"
               value={courseData.difficultyLevel}
               onChange={handleInputChange}
-            />
+            >
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+              <option value="expert">Expert</option>
+            </select>
           </InputField>
           
           
