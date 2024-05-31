@@ -96,8 +96,8 @@ const JobsPage = () => {
                 onChange={(e) => setSelectedLocation(e.target.value)}
               >
                 <option value="">All Locations</option>
-                <option value="Remote">Remote</option>
-                <option value="On-site">On-site</option>
+                <option value="remote">Remote</option>
+                <option value="onsite">On-site</option>
               </select>
             </label>
             <label>
@@ -107,9 +107,9 @@ const JobsPage = () => {
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
                 <option value="">All Categories</option>
-                <option value="hearing impaired">Hearing Impaired</option>
-                <option value="motor impaired">Motor Impaired</option>
-                <option value="speech impaired">Speech Impaired</option>
+                <option value="hearingimpaired">Hearing Impaired</option>
+                <option value="motorimpaired">Motor Impaired</option>
+                <option value="speechimpaired">Speech Impaired</option>
               </select>
             </label>
           </Styles.FilteringOptions>
