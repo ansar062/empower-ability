@@ -107,9 +107,9 @@ const JobsPage = () => {
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
                 <option value="">All Categories</option>
-                <option value="Hearing Impaired">Hearing Impaired</option>
-                <option value="Motor Impaired">Motor Impaired</option>
-                <option value="Speech Impaired">Speech Impaired</option>
+                <option value="hearing impaired">Hearing Impaired</option>
+                <option value="motor impaired">Motor Impaired</option>
+                <option value="speech impaired">Speech Impaired</option>
               </select>
             </label>
           </Styles.FilteringOptions>
