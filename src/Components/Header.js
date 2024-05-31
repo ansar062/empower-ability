@@ -268,7 +268,13 @@ const Header = () => {
             </div>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
-            <NavLink to={currentUser.role === 'client' ? 'edit-freelancer-profile' : currentUser.role === 'employer' ? 'unauthorized' : 'tutor'}><DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item></NavLink>
+  {currentUser.role === 'employer' ? (
+    <DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item>
+  ) : (
+    <NavLink to={currentUser.role === 'client' ? 'edit-freelancer-profile' : 'tutor'}><DropdownMenu.Item>{`${currentUser.firstname} ${currentUser.lastname}`}</DropdownMenu.Item></NavLink>
+  )
+  }
+            
             <NavLink to={currentUser.role === 'client' ? 'sdashboard' : currentUser.role === 'employer' ? 'edash' : 'tdashboard'}><DropdownMenu.Item>{currentUser.role}</DropdownMenu.Item></NavLink>
 
             <DropdownMenu.Separator />
