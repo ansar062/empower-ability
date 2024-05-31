@@ -153,9 +153,9 @@ const ManageJobsPage = () => {
             onChange={handleChange}
             onBlur={handleBlur}
           >
-            <option value="hearing impaired">Hearing Impaired</option>
-            <option value="motor impaired">Motor Impaired</option>
-            <option value="speech impaired">Speech Impaired</option>
+            <option value="hearingimpaired">Hearing Impaired</option>
+            <option value="motorimpaired">Motor Impaired</option>
+            <option value="speechimpaired">Speech Impaired</option>
           </select>
         </FormField>
         {errors.category && touched.category ? (
