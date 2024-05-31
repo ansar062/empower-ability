@@ -27,6 +27,6 @@ export const postajobSchema = Yup.object().shape({
     category: Yup.string().required("Category is required"),
     country: Yup.string().required("Country is required"),
     city: Yup.string().required("City is required"),
-    location: Yup.string().required("Location is required").min(10, "Location must contian at least 10 characters!"),
+    location: Yup.string().required("Location is required"),
     company: Yup.string().required("Company is required"),
 })
