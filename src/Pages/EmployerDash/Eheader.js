@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaBell, FaBars } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import NotificationIcon from '../../Components/NotificationIcon'; 
 import { Flex, AlertDialog, Button, DropdownMenu, Avatar } from '@radix-ui/themes';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../store/slices/authSlice';
