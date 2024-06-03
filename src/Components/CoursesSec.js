@@ -239,7 +239,8 @@ const CoursesSection = () => {
 
   return (
     <Section id="courses" aria-label="course">
-      <Container>
+      <Container data-aos="fade-right"
+    data-aos-duration="1000">
         <SectionSubtitle>Accessible Courses</SectionSubtitle>
         <SectionTitle>Pick A Course To Get Started</SectionTitle>
 

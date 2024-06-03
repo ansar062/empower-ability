@@ -195,7 +195,7 @@ const BlogSection = () => {
   ];
 
   return (
-    <BlogSectionWrapper>
+    <BlogSectionWrapper data-aos="zoom-in-up">
       <div className="container">
         <h2 className="h2 section-title">Get News With Eduweb</h2>
         <p className="section-subtitle">Latest Articles</p>

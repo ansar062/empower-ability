@@ -173,7 +173,8 @@ const SubmitButton = styled.button`
 
 const ContactSec = () => {
   return (
-    <Container>
+    <Container data-aos="fade-up"
+    data-aos-duration="1500">
       <LeftSection>
         <SectionHeading>About EmpowerAbility</SectionHeading>
         <Description>

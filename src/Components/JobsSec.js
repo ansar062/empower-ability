@@ -5,7 +5,8 @@ import { FaGlobe, FaUsers, FaRocket } from 'react-icons/fa';
 
 const JobSection = () => {
   return (
-    <Container>
+    <Container data-aos="fade-left"
+    data-aos-duration="1000">
       <TextContainer>
         <SectionHeading>
           Unlocking Potential, Embracing Diversity
